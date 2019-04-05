@@ -1,1 +1,0 @@
-//here goes code for index.js
