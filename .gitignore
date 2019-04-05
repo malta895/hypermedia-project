@@ -521,3 +521,6 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/vim,node,emacs,netbeans,visualstudio,visualstudiocode
+
+# add netbeans folder
+nbproject/
