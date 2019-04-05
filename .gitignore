@@ -524,3 +524,7 @@ MigrationBackup/
 
 # add netbeans folder
 nbproject/
+
+#macOS
+
+.DS_Store
