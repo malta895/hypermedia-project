@@ -9,7 +9,7 @@ Marco Turetta
 
 ### Design
 
-```
+
 1. Design-in-the-large
 - C-IDM (Graph)
 - L-IDM (Graph)
@@ -18,7 +18,7 @@ Marco Turetta
 3. Screenshot commented
 4. ER Diagram
 5. Scenario
-```
+
 
 ### FRONT-END
 
