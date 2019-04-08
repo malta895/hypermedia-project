@@ -1,0 +1,19 @@
+{
+  "name": "hypermedia-project",
+  "version": "1.0.0",
+  "description": "Hypermedia Applications Web Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/malta895/hypermedia-project.git"
+  },
+  "author": "Alessandro Carughi, Luca Maltagliati, Marco Turetta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/malta895/hypermedia-project/issues"
+  },
+  "homepage": "https://github.com/malta895/hypermedia-project#readme"
+}
