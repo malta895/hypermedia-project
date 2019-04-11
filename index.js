@@ -5,7 +5,7 @@ let serveStatic = require('serve-static');
 
 let app = require('connect')();
 
-const serverPort = 8080;
+const serverPort = process.env.PORT || 8080;
 
 app.use(serveStatic(__dirname + "/public"));
 
