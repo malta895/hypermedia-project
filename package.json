@@ -4,7 +4,9 @@
   "description": "Hypermedia Applications Web Project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prestart": "npm install",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,11 @@
   "bugs": {
     "url": "https://github.com/malta895/hypermedia-project/issues"
   },
-  "homepage": "https://github.com/malta895/hypermedia-project#readme"
+  "homepage": "https://github.com/malta895/hypermedia-project#readme",
+  "dependencies": {
+    "connect": "^3.6.6",
+    "http": "0.0.0",
+    "path": "^0.12.7",
+    "serve-static": "^1.13.2"
+  }
 }
