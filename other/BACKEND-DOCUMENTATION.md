@@ -6,20 +6,20 @@
 | --------- | ----          | ---------- | ---------   | --------- | -------------                     |
 |         1 | administrator | Luca       | Maltagliati |    919858 | luca.maltagliati@mail.polimi.it   |
 |         2 | member        | Alessandro | Carughi     |    915625 | alessandro.carughi@mail.polimi.it |
-|         3 | member        | Marco      | Turetta     |           |                                   |
+|         3 | member        | Marco      | Turetta     |    921188 | marco3.turetta@mail.polimi.it     |
 
 
 ## Links to other deliverables
 - Deliverable D0: the web application is accessible at
-[this address](https://example.com).
+[this address](https://hypermedia-app-project.herokuapp.com/).
 - Deliverable D2: the YAML or JSON file containing the specification of the app
-API can be found at [this address](https://example.com/backend/spec.yaml).
+API can be found at [this address](https://hypermedia-app-project.herokuapp.com/backend/spec.yaml).
 - Deliverable D3: the SwaggerUI page of the same API is available at
-[this address](https://example.com/backend/swaggerui).
+[this address](https://hypermedia-app-project.herokuapp.com/swaggerui).
 - Deliverable D4: the source code of D0 is available as a zip file at
-[this address](https://example.com/backend/app.zip).
+[this address](https://hypermedia-app-project.herokuapp.com/backend/app.zip).
 - Deliverable D5: the address of the online source control repository is
-available [this address](https://examplegit.com). We hereby declare that this
+available [this address](https://github.com/malta895/hypermedia-project). We hereby declare that this
 is a private repository and, upon request, we will give access to the
 instructors.
 ## Specification
@@ -42,6 +42,7 @@ application. How these map to the OpenAPI data model?
 ### Tools used
 Describe here which tools, languages and frameworks did you use for the backend
 of the application.
+
 ### Discussion
 Describe here:
 - How did you make sure your web application adheres to the provided OpenAPI
