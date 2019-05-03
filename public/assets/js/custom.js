@@ -491,14 +491,14 @@ $(window).load(function () {
 	/*------------------------------
 		MODAL ADVERTISING
 	------------------------------*/
-	if(typeof(Storage) !== "undefined") {
-		if(localStorage.getItem("modalhidden") !== "hidden") {
-			$('#modalAdvertising').modal('show');
-		}
-	}
-	else {
-		$('#modalAdvertising').modal('show');
-	}
+	// if(typeof(Storage) !== "undefined") {
+	// 	if(localStorage.getItem("modalhidden") !== "hidden") {
+	// 		$('#modalAdvertising').modal('show');
+	// 	}
+	// }
+	// else {
+	// 	$('#modalAdvertising').modal('show');
+	// }
 });
 
 /*------------------------------
