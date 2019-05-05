@@ -25,13 +25,39 @@ paths:
   /books:
     get:
       tags:
-      - "book"
+      - "books"
       summary: "Books available in the inventory"
       description: "List of books available in the inventory"
       operationId: "booksGET"
       produces:
       - "application/json"
       parameters:
+      - name: "publishers"
+        in: "query"
+        description: "Filter by publishers' ID"
+        type: "array"
+        items:
+          type: "integer"
+          format: "int64"
+      - name: "authors"
+        in: "query"
+        description: "Filter by author"
+        type: "array"
+        items:
+          type: "integer"
+          format: "int64"
+      - name: "min_price"
+        in: "query"
+        description: "Filter by price higher than value"
+        item:
+          $ref: "#/description/Amount"
+        required: false
+      - name: "max_price"
+        in: "query"
+        description: "Filter by price lower than value"
+        item:
+          $ref: "#/description/Amount"
+        required: false
       - name: "offset"
         in: "query"
         description: "Pagination offset. Default is 0."
@@ -166,7 +192,8 @@ paths:
           description: "Successful registration"
         403:
           description: "Unauthorized"
-      x-swagger-router-controller: "User"
+    x-swagger-router-controller: "User"
+  
   /cart/{cartId}:
     get:
       tags:
@@ -232,7 +259,7 @@ paths:
         type: "integer"
       responses:
         200:
-          description: "Succesful operation"
+          description: "Successful operation"
         404:
           description: "Publisher not found!"
 
@@ -247,18 +274,32 @@ definitions:
     properties:
       id:
         type: "integer"
+        format: "int64"
+        example: 1
       name:
         type: "string"
-      address:
+        example: "Mario"
+      surname:
         type: "string"
+        example: "Rossi"
+      email:
+        type: "string"
+        format: "email"
+      birth_date:
+        type: "string"
+        format: "date"
+      address:
+        $ref: "#/definitions/Address"
     title: "User"
-    description: "A user"
+    description: "A user of the application."
     example:
       id: 1
       name: "Mario"
   Cart:
     type: "object"
     properties:
+      user:
+        $ref: "#/definitions/User"
       total:
         $ref: "#/definitions/Amount"
       books:
@@ -300,12 +341,16 @@ definitions:
           $ref: "#/definitions/Author"
       price:
         $ref: "#/definitions/Amount"
+      picture_path:
+        type: "string"
+        description: "Relative path to a picture representing the book\n"
+        example: "pic1.jpg"
       status:
         type: "string"
-        description: "book availability in the inventory"
+        description: "Book availability in the inventory"
         enum:
-        - "available"
-        - "out of stock"
+        - "Available"
+        - "Out of stock"
     title: "Book"
     description: "A book for sale in the store"
     example:
@@ -358,10 +403,9 @@ definitions:
       biography:
         type: "string"
         description: "Short biography of the author\n"
-      birth_date:
+      picture:
         type: "string"
-        format: "date"
-        description: "Date of birth of the author\n"
+        description: "A portrait of the author\n"
     title: "Author"
     description: "An author that has written or co-written some books in the store"
   Address:
