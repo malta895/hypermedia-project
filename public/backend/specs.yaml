@@ -19,22 +19,30 @@ tags:
   description: "Access to the cart"
 - name: "user"
   description: "Operations about user"
-# schemes:
-# - "http"
+- name: "event"
+  description: "Operations on event"
+- name: "publisher"
+  description: "Operations on publisher"
+
 paths:
+
   /books:
     get:
       tags:
-      - "books"
-      summary: "Books available in the inventory"
-      description: "List of books available in the inventory"
+      - "book"
+      summary: "Books filter"
+      description: "Filter books by specified criteria"
       operationId: "booksGET"
       produces:
       - "application/json"
       parameters:
+      - name: "title"
+        in: "query"
+        description: "Filter by name\n"
+        type: "string"
       - name: "publishers"
         in: "query"
-        description: "Filter by publishers' ID"
+        description: "Filter by publishers' ID\n"
         type: "array"
         items:
           type: "integer"
@@ -49,15 +57,19 @@ paths:
       - name: "min_price"
         in: "query"
         description: "Filter by price higher than value"
-        item:
-          $ref: "#/description/Amount"
-        required: false
+        type: "number"
       - name: "max_price"
         in: "query"
         description: "Filter by price lower than value"
-        item:
-          $ref: "#/description/Amount"
-        required: false
+        type: "number"
+      - name: "genre"
+        in: "query"
+        description: "Filter by genre"
+        type: "string"
+      - name: "best_seller"
+        in: "query"
+        description: "Filter by bestseller"
+        type: "boolean"
       - name: "offset"
         in: "query"
         description: "Pagination offset. Default is 0."
@@ -79,6 +91,7 @@ paths:
         404:
           description: "No books found"
       x-swagger-router-controller: "Book"
+
   /books/{bookId}:
     get:
       tags:
@@ -105,6 +118,7 @@ paths:
         404:
           description: "Book not found"
       x-swagger-router-controller: "Book"
+
   /books/similar/{bookId}:
     get:
       tags:
@@ -144,6 +158,7 @@ paths:
         404:
           description: "Unexpected error"
       x-swagger-router-controller: "Book"
+
   /user/login:
     post:
       tags:
@@ -170,6 +185,7 @@ paths:
         403:
           description: "Wrong username/password"
       x-swagger-router-controller: "User"
+
   /user/register:
     post:
       tags:
@@ -193,7 +209,34 @@ paths:
         403:
           description: "Unauthorized"
     x-swagger-router-controller: "User"
-  
+
+  /user/update:
+    put:
+      tags:
+      - "user"
+      summary: "Update user's data"
+      description: "Put request to modify some of the user's data"
+      operationId: "userModifyPUT"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "Successful operation"
+        403:
+          description: "Unathorized"
+        400:
+          description: "Invalid request"
+      x-swagger-router-controller: "User"
+
+
   /cart/{cartId}:
     get:
       tags:
@@ -221,6 +264,53 @@ paths:
         403:
           description: "Unauthorized"
       x-swagger-router-controller: "Cart"
+
+  /cart/add/{bookId}:
+    put:
+      tags:
+      - "cart"
+      summary: "Add/remove elements to the cart"
+      operationId: "cartUpdatePUT"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "quantity"
+        in: "query"
+        type: "integer"
+        description: "Number of copies to add to the cart"
+      responses:
+        200:
+          description: "Successful operation"
+        400:
+          description: "Bad request"
+    x-swagger-router-controller: "Cart"
+
+  /cart/remove/{bookId}:
+    delete:
+      tags:
+      - "cart"
+      summary: "Remove items from the cart"
+      operationId: "cartRemoveDELETE"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "quantity"
+        in: "query"
+        type: "integer"
+        description: "Number of copies to remove from the cart"
+      responses:
+        200:
+          description: "Successful operation"
+        400:
+          description: "Bad request"
+    x-swagger-router-controller: "Cart"
+
   /author/{authorId}:
     get:
       tags:
@@ -243,6 +333,7 @@ paths:
         404:
           description: "Author not found!"
       x-swagger-router-controller: "Author"
+
   /publisher/{publisherId}:
     get:
       tags:
@@ -257,14 +348,109 @@ paths:
         in: "path"
         required: true
         type: "integer"
+        format: "int64"
       responses:
         200:
           description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Publisher"
         404:
           description: "Publisher not found!"
 
 
-# /event/{eventId}:
+  /event/{eventId}:
+    get:
+      tags:
+      - "event"
+      summary: "Get an event in wich a book is presented"
+      operationId: "eventIdGET"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "eventId"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Event"
+        404:
+          description: "Event not found!"
+
+  /events:
+    get:
+      tags:
+      - "event"
+      summary: "Get events filtered"
+      operationId: "eventGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "nameLike"
+        in: "query"
+        type: "string"
+      - name: "dateMin"
+        in: "query"
+        type: "string"
+        format: "date-time"
+      - name: "dateMax"
+        in: "query"
+        type: "string"
+        format: "date-time"
+      - name: "offset"
+        in: "query"
+        description: "Pagination offset. Default is 0."
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Maximum number of items per page. Default is 20 and cannot exceed\
+          \ 500."
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operations"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Event"
+        404:
+          description: "No events found!"
+        400:
+          description: "Invalid request"
+    x-swagger-router-controller: "Event"
+
+  /order/create/{cartId}:
+    post:
+      tags:
+      - "order"
+      summary: "Place a new order"
+      description: "Place a new order from the cart"
+      operationId: "orderPlacePOST"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "cartId"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "Successful placement"
+        403:
+          description: "Unauthorized"
+        400:
+          description: "Bad Request"
+    x-swagger-router-controller: "Order"
+    
+  
 # /event/{eventName}:
 # /author/{authorName}:
 
@@ -295,6 +481,7 @@ definitions:
     example:
       id: 1
       name: "Mario"
+      surname: "Rossi"
   Cart:
     type: "object"
     properties:
@@ -308,21 +495,8 @@ definitions:
           $ref: "#/definitions/Book"
     title: "Cart"
     description: "Order for books"
-    example:
-      total:
-        currency: "EUR"
-        value: 80082819046101.171875
-      books:
-      - id: 0
-        title: "Il deserto dei tartari"
-        price:
-          value: 10
-          currency: "EUR"
-      - id: 0
-        title: "Il deserto dei tartari"
-        price:
-          value: 10
-          currency: "EUR"
+
+  
   Book:
     type: "object"
     required:
@@ -333,8 +507,10 @@ definitions:
       id:
         type: "integer"
         format: "int64"
+        example: 1
       title:
         type: "string"
+        example: "Il deserto dei tartari"
       authors:
         type: "array"
         items:
@@ -351,19 +527,9 @@ definitions:
         enum:
         - "Available"
         - "Out of stock"
+        example: "Available"
     title: "Book"
     description: "A book for sale in the store"
-    example:
-      id: 0
-      title: "Il deserto dei tartari"
-      authors:
-        item:
-          author:
-            name: "Dino Buzzati"
-      price:
-        value: 10
-        currency: "eur"
-      status: "available"
   Amount:
     type: "object"
     required:
