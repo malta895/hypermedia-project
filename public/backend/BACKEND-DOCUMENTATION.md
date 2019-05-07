@@ -40,19 +40,24 @@ Describe with an ER diagram the model used in the data layer of your web
 application. How these map to the OpenAPI data model?
 ## Implementation
 ### Tools used
-Describe here which tools, languages and frameworks did you use for the backend
-of the application.
-
+For the backend part we used the following tools:
+- NodeJS, with the following NPM packages:
+     - ServeStatic
+     - pg 
+ - SwaggerUI, for generating the skeleton of the web server
+ - PostgreSQL, as relational database
 ### Discussion
-Describe here:
+Describe here
 - How did you make sure your web application adheres to the provided OpenAPI
 specification?
+To ease this important task we made use of the suggested middleware *SwaggerUI*. We generated an API by writing the YAML specification, and then we added the logic to the generated NodeJS server skeleton.
 - Why do you think your web application adheres to common practices to partition
 the web application (static assets vs. application data)
 - Describe synthetically why and how did you manage session state, what are the
 state change triggering actions (e.g., POST to login etc..).
 - Which technology did you use (relational or a no-SQL database) for managing
 the data model?
+We used the RDBMS PostgreSQL; to ease persistence tasks on the server we made use of the library *Knex.js*
 ## Other information
 ### Task assignment
 Describe here how development tasks have been subdivided among members of the
