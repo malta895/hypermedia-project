@@ -1,0 +1,24 @@
+{
+  "name": "hyp-bookstore",
+  "version": "1.0.0",
+  "description": "This is a simple bookstore server with a book inventory, users and a shopping cart.",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "swagger"
+  ],
+  "license": "Unlicense",
+  "private": true,
+  "dependencies": {
+    "connect": "^3.2.0",
+    "cookie-parser": "^1.4.4",
+    "cookie-session": "^1.3.3",
+    "js-yaml": "^3.3.0",
+    "knex": "^0.16.5",
+    "serve-static": "^1.14.0",
+    "swagger-tools": "0.10.1"
+  }
+}
