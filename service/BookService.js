@@ -2,7 +2,7 @@
 
 
 exports.booksDbSetup = function(database) {
-    sqlDb = database;
+    var sqlDb = database;
     console.log("Checking if books table exists");
     return database.schema.hasTable("books").then(exists => {
         if (!exists) {
