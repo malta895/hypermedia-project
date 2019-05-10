@@ -3,11 +3,12 @@
 
 exports.booksDbSetup = function(database) {
     var sqlDb = database;
-    console.log("Checking if books table exists");
-    return database.schema.hasTable("books").then(exists => {
+    var tableName = "book";
+    console.log("Checking if %s table exists", tableName);
+    return database.schema.hasTable(tableName).then(exists => {
         if (!exists) {
             console.log("It doesn't so we create it");
-            return database.schema.createTable("book", table => {
+            return database.schema.createTable(tableName, table => {
                 table.increments();
                 table.text("title");
                 table.integer("author");
