@@ -44,14 +44,10 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
   // Serve the Swagger documents and Swagger UI
     app.use(middleware.swaggerUi());
 
-    //Serve the static web app
+    //Serve the static web pages
     app.use(serveStatic(path.join(__dirname, "/public")));
 
-    console.log("Database on %s", process.env.DATABASE_URL);
-
-    
-    setupDataLayer().then(() =>{
-
+    setupDataLayer().then(() => {
         // Start the server
         http.createServer(app).listen(serverPort, function () {
             console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
