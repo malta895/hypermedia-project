@@ -58,73 +58,48 @@ exports.similarBooksDbSetup = function(database) {
  * limit Integer Maximum number of items per page. Default is 20 and cannot exceed 500. (optional)
  * returns List
  **/
-exports.booksGET = function(title,publishers,authors,min_price,max_price,genre,best_seller,offset,limit) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [ {
-  "picture_path" : "pic1.jpg",
-  "price" : {
-    "currency" : "EUR",
-    "value" : 11
-  },
-  "genre" : {
-    "name" : "Horror",
-    "description" : "Very scary"
-  },
-  "theme" : {
-    "name" : "name",
-    "description" : "description"
-  },
-  "id" : 1,
-  "title" : "Il deserto dei tartari",
-  "authors" : [ {
-    "surname" : "Rossi",
-    "name" : "Mario",
-    "biography" : "biography",
-    "picture" : "picture"
-  }, {
-    "surname" : "Rossi",
-    "name" : "Mario",
-    "biography" : "biography",
-    "picture" : "picture"
-  } ],
-  "status" : "Available"
-}, {
-  "picture_path" : "pic1.jpg",
-  "price" : {
-    "currency" : "EUR",
-    "value" : 11
-  },
-  "genre" : {
-    "name" : "Horror",
-    "description" : "Very scary"
-  },
-  "theme" : {
-    "name" : "name",
-    "description" : "description"
-  },
-  "id" : 1,
-  "title" : "Il deserto dei tartari",
-  "authors" : [ {
-    "surname" : "Rossi",
-    "name" : "Mario",
-    "biography" : "biography",
-    "picture" : "picture"
-  }, {
-    "surname" : "Rossi",
-    "name" : "Mario",
-    "biography" : "biography",
-    "picture" : "picture"
-  } ],
-  "status" : "Available"
-} ];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
-}
+exports.booksGET = function (title, publisher, authors, min_price, max_price, genre, best_seller,theme, offset, limit) {
+    return database('book')
+        .join('publisher', 'publisher.id', '=', 'book.publisher')
+        .join('genre', 'genre.id', '=', 'book.genre')
+        .join('theme', 'theme.id', '=', 'book.theme')
+        .select('*')
+        .where((filter) => {
+        if (title) {
+            filter.where('book.title', 'like', `%${title}%`);
+        }
+
+        if (publisher) {
+            filter.andWhere('book.publisher', '=', publisher);
+        }
+
+        /*if (authors) {
+            qb.orWhere('items.category', '=', searchCriteria.category);TODO AUTHORS
+        }*/
+        if (min_price) {
+            filter.andWhere('book.price', '>=', min_price);
+        }
+        if (max_price) {
+            filter.andWhere('book.price', '<=', max_price);
+        }
+        if (genre) {
+            filter.andWhere('book.genre', '=', genre);
+        }
+        if (theme) {
+                filter.andWhere('book.genre', '=', theme);
+        }
+        if (best_seller) {
+            //TODO
+        }
+        if (offset) {
+            //TODO
+        }
+        if (limit) {
+            //TOD
+        }
+    });
+
+};
 
 
 /**
