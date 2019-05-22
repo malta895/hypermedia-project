@@ -86,7 +86,7 @@ exports.booksGET = function (title, publisher, authors, min_price, max_price, ge
             filter.andWhere('book.genre', '=', genre);
         }
         if (theme) {
-                filter.andWhere('book.genre', '=', genre);
+                filter.andWhere('book.genre', '=', theme);
         }
         if (best_seller) {
             //TODO
