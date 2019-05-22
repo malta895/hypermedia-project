@@ -3,7 +3,9 @@ const sqlDbFactory = require("knex");
 let { bookDbSetup } = require("./BookService");
 let { userDbSetup } = require("./UserService");
 let { orderDbSetup } = require("./OrderService");
-let { editorDbSetup } = require("./EditorService");
+let { addressDbSetup } = require("./AddressService");
+let { eventDbSetup } = require("./EventService")
+// let { editorDbSetup } = require("./EditorService");
 // let { orderDbSetup } = require("./OrderService");
 // let { orderDbSetup } = require("./OrderService");
 // let { orderDbSetup } = require("./OrderService");
@@ -18,9 +20,13 @@ let sqlDb = sqlDbFactory({
 
 function setupDataLayer() {
     console.log("Setting up data layer....");
-    return booksDbSetup(sqlDb)
+    // mantenere l'ordine giusto, le foreign key devono riferirsi a tabelle già esistenti
+    return bookDbSetup(sqlDb)
+        .then(addressDbSetup(sqlDb))
         .then(userDbSetup(sqlDb))
-        .then(editorDbSetup(sqlDb))
+        .then(eventDbSetup(sqlDb))
+        .then(orderDbSetup(sqlDb))
+
         // .then()
 }
 

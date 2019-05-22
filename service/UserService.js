@@ -9,7 +9,7 @@ exports.userDbSetup = function(database) {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
-                table.increments();
+                table.increments("user_id");
                 table.text("username").unique();
                 table.text("password").notNullable();
                 table.text("email").unique();
