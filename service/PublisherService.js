@@ -1,5 +1,23 @@
 'use strict';
 
+exports.publisherDbSetup = function(database) {
+    var sqlDb = database;
+    var tableName = "publisher";
+    console.log("Checking if %s table exists", tableName);
+    return database.schema.hasTable(tableName).then(exists => {
+        if (!exists) {
+            console.log("It doesn't so we create it");
+            return database.schema.createTable(tableName, table => {
+                table.increments("publisher_id");
+                table.foreign("hq_location").references("address_id").inTable("address");
+                table.string("name").notNullable();
+                table.text("description");
+            });
+        } else {
+            console.log(`Table ${tableName} already exists, skipping...`);
+        }
+    });
+};
 
 /**
  * Get a publisher by Id

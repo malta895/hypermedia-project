@@ -1,7 +1,7 @@
 'use strict';
 
 
-exports.booksDbSetup = function(database) {
+exports.bookDbSetup = function(database) {
     var sqlDb = database;
     var tableName = "book";
     console.log("Checking if %s table exists", tableName);
@@ -10,16 +10,37 @@ exports.booksDbSetup = function(database) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments();
-                table.text("title");
-                table.integer("author");
-                table.float("value");
-                table.text("currency");
+                table.text("title").notNullable();
+                table.integer("author").notNullable();
+                table.float("price_value").notNullable();
+                table.text("currency").notNullable();
                 table.enum("status", ["Available", "Out of stock"]);
+                table.foreign("publisher").references("publisher_id").inTable("publisher");
             });
+        } else {
+            console.log(`Table ${tableName} already exists, skipping...`);
         }
     });
 };
 
+
+exports.similarBooksDbSetup = function(database) {
+    var sqlDb = database;
+    var tableName = "similar_book";
+    console.log("Checking if %s table exists", tableName);
+    return database.schema.hasTable(tableName).then(exists => {
+        if (!exists) {
+            console.log("It doesn't so we create it");
+            return database.schema.createTable(tableName, table => {
+                table.increments();
+                table.foreign("book1").references("ISBN").inTable("book");
+                table.foreign("book2").references("ISBN").inTable("book");
+            });
+        } else {
+            console.log(`Table ${tableName} already exists, skipping...`);
+        }
+    });
+};
 
 
 /**

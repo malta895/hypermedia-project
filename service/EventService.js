@@ -1,5 +1,26 @@
 'use strict';
 
+exports.eventDbSetup = function(database) {
+    var sqlDb = database;
+    var tableName = "similar_book";
+    console.log("Checking if %s table exists", tableName);
+    return database.schema.hasTable(tableName).then(exists => {
+        if (!exists) {
+            console.log("It doesn't so we create it");
+            return database.schema.createTable(tableName, table => {
+                table.increments();
+                table.foreign("location").references("address_id").inTable("address");
+                table.foreign("presented_book").references("ISBN").inTable("book");
+                table.string("name").notNullable();
+                table.datetime("date_time").notNullable();
+            });
+        } else {
+            console.log(`Table ${tableName} already exists, skipping...`);
+        }
+    });
+};
+
+
 
 /**
  * Get events filtered

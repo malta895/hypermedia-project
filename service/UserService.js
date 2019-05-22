@@ -1,6 +1,30 @@
 'use strict';
 
 
+exports.userDbSetup = function(database) {
+    var sqlDb = database;
+    var tableName = "user";
+    console.log("Checking if %s table exists", tableName);
+    return database.schema.hasTable(tableName).then(exists => {
+        if (!exists) {
+            console.log("It doesn't so we create it");
+            return database.schema.createTable(tableName, table => {
+                table.increments();
+                table.text("username").unique();
+                table.text("password").notNullable();
+                table.text("email").unique();
+                table.text("first_name").notNullable();
+                table.text("surname").notNullable();
+                table.date("birth_date").notNullable();
+                table.foreign("address").references("address_id").inTable("address");
+            });
+        } else {
+            console.log(`Table ${tableName} already exists, skipping...`)
+        }
+    });
+};
+
+
 /**
  * Login
  * Login with a form

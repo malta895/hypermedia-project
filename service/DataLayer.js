@@ -1,6 +1,13 @@
 const sqlDbFactory = require("knex");
 
-let { booksDbSetup } = require("./BookService");
+let { bookDbSetup } = require("./BookService");
+let { userDbSetup } = require("./UserService");
+let { orderDbSetup } = require("./OrderService");
+let { editorDbSetup } = require("./EditorService");
+// let { orderDbSetup } = require("./OrderService");
+// let { orderDbSetup } = require("./OrderService");
+// let { orderDbSetup } = require("./OrderService");
+
 
 let sqlDb = sqlDbFactory({
     client: "pg",
@@ -11,7 +18,10 @@ let sqlDb = sqlDbFactory({
 
 function setupDataLayer() {
     console.log("Setting up data layer....");
-    return booksDbSetup(sqlDb);
+    return booksDbSetup(sqlDb)
+        .then(userDbSetup(sqlDb))
+        .then(editorDbSetup(sqlDb))
+        // .then()
 }
 
 module.exports = { database: sqlDb, setupDataLayer };
