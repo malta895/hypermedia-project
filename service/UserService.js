@@ -1,8 +1,9 @@
 'use strict';
 
+var sqlDb;
 
 exports.userDbSetup = function(database) {
-    var sqlDb = database;
+    sqlDb = database;
     var tableName = "user";
     console.log("Checking if %s table exists", tableName);
     return database.schema.hasTable(tableName).then(exists => {
@@ -19,7 +20,7 @@ exports.userDbSetup = function(database) {
                 table.foreign("address").references("address_id").inTable("address");
             });
         } else {
-            console.log(`Table ${tableName} already exists, skipping...`)
+            console.log(`Table ${tableName} already exists, skipping...`);
         }
     });
 };
@@ -34,10 +35,20 @@ exports.userDbSetup = function(database) {
  * no response value expected for this operation
  **/
 exports.userLoginPOST = function(username,password) {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
+    if(sqlDb === undefined)
+        reject();
+
+    let query = sqlDb('user').where({
+        username: username,
+        password: password
+    }).select('email', 'first_name', 'surname');
+
+
+    return new Promise(function(resolve, reject) {
+        resolve(query);
+    });
 }
+
 
 
 /**
@@ -75,8 +86,13 @@ exports.userModifyPUT = function(body) {
  * no response value expected for this operation
  **/
 exports.userRegisterPOST = function(body) {
+
+    console.log(body.address);
+
+    let query = body;
+
   return new Promise(function(resolve, reject) {
-    resolve();
+      resolve(body);
   });
 }
 

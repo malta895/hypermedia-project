@@ -4,7 +4,8 @@ let { bookDbSetup } = require("./BookService");
 let { userDbSetup } = require("./UserService");
 let { orderDbSetup } = require("./OrderService");
 let { addressDbSetup } = require("./AddressService");
-let { eventDbSetup } = require("./EventService")
+let { eventDbSetup } = require("./EventService");
+let { genreDbSetup } = require("./GenreService");
 // let { editorDbSetup } = require("./EditorService");
 // let { orderDbSetup } = require("./OrderService");
 // let { orderDbSetup } = require("./OrderService");
@@ -22,10 +23,11 @@ function setupDataLayer() {
     console.log("Setting up data layer....");
     // mantenere l'ordine giusto, le foreign key devono riferirsi a tabelle già esistenti
     return bookDbSetup(sqlDb)
-        .then(addressDbSetup(sqlDb))
-        .then(userDbSetup(sqlDb))
-        .then(eventDbSetup(sqlDb))
-        .then(orderDbSetup(sqlDb))
+        .then(genreDbSetup(sqlDb)
+              .then(addressDbSetup(sqlDb)
+                    .then(userDbSetup(sqlDb)
+                          .then(eventDbSetup(sqlDb)
+                                .then(orderDbSetup(sqlDb))))))
 
         // .then()
 }
