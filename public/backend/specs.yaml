@@ -4,7 +4,7 @@ info:
   description: "This is a simple bookstore server with a book inventory, users and\
     \ a shopping cart."
   version: "1.0.0"
-  title: "Hyp BookStore"
+  title: "BookHub"
   contact:
     email: "luca.maltagliati@mail.polimi.it"
   license:
@@ -25,6 +25,9 @@ tags:
   description: "Operations on publisher"
 - name: "order"
   description: "Operations about an order"
+- name: "bestseller"
+  description: "Operations about bestseller"
+
 
 paths:
 
@@ -42,6 +45,10 @@ paths:
         in: "query"
         description: "Filter by name\n"
         type: "string"
+      - name: "not_in_stock"
+        in: "query"
+        description: "If true returns also books not in stock. Default is false."
+        type: "boolean"
       - name: "publishers"
         in: "query"
         description: "Filter by publishers' ID\n"
@@ -66,11 +73,21 @@ paths:
         type: "number"
       - name: "genre"
         in: "query"
-        description: "Filter by genre"
-        type: "string"
+        description: "Filter by genres"
+        type: "array"
+        items:
+          type: "integer"
+          format: "int64"
+      - name: "themes"
+        in: "query"
+        description: "Filter by themes"
+        type: "array"
+        items:
+          type: "integer"
+          format: "int64"
       - name: "best_seller"
         in: "query"
-        description: "Filter by bestseller"
+        description: "If true returns bestsellers only"
         type: "boolean"
       - name: "offset"
         in: "query"
@@ -85,7 +102,7 @@ paths:
         type: "integer"
       responses:
         200:
-          description: "A collection of Books"
+          description: "A collection of books"
           schema:
             type: "array"
             items:
@@ -647,7 +664,6 @@ definitions:
     type: "object"
     required:
       - "id"
-      - "address"
       - "name"
     properties:
       id:
@@ -660,14 +676,22 @@ definitions:
         type: "string"
         description: "Name of the editor/publisher"
         example: "Zanichelli"
+      description:
+        type: "string"
+        description: "Some information on the publisher"
     title: "Publisher"
     description: "Who edits/publishes a book"
 
   Genre:
     type: "object"
     required:
+    - "id"
     - "name"
     properties:
+      id:
+        type: "integer"
+        format: "int64"
+        example: 1
       name:
         type: "string"
         example: "Horror"
@@ -675,7 +699,7 @@ definitions:
         type: "string"
         example: "Very scary"
     title: "Genre"
-    description: "The genre to which a book belongs to"
+    description: "The genre of the book"
 
   Theme:
     type: "object"
@@ -687,14 +711,16 @@ definitions:
       description:
         type: "string"
     title: "Theme"
-    description: "The theme to which a book belongs to"
+    description: "The theme of the book"
 
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
 # Added by API Auto Mocking Plugin
-host: virtserver.swaggerhub.com
-basePath: /malta895/hypermedia-project/1.0.0
+# host: virtserver.swaggerhub.com
+# basePath: /malta895/hypermedia-project/1.0.0
+# host: "localhost"
+basePath: "/api/"
 schemes:
  - https
  - http
