@@ -19,4 +19,3 @@ exports.genreDbSetup = function(database) {
         }
     });
 };
-

@@ -20,6 +20,7 @@ exports.bookDbSetup = function(database) {
                 table.enum("status", ["Available", "Out of stock"]).defaultTo("Available");
                 table.foreign("publisher").references("publisher.publisher_id");
                 table.foreign("theme").references("theme.theme_id");
+                table.foreign("genre").references("genre.genre_id");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
@@ -54,8 +55,8 @@ exports.similarBooksDbSetup = function(database) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments();
-                table.foreign("book1").references("ISBN").inTable("book");
-                table.foreign("book2").references("ISBN").inTable("book");
+                table.foreign("book1").references("book.ISBN");
+                table.foreign("book2").references("book.ISBN");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
