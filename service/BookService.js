@@ -77,7 +77,7 @@ exports.booksGET = function (title, publisher, authors, min_price, max_price, ge
         }
 
         if (publisher) {
-            filter.andWhere('book.publisher', '=', publisher);
+            filter.andWhere('book.publisher', 'like', `%${publisher}%`);
         }
 
         /*if (authors) {
@@ -98,13 +98,14 @@ exports.booksGET = function (title, publisher, authors, min_price, max_price, ge
         if (best_seller) {
             //TODO
         }
+
+        }).select();
         if (offset) {
-            filter.offset(offset);
+            query.offset(offset);
         }
         if (limit) {
-            filter.limit(limit);
+            query.limit(limit);
         }
-        }).select();
     resolve(query);
     });
 
