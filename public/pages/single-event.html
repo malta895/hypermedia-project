@@ -7,7 +7,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="TODO description">
-
+    <style>
+        #map {
+        height: 100%;
+      }
+    </style>
     <!-- ==========================
         Title
     =========================== -->
@@ -178,24 +182,26 @@
                 <article class="product-item product-single">
                     <div class="row">
                         <div class="col-xs-4">
-                            <div class="item"><img src="../assets/images/author/grrm.jpg" class="img-responsive" alt=""></div>
+                            <div class="item"><img src="../assets/images/products/product-1.jpg" class="img-responsive" alt=""></div>
                         </div>
                         <div class="col-xs-8">
                             <div class="product-body">
                                 <br />
-                                <h2>George R.R. Martin</h2>
-                                <h4>Biography</h4>
-                                <p>
-                                    George Raymond Richard Marti (born George Raymond Martin, September 20, 1948), also known as GRRM, is an American novelist and short story writer in the fantasy, horror, and science fiction genres, screenwriter, and television producer. He is best known for his series of epic fantasy novels, A Song of Ice and Fire, which was adapted into the HBO series Game of Thrones (2011–2019).
-
-                                    In 2005, Lev Grossman of Time called Martin "the American Tolkien", and in 2011, he was included on the annual Time 100 list of the most influential people in the world.
-                                </p>
+                                <h3>Presentation: Harry Potter (Author: J. K. Rowling)</h3>
+                                <h4>Date:</h4>
+                                <p>21/07/2019</p>
+                                <h4>Where:</h4>
+                                <p>Mondadori Megastore Milan</p>
+                                <h4>Plot:</h4>
+                                <p>Mini Plot</p>
                             </div>
                         </div>
                     </div>
                 </article>
             </div>
         </section>
+
+        <div id="map"></div>
         <!-- ==========================
         PRODUCTS - END
         =========================== -->
@@ -295,5 +301,15 @@
     <script src="../assets/js/twitterFetcher_min.js"></script>
     <script src="../assets/js/color-switcher.js"></script>
     <script src="../assets/js/custom.js"></script>
+    <script>
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 45.463781, lng: 9.189432},
+          zoom: 8
+        });
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCumswTW7o8zkw0wKGDmXqnFH-VCa5tOE8&callback=initMap" async defer></script>
 </body>
 </html>
