@@ -5,15 +5,17 @@ var Book = require('../service/BookService');
 
 module.exports.booksGET = function booksGET (req, res, next) {
   var title = req.swagger.params['title'].value;
+  var not_in_stock = req.swagger.params['not_in_stock'].value;
   var publishers = req.swagger.params['publishers'].value;
   var authors = req.swagger.params['authors'].value;
   var min_price = req.swagger.params['min_price'].value;
   var max_price = req.swagger.params['max_price'].value;
   var genre = req.swagger.params['genre'].value;
+  var themes = req.swagger.params['themes'].value;
   var best_seller = req.swagger.params['best_seller'].value;
   var offset = req.swagger.params['offset'].value;
   var limit = req.swagger.params['limit'].value;
-  Book.booksGET(title,publishers,authors,min_price,max_price,genre,best_seller,offset,limit)
+  Book.booksGET(title,not_in_stock,publishers,authors,min_price,max_price,genre,themes,best_seller,offset,limit)
     .then(function (response) {
       utils.writeJson(res, response);
     })

@@ -1,8 +1,9 @@
 'use strict';
 
+var sqlDb;
 
 exports.bookDbSetup = function(database) {
-    var sqlDb = database;
+    sqlDb = database;
     var tableName = "book";
     console.log("Checking if %s table exists", tableName);
     return database.schema.hasTable(tableName).then(exists => {
@@ -25,7 +26,7 @@ exports.bookDbSetup = function(database) {
 
 
 exports.similarBooksDbSetup = function(database) {
-    var sqlDb = database;
+    sqlDb = database;
     var tableName = "similar_book";
     console.log("Checking if %s table exists", tableName);
     return database.schema.hasTable(tableName).then(exists => {
@@ -59,11 +60,17 @@ exports.similarBooksDbSetup = function(database) {
  * returns List
  **/
 exports.booksGET = function (title, publisher, authors, min_price, max_price, genre, best_seller,theme, offset, limit) {
-    return database('book')
-        .join('publisher', 'publisher.id', '=', 'book.publisher')
-        .join('genre', 'genre.id', '=', 'book.genre')
-        .join('theme', 'theme.id', '=', 'book.theme')
-        .select('*')
+
+    return new Promise(function(resolve, reject){
+
+    if(!sqlDb)
+        reject();
+
+
+    let query = sqlDb('book')
+        // .join('publisher', 'publisher.id', '=', 'book.publisher')
+        // .join('genre', 'genre.genre_id', '=', 'book.genre')
+        // .join('theme', 'theme.id', '=', 'book.theme')
         .where((filter) => {
         if (title) {
             filter.where('book.title', 'like', `%${title}%`);
@@ -74,7 +81,7 @@ exports.booksGET = function (title, publisher, authors, min_price, max_price, ge
         }
 
         /*if (authors) {
-            qb.orWhere('items.category', '=', searchCriteria.category);TODO AUTHORS
+            qb.orWhere('items.category', '=', search Criteria.category);//TODO AUTHORS
         }*/
         if (min_price) {
             filter.andWhere('book.price', '>=', min_price);
@@ -92,11 +99,13 @@ exports.booksGET = function (title, publisher, authors, min_price, max_price, ge
             //TODO
         }
         if (offset) {
-            //TODO
+            filter.offset(offset);
         }
         if (limit) {
-            //TOD
+            filter.limit(limit);
         }
+        }).select();
+    resolve(query);
     });
 
 };

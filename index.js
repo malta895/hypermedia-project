@@ -20,7 +20,7 @@ let { setupDataLayer } = require("./service/DataLayer");
 
 // swaggerRouter configuration
 var options = {
-  swaggerUi: path.join(__dirname, '/swagger.json'),
+    swaggerUi: path.join(__dirname, '/swagger.json'),
   controllers: path.join(__dirname, './controllers'),
   useStubs: process.env.NODE_ENV === 'development' // Conditionally turn on stubs (mock mode)
 };
@@ -45,7 +45,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
     app.use(middleware.swaggerUi());
 
     //Serve the static web pages
-    app.use(serveStatic(path.join(__dirname, "/public")));
+    app.use(serveStatic(path.join(__dirname, "./public")));
 
     setupDataLayer().then(() => {
         // Start the server
@@ -57,3 +57,16 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
 
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
