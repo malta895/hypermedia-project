@@ -2,15 +2,15 @@
 
 exports.eventDbSetup = function(database) {
     var sqlDb = database;
-    var tableName = "similar_book";
+    var tableName = "event";
     console.log("Checking if %s table exists", tableName);
     return database.schema.hasTable(tableName).then(exists => {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments();
-                table.foreign("location").references("address_id").inTable("address");
-                table.foreign("presented_book").references("ISBN").inTable("book");
+                table.foreign("location").references("address.address_id");
+                table.foreign("presented_book").references("book.ISBN");
                 table.string("name").notNullable();
                 table.datetime("date_time").notNullable();
             });

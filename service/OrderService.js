@@ -9,8 +9,8 @@ exports.orderDbSetup = function(database) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments();
-                table.foreign("user_id").references("user_id").inTable("user");
-                table.foreign("ship_address").references("address_id").inTable("address");
+                table.foreign("user_id").references("user.user_id");
+                table.foreign("ship_address").references("adress.address_id");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
@@ -27,8 +27,8 @@ exports.orderToBookDbSetup = function(database) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments();
-                table.foreign("book").references("ISBN").inTable("book");
-                table.foreign("order").references("order_id").inTable("order");
+                table.foreign("book").references("book.ISBN");
+                table.foreign("order").references("order.order_id");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`)

@@ -1,6 +1,39 @@
 'use strict';
 
+exports.cartDbSetup = function (database) {
+    var sqlDb = database;
+    const tableName = "cart";
+    console.log("Checking if %s table exists...", tableName);
+    return database.schema.hasTable(tableName).then(exists => {
+        if (!exists) {
+            console.log("It doesn't so we create it");
+            return database.schema.createTable(tableName, table => {
+                table.increments("cart_id");
+                table.foreign("user_id").references("user.user_id");
+            });
+        } else {
+            console.log(`Table ${tableName} already exists, skipping...`);
+        }
+    });
+};
 
+exports.cartBooksDbSetup = function (database) {
+    sqlDb = database;
+    var tableName = "cart_book";
+    console.log("Checking if %s table exists", tableName);
+    return database.schema.hasTable(tableName).then(exists => {
+        if (!exists) {
+            console.log("It doesn't so we create it");
+            return database.schema.createTable(tableName, table => {
+                table.increments();
+                table.foreign("cart").references("cart.cart_id");
+                table.foreign("book").references("book.book_id");
+            });
+        } else {
+            console.log(`Table ${tableName} already exists, skipping...`);
+        }
+    });
+};
 /**
  * View the content of the cart
  *

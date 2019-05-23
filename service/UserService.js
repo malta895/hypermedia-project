@@ -17,7 +17,7 @@ exports.userDbSetup = function(database) {
                 table.text("first_name").notNullable();
                 table.text("surname").notNullable();
                 table.date("birth_date").notNullable();
-                table.foreign("address").references("address_id").inTable("address");
+                table.foreign("address").references("address.address_id");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);

@@ -10,13 +10,16 @@ exports.bookDbSetup = function(database) {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
-                table.increments();
+                table.increments("book_id");
+                table.integer("ISBN").notNullable().unique();
                 table.text("title").notNullable();
-                table.integer("author").notNullable();
-                table.float("price_value").notNullable();
-                table.text("currency").notNullable();
-                table.enum("status", ["Available", "Out of stock"]);
-                table.foreign("publisher").references("publisher_id").inTable("publisher");
+                table.float("price").notNullable();
+                table.text("picture").notNullable();
+                table.text("abstract").notNullable().defaultTo("Lorem ipsum");
+                table.text("interview").notNullable().defaultTo("Lorem ipsum");
+                table.enum("status", ["Available", "Out of stock"]).defaultTo("Available");
+                table.foreign("publisher").references("publisher.publisher_id");
+                table.foreign("theme").references("theme.theme_id");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
@@ -24,6 +27,23 @@ exports.bookDbSetup = function(database) {
     });
 };
 
+exports.authorsBooksDbSetup = function (database) {
+    sqlDb = database;
+    var tableName = "author_book";
+    console.log("Checking if %s table exists", tableName);
+    return database.schema.hasTable(tableName).then(exists => {
+        if (!exists) {
+            console.log("It doesn't so we create it");
+            return database.schema.createTable(tableName, table => {
+                table.increments("author_book_id");
+                table.foreign("author").references("author.author_id");
+                table.foreign("book").references("book.book_id");
+            });
+        } else {
+            console.log(`Table ${tableName} already exists, skipping...`);
+        }
+    });
+};
 
 exports.similarBooksDbSetup = function(database) {
     sqlDb = database;

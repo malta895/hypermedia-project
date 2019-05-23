@@ -9,9 +9,8 @@ exports.publisherDbSetup = function(database) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments("publisher_id");
-                table.foreign("hq_location").references("address_id").inTable("address");
+                table.foreign("hq_location").references("address.address_id");
                 table.string("name").notNullable();
-                table.text("description");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
