@@ -10,8 +10,7 @@ info:
   license:
     name: "Apache-2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-# host: "localhost:8080"
-# basePath: "/v2"
+
 tags:
 - name: "book"
   description: "Available book"
@@ -25,8 +24,8 @@ tags:
   description: "Operations on publisher"
 - name: "order"
   description: "Operations about an order"
-- name: "bestseller"
-  description: "Operations about bestseller"
+- name: "review"
+  description: "Operations about books reviews"
 
 
 paths:
@@ -63,6 +62,11 @@ paths:
         items:
           type: "integer"
           format: "int64"
+      - name: "ISBN"
+        in: "query"
+        description: "Filter by ISBN"
+        type: "integer"
+        format: "int64"
       - name: "min_price"
         in: "query"
         description: "Filter by price higher than value"
@@ -138,13 +142,13 @@ paths:
           description: "Book not found"
       x-swagger-router-controller: "Book"
 
-  /books/similar/{bookId}:
+  /books/{bookId}/related:
     get:
       tags:
       - "book"
       summary: "Books similar to a specific book"
       description: "List of books similar to specified book"
-      operationId: "similarBooksGET"
+      operationId: "relatedBooksGET"
       produces:
       - "application/json"
       parameters:
@@ -248,6 +252,24 @@ paths:
           description: "Unauthorized"
     x-swagger-router-controller: "User"
 
+  /user/delete:
+    delete:
+      tags:
+      - "user"
+      summary: "Delete user"
+      description: "Delete an user's account"
+      operationId: "userDeletePOST"
+      responses:
+        200:
+          description: "Successful deletion!"
+        403:
+          description: "Unauthorized"
+        404:
+          description: "User not found"
+        400:
+          description: "Invalid request"
+    x-swagger-router-controller: "User"
+
   /user/update:
     put:
       tags:
@@ -344,6 +366,37 @@ paths:
           description: "Bad request"
     x-swagger-router-controller: "Cart"
 
+  /authors:
+    get:
+      tags:
+      - "author"
+      summary: "Get the list of authors"
+      operationId: "authorsGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "offset"
+        in: "query"
+        description: "Pagination offset. Default is 0."
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Maximum number of items per page. Default is 20 and cannot exceed\
+          \ 500."
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Author"
+        404:
+          description: "Author not found!"
+      x-swagger-router-controller: "Author"
+
   /author/{authorId}:
     get:
       tags:
@@ -367,11 +420,42 @@ paths:
           description: "Author not found!"
       x-swagger-router-controller: "Author"
 
+  /publishers:
+    get:
+      tags:
+      - "publisher"
+      summary: "Get all publishers"
+      operationId: "publishersGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "offset"
+        in: "query"
+        description: "Pagination offset. Default is 0."
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Maximum number of items per page. Default is 20 and cannot exceed\
+          \ 500."
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Publisher"
+        404:
+          description: "Not found!"
+      x-swagger-router-controller: "Publisher"
+
+
   /publisher/{publisherId}:
     get:
       tags:
       - "publisher"
-      - "editor"
       summary: "Get a publisher by Id"
       operationId: "publisherIdGET"
       produces:
@@ -389,7 +473,7 @@ paths:
             $ref: "#/definitions/Publisher"
         404:
           description: "Publisher not found!"
-
+    x-swagger-router-controller: "Publisher"
 
   /event/{eventId}:
     get:
@@ -412,6 +496,7 @@ paths:
             $ref: "#/definitions/Event"
         404:
           description: "Event not found!"
+      x-swagger-router-controller: "Event"
 
   /events:
     get:
@@ -422,17 +507,6 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "nameLike"
-        in: "query"
-        type: "string"
-      - name: "dateMin"
-        in: "query"
-        type: "string"
-        format: "date-time"
-      - name: "dateMax"
-        in: "query"
-        type: "string"
-        format: "date-time"
       - name: "offset"
         in: "query"
         description: "Pagination offset. Default is 0."
@@ -476,10 +550,71 @@ paths:
         400:
           description: "Bad Request"
     x-swagger-router-controller: "Order"
-    
-  
-# /event/{eventName}:
-# /author/{authorName}:
+
+  /book/{bookId}/reviews:
+    get:
+      tags:
+      - "review"
+      - "book"
+      summary: "Get reviews of a book"
+      description: "Given a book Id, returns all the reviews"
+      operationId: "bookReviewsGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "Id of the book to get the reviews"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "offset"
+        in: "query"
+        description: "Pagination offset. Default is 0."
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Maximum number of items per page. Default is 20 and cannot exceed\
+          \ 500."
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operations"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Review"
+        404:
+          description: "No reviews found!"
+        400:
+          description: "Invalid request"
+    x-swagger-router-controller: "Review"
+
+  /review/{reviewId}:
+    get:
+      tags:
+      - "review"
+      summary: "Get a review by Id"
+      operationId: "reviewIdGET"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "reviewId"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Review"
+        404:
+          description: "Review not found!"
+    x-swagger-router-controller: "Review"
+
 
 definitions:
   User:
@@ -553,11 +688,22 @@ definitions:
         - "Out of stock"
         example: "Available"
       genre:
-        $ref: "#/definitions/Genre"
+        type: "array"
+        items:
+          $ref: "#/definitions/Genre"
       theme:
-        $ref: "#/definitions/Theme"
+        type: "array"
+        items:
+          $ref: "#/definitions/Theme"
+      score:
+        type: "number"
+        format: "float"
+        minimum: 1
+        maximum: 5
+        description: "Average score of reviews"
     title: "Book"
     description: "A book for sale in the store"
+
   Amount:
     type: "object"
     required:
@@ -568,7 +714,7 @@ definitions:
         type: "number"
         format: "double"
         minimum: 0.01
-        maximum: 1000000000000000
+        maximum: 1000000000
       currency:
         $ref: "#/definitions/Currency"
     description: "Price\n"
@@ -603,6 +749,7 @@ definitions:
         description: "A portrait of the author\n"
     title: "Author"
     description: "An author that has written or co-written some books in the store"
+
   Address:
     type: "object"
     required:
@@ -677,9 +824,6 @@ definitions:
         type: "string"
         description: "Name of the editor/publisher"
         example: "Zanichelli"
-      description:
-        type: "string"
-        description: "Some information on the publisher"
     title: "Publisher"
     description: "Who edits/publishes a book"
 
@@ -696,9 +840,6 @@ definitions:
       name:
         type: "string"
         example: "Horror"
-      description:
-        type: "string"
-        example: "Very scary"
     title: "Genre"
     description: "The genre of the book"
 
@@ -713,6 +854,37 @@ definitions:
         type: "string"
     title: "Theme"
     description: "The theme of the book"
+
+  Review:
+    type: "object"
+    required:
+    - "id"
+    - "author_name"
+    - "title"
+    - "text"
+    - "score"
+    - "book_id"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      author_name:
+        type: "string"
+      title:
+        type: "string"
+      text:
+        type: "string"
+      score:
+        type: "integer"
+        format: "int64"
+        minimum: 1
+        maximum: 5
+      book_id:
+        type: "integer"
+        format: "int64"
+    title: "Review"
+    description: "A review of a book"
+
 
 externalDocs:
   description: "Find out more about Swagger"
