@@ -10,8 +10,8 @@ info:
   license:
     name: "Apache-2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-#host: "virtserver.swaggerhub.com"
-basePath: "/api"
+host: "virtserver.swaggerhub.com"
+basePath: "/malta895/hypermedia-project/1.0.0"
 tags:
 - name: "book"
   description: "Available book"
@@ -25,8 +25,8 @@ tags:
   description: "Operations on publisher"
 - name: "order"
   description: "Operations about an order"
-- name: "bestseller"
-  description: "Operations about bestseller"
+- name: "review"
+  description: "Operations about books reviews"
 schemes:
 - "https"
 - "http"
@@ -69,6 +69,12 @@ paths:
           type: "integer"
           format: "int64"
         collectionFormat: "multi"
+      - name: "ISBN"
+        in: "query"
+        description: "Filter by ISBN"
+        required: false
+        type: "integer"
+        format: "int64"
       - name: "min_price"
         in: "query"
         description: "Filter by price higher than value"
@@ -149,13 +155,13 @@ paths:
         404:
           description: "Book not found"
       x-swagger-router-controller: "Book"
-  /books/similar/{bookId}:
+  /books/{bookId}/related:
     get:
       tags:
       - "book"
       summary: "Books similar to a specific book"
       description: "List of books similar to specified book"
-      operationId: "similarBooksGET"
+      operationId: "relatedBooksGET"
       produces:
       - "application/json"
       parameters:
@@ -256,6 +262,25 @@ paths:
           description: "Unauthorized"
       x-swagger-router-controller: "User"
     x-swagger-router-controller: "User"
+  /user/delete:
+    delete:
+      tags:
+      - "user"
+      summary: "Delete user"
+      description: "Delete an user's account"
+      operationId: "userDeletePOST"
+      parameters: []
+      responses:
+        200:
+          description: "Successful deletion!"
+        400:
+          description: "Invalid request"
+        403:
+          description: "Unauthorized"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "User"
+    x-swagger-router-controller: "User"
   /user/update:
     put:
       tags:
@@ -351,6 +376,36 @@ paths:
           description: "Bad request"
       x-swagger-router-controller: "Cart"
     x-swagger-router-controller: "Cart"
+  /authors:
+    get:
+      tags:
+      - "author"
+      summary: "Get the list of authors"
+      operationId: "authorsGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "offset"
+        in: "query"
+        description: "Pagination offset. Default is 0."
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Maximum number of items per page. Default is 20 and cannot exceed\
+          \ 500."
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Author"
+        404:
+          description: "Author not found!"
+      x-swagger-router-controller: "Author"
   /author/{authorId}:
     get:
       tags:
@@ -373,11 +428,40 @@ paths:
         404:
           description: "Author not found!"
       x-swagger-router-controller: "Author"
+  /publishers:
+    get:
+      tags:
+      - "publisher"
+      summary: "Get all publishers"
+      operationId: "publishersGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "offset"
+        in: "query"
+        description: "Pagination offset. Default is 0."
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Maximum number of items per page. Default is 20 and cannot exceed\
+          \ 500."
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Publisher"
+        404:
+          description: "Not found!"
+      x-swagger-router-controller: "Publisher"
   /publisher/{publisherId}:
     get:
       tags:
       - "publisher"
-      - "editor"
       summary: "Get a publisher by Id"
       operationId: "publisherIdGET"
       produces:
@@ -396,6 +480,7 @@ paths:
         404:
           description: "Publisher not found!"
       x-swagger-router-controller: "Publisher"
+    x-swagger-router-controller: "Publisher"
   /event/{eventId}:
     get:
       tags:
@@ -427,20 +512,6 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "nameLike"
-        in: "query"
-        required: false
-        type: "string"
-      - name: "dateMin"
-        in: "query"
-        required: false
-        type: "string"
-        format: "date-time"
-      - name: "dateMax"
-        in: "query"
-        required: false
-        type: "string"
-        format: "date-time"
       - name: "offset"
         in: "query"
         description: "Pagination offset. Default is 0."
@@ -486,6 +557,70 @@ paths:
           description: "Unauthorized"
       x-swagger-router-controller: "Order"
     x-swagger-router-controller: "Order"
+  /book/{bookId}/reviews:
+    get:
+      tags:
+      - "review"
+      - "book"
+      summary: "Get reviews of a book"
+      description: "Given a book Id, returns all the reviews"
+      operationId: "bookReviewsGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "Id of the book to get the reviews"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "offset"
+        in: "query"
+        description: "Pagination offset. Default is 0."
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Maximum number of items per page. Default is 20 and cannot exceed\
+          \ 500."
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operations"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Review"
+        400:
+          description: "Invalid request"
+        404:
+          description: "No reviews found!"
+      x-swagger-router-controller: "Review"
+    x-swagger-router-controller: "Review"
+  /review/{reviewId}:
+    get:
+      tags:
+      - "review"
+      summary: "Get a review by Id"
+      operationId: "reviewIdGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "reviewId"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Review"
+        404:
+          description: "Review not found!"
+      x-swagger-router-controller: "Review"
+    x-swagger-router-controller: "Review"
 definitions:
   User:
     type: "object"
@@ -515,9 +650,9 @@ definitions:
         country: "Italy"
         province: "CO"
         city: "Como"
+        address_id: 1
         street_line2: "11"
         street_line1: "Via Valleggio"
-        id: 1
         zip_code: "22100"
       surname: "Rossi"
       birth_date: "2000-01-23"
@@ -547,12 +682,16 @@ definitions:
           currency: "EUR"
           value: 11
         genre:
-          name: "Horror"
-          description: "Very scary"
-          id: 1
+        - name: "Horror"
+          genre_id: 1
+        - name: "Horror"
+          genre_id: 1
         theme:
-          name: "name"
+        - name: "name"
           description: "description"
+        - name: "name"
+          description: "description"
+        average_rating: 1.3203313
         id: 1
         title: "Il deserto dei tartari"
         authors:
@@ -570,12 +709,16 @@ definitions:
           currency: "EUR"
           value: 11
         genre:
-          name: "Horror"
-          description: "Very scary"
-          id: 1
+        - name: "Horror"
+          genre_id: 1
+        - name: "Horror"
+          genre_id: 1
         theme:
-          name: "name"
+        - name: "name"
           description: "description"
+        - name: "name"
+          description: "description"
+        average_rating: 1.3203313
         id: 1
         title: "Il deserto dei tartari"
         authors:
@@ -593,9 +736,9 @@ definitions:
           country: "Italy"
           province: "CO"
           city: "Como"
+          address_id: 1
           street_line2: "11"
           street_line1: "Via Valleggio"
-          id: 1
           zip_code: "22100"
         surname: "Rossi"
         birth_date: "2000-01-23"
@@ -633,9 +776,19 @@ definitions:
         - "Available"
         - "Out of stock"
       genre:
-        $ref: "#/definitions/Genre"
+        type: "array"
+        items:
+          $ref: "#/definitions/Genre"
       theme:
-        $ref: "#/definitions/Theme"
+        type: "array"
+        items:
+          $ref: "#/definitions/Theme"
+      average_rating:
+        type: "number"
+        format: "float"
+        description: "Average rating of the reviews"
+        minimum: 1
+        maximum: 5
     title: "Book"
     description: "A book for sale in the store"
     example:
@@ -644,12 +797,16 @@ definitions:
         currency: "EUR"
         value: 11
       genre:
-        name: "Horror"
-        description: "Very scary"
-        id: 1
+      - name: "Horror"
+        genre_id: 1
+      - name: "Horror"
+        genre_id: 1
       theme:
-        name: "name"
+      - name: "name"
         description: "description"
+      - name: "name"
+        description: "description"
+      average_rating: 1.3203313
       id: 1
       title: "Il deserto dei tartari"
       authors:
@@ -672,7 +829,7 @@ definitions:
         type: "number"
         format: "double"
         minimum: 0.01
-        maximum: 1000000000000000
+        maximum: 1000000000
       currency:
         $ref: "#/definitions/Currency"
     description: "Price\n"
@@ -716,12 +873,11 @@ definitions:
     required:
     - "city"
     - "country"
-    - "id"
     - "street_line1"
     - "street_line2"
     - "zip_code"
     properties:
-      id:
+      address_id:
         type: "integer"
         format: "int64"
         example: 1
@@ -750,19 +906,19 @@ definitions:
       country: "Italy"
       province: "CO"
       city: "Como"
+      address_id: 1
       street_line2: "11"
       street_line1: "Via Valleggio"
-      id: 1
       zip_code: "22100"
   Event:
     type: "object"
     required:
     - "date"
-    - "id"
+    - "event_id"
     - "location"
     - "name"
     properties:
-      id:
+      event_id:
         type: "integer"
         format: "int64"
         example: 1
@@ -778,23 +934,22 @@ definitions:
     description: "An event where some books are presented"
     example:
       date: "2000-01-23T04:56:07.000+00:00"
+      event_id: 1
       name: "name"
       location:
         country: "Italy"
         province: "CO"
         city: "Como"
+        address_id: 1
         street_line2: "11"
         street_line1: "Via Valleggio"
-        id: 1
         zip_code: "22100"
-      id: 1
   Publisher:
     type: "object"
     required:
-    - "id"
     - "name"
     properties:
-      id:
+      publisher_id:
         type: "integer"
         format: "int64"
         example: 1
@@ -804,45 +959,37 @@ definitions:
         type: "string"
         example: "Zanichelli"
         description: "Name of the editor/publisher"
-      description:
-        type: "string"
-        description: "Some information on the publisher"
     title: "Publisher"
     description: "Who edits/publishes a book"
     example:
+      publisher_id: 1
       address:
         country: "Italy"
         province: "CO"
         city: "Como"
+        address_id: 1
         street_line2: "11"
         street_line1: "Via Valleggio"
-        id: 1
         zip_code: "22100"
       name: "Zanichelli"
-      description: "description"
-      id: 1
   Genre:
     type: "object"
     required:
-    - "id"
+    - "genre_id"
     - "name"
     properties:
-      id:
+      genre_id:
         type: "integer"
         format: "int64"
         example: 1
       name:
         type: "string"
         example: "Horror"
-      description:
-        type: "string"
-        example: "Very scary"
     title: "Genre"
     description: "The genre of the book"
     example:
       name: "Horror"
-      description: "Very scary"
-      id: 1
+      genre_id: 1
   Theme:
     type: "object"
     required:
@@ -857,6 +1004,46 @@ definitions:
     example:
       name: "name"
       description: "description"
+  Review:
+    type: "object"
+    required:
+    - "book"
+    - "rating"
+    - "review_id"
+    - "user"
+    properties:
+      review_id:
+        type: "integer"
+        format: "int64"
+      user:
+        type: "integer"
+        format: "int64"
+        description: "User id of who wrote the review"
+      title:
+        type: "string"
+        description: "Title of the review"
+      text:
+        type: "string"
+        description: "Content of the review"
+      rating:
+        type: "integer"
+        format: "int64"
+        description: "Rating of the review, expressed in 1 to 5 stars"
+        minimum: 1
+        maximum: 5
+      book:
+        type: "integer"
+        format: "int64"
+        description: "Id of the reviewed book"
+    title: "Review"
+    description: "A review of a book, with rating and optional title and text"
+    example:
+      review_id: 0
+      book: 5
+      rating: 1
+      text: "text"
+      title: "title"
+      user: 6
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

@@ -4,8 +4,10 @@ var sqlDb;
 
 exports.userDbSetup = function(database) {
     sqlDb = database;
-    var tableName = "user";
+    var tableName = "app_user";
     console.log("Checking if %s table exists", tableName);
+    if(process.env.HYP_DROP_ALL)
+        database.schema.dropTableIfExists(tableName);
     return database.schema.hasTable(tableName).then(exists => {
         if (!exists) {
             console.log("It doesn't so we create it");
@@ -17,10 +19,12 @@ exports.userDbSetup = function(database) {
                 table.text("first_name").notNullable();
                 table.text("surname").notNullable();
                 table.date("birth_date").notNullable();
+                table.integer("address").unsigned();
                 table.foreign("address").references("address.address_id");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
+            return Promise.resolve();
         }
     });
 };
@@ -38,7 +42,7 @@ exports.userLoginPOST = function(username,password) {
     if(sqlDb === undefined)
         reject();
 
-    let query = sqlDb('user').where({
+    let query = sqlDb('app_user').where({
         username: username,
         password: password
     }).select('email', 'first_name', 'surname');

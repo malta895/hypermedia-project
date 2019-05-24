@@ -3,19 +3,24 @@
 var sqlDb;
 
 
-let authorBookDbSetup = function(database) {
+exports.authorBookDbSetup = function(database) {
     var tableName = "author_book";
     console.log("Checking if %s table exists", tableName);
+    if(process.env.HYP_DROP_ALL)
+        database.schema.dropTableIfExists(tableName);
     return database.schema.hasTable(tableName).then(exists => {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments();
+                table.integer("book").unsigned();
                 table.foreign("book").references("book.book_id");
-                table.foreign("author").references("author.authorId");
+                table.integer("author").unsigned();
+                table.foreign("author").references("author.author_id");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
+            return Promise.resolve();
         }
     });
 };
@@ -29,16 +34,14 @@ exports.authorDbSetup = function(database) {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
-                table.increments();
+                table.increments("author_id");
                 table.string('first_name').notNullable();
                 table.string('surname').notNullable();
                 table.text('biography');
-            }).then(_ => {
-                authorBookDbSetup(database);
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
-            return authorBookDbSetup(database);
+            return Promise.resolve();
         }
     });
 };

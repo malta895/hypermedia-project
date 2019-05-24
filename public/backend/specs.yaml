@@ -695,12 +695,12 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/Theme"
-      score:
+      average_rating:
         type: "number"
         format: "float"
         minimum: 1
         maximum: 5
-        description: "Average score of reviews"
+        description: "Average rating of the reviews"
     title: "Book"
     description: "A book for sale in the store"
 
@@ -760,7 +760,7 @@ definitions:
       - "zip_code"
       - "country"
     properties:
-      id:
+      address_id:
         type: "integer"
         format: "int64"
         example: 1
@@ -788,12 +788,12 @@ definitions:
   Event:
     type: "object"
     required:
-      - "id"
+      - "event_id"
       - "location"
       - "name"
       - "date"
     properties:
-      id:
+      event_id:
         type: "integer"
         format: "int64"
         description: "Unique identifier of the event"
@@ -814,7 +814,7 @@ definitions:
       - "id"
       - "name"
     properties:
-      id:
+      publisher_id:
         type: "integer"
         format: "int64"
         example: 1
@@ -830,10 +830,10 @@ definitions:
   Genre:
     type: "object"
     required:
-    - "id"
+    - "genre_id"
     - "name"
     properties:
-      id:
+      genre_id:
         type: "integer"
         format: "int64"
         example: 1
@@ -858,32 +858,36 @@ definitions:
   Review:
     type: "object"
     required:
-    - "id"
-    - "author_name"
-    - "title"
-    - "text"
-    - "score"
-    - "book_id"
+    - "review_id"
+    - "user"
+    - "rating"
+    - "book"
     properties:
-      id:
+      review_id:
         type: "integer"
         format: "int64"
-      author_name:
-        type: "string"
+      user:
+        type: "integer"
+        format: "int64"
+        description: "User id of who wrote the review"
       title:
         type: "string"
+        description: "Title of the review"
       text:
         type: "string"
-      score:
+        description: "Content of the review"
+      rating:
         type: "integer"
         format: "int64"
         minimum: 1
         maximum: 5
-      book_id:
+        description: "Rating of the review, expressed in 1 to 5 stars"
+      book:
         type: "integer"
         format: "int64"
+        description: "Id of the reviewed book"
     title: "Review"
-    description: "A review of a book"
+    description: "A review of a book, with rating and optional title and text"
 
 
 externalDocs:

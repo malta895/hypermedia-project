@@ -1,12 +1,13 @@
 'use strict';
 
 var utils = require('../utils/writer.js');
-var Event = require('../service/EventService');
+var Review = require('../service/ReviewService');
 
-module.exports.eventGET = function eventGET (req, res, next) {
+module.exports.bookReviewsGET = function bookReviewsGET (req, res, next) {
+  var bookId = req.swagger.params['bookId'].value;
   var offset = req.swagger.params['offset'].value;
   var limit = req.swagger.params['limit'].value;
-  Event.eventGET(offset,limit)
+  Review.bookReviewsGET(bookId,offset,limit)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -15,9 +16,9 @@ module.exports.eventGET = function eventGET (req, res, next) {
     });
 };
 
-module.exports.eventIdGET = function eventIdGET (req, res, next) {
-  var eventId = req.swagger.params['eventId'].value;
-  Event.eventIdGET(eventId)
+module.exports.reviewIdGET = function reviewIdGET (req, res, next) {
+  var reviewId = req.swagger.params['reviewId'].value;
+  Review.reviewIdGET(reviewId)
     .then(function (response) {
       utils.writeJson(res, response);
     })

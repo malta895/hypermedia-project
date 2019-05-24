@@ -5,14 +5,18 @@ exports.cartDbSetup = function (database) {
     const tableName = "cart";
     console.log("Checking if %s table exists...", tableName);
     return database.schema.hasTable(tableName).then(exists => {
+        if(exists && process.env.HYP_DROP_ALL)
+            database.schema.dropTable(tableName);
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments("cart_id");
-                table.foreign("user_id").references("user.user_id");
+                table.integer("user_id").unsigned();
+                table.foreign("user_id").references("app_user.user_id");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
+            return Promise.resolve();
         }
     });
 };
@@ -21,16 +25,21 @@ exports.cartBooksDbSetup = function (database) {
     sqlDb = database;
     var tableName = "cart_book";
     console.log("Checking if %s table exists", tableName);
+    if(process.env.HYP_DROP_ALL)
+        database.schema.dropTableIfExists(tableName);
     return database.schema.hasTable(tableName).then(exists => {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments();
+                table.integer("cart").unsigned();
                 table.foreign("cart").references("cart.cart_id");
+                table.integer("book").unsigned();
                 table.foreign("book").references("book.book_id");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
+            return Promise.resolve();
         }
     });
 };

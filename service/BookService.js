@@ -6,42 +6,31 @@ exports.bookDbSetup = function(database) {
     sqlDb = database;
     var tableName = "book";
     console.log("Checking if %s table exists", tableName);
+    if(process.env.HYP_DROP_ALL)
+        database.schema.dropTableIfExists(tableName);
     return database.schema.hasTable(tableName).then(exists => {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments("book_id");
-                table.integer("ISBN").notNullable().unique();
+                table.integer("isbn").notNullable().unique();
                 table.text("title").notNullable();
-                table.float("price").notNullable();
+                table.double("price").notNullable();
                 table.text("picture").notNullable();
                 table.text("abstract").notNullable().defaultTo("Lorem ipsum");
                 table.text("interview").notNullable().defaultTo("Lorem ipsum");
                 table.enum("status", ["Available", "Out of stock"]).defaultTo("Available");
+                table.integer("publisher").unsigned();
+                table.float("rating").defaultTo(0);
                 table.foreign("publisher").references("publisher.publisher_id");
+                table.integer("theme").unsigned();
                 table.foreign("theme").references("theme.theme_id");
+                table.integer("genre").unsigned();
                 table.foreign("genre").references("genre.genre_id");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
-        }
-    });
-};
-
-exports.authorsBooksDbSetup = function (database) {
-    sqlDb = database;
-    var tableName = "author_book";
-    console.log("Checking if %s table exists", tableName);
-    return database.schema.hasTable(tableName).then(exists => {
-        if (!exists) {
-            console.log("It doesn't so we create it");
-            return database.schema.createTable(tableName, table => {
-                table.increments("author_book_id");
-                table.foreign("author").references("author.author_id");
-                table.foreign("book").references("book.book_id");
-            });
-        } else {
-            console.log(`Table ${tableName} already exists, skipping...`);
+            return Promise.resolve();
         }
     });
 };
@@ -55,11 +44,14 @@ exports.similarBooksDbSetup = function(database) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments();
-                table.foreign("book1").references("book.ISBN");
-                table.foreign("book2").references("book.ISBN");
+                table.integer("book1").unsigned();
+                table.foreign("book1").references("book.book_id");
+                table.integer("book2").unsigned();
+                table.foreign("book2").references("book.book_id");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
+            return Promise.resolve();
         }
     });
 };

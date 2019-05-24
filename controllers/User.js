@@ -3,6 +3,16 @@
 var utils = require('../utils/writer.js');
 var User = require('../service/UserService');
 
+module.exports.userDeletePOST = function userDeletePOST (req, res, next) {
+  User.userDeletePOST()
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};
+
 module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
   var username = req.swagger.params['username'].value;
   var password = req.swagger.params['password'].value;

@@ -4,16 +4,20 @@ exports.publisherDbSetup = function(database) {
     var sqlDb = database;
     var tableName = "publisher";
     console.log("Checking if %s table exists", tableName);
+    if(process.env.HYP_DROP_ALL)
+        database.schema.dropTableIfExists(tableName);
     return database.schema.hasTable(tableName).then(exists => {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments("publisher_id");
+                table.integer("hq_location").unsigned();
                 table.foreign("hq_location").references("address.address_id");
                 table.string("name").notNullable();
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
+            return Promise.resolve();
         }
     });
 };

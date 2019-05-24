@@ -13,3 +13,15 @@ module.exports.authorIdGET = function authorIdGET (req, res, next) {
       utils.writeJson(res, response);
     });
 };
+
+module.exports.authorsGET = function authorsGET (req, res, next) {
+  var offset = req.swagger.params['offset'].value;
+  var limit = req.swagger.params['limit'].value;
+  Author.authorsGET(offset,limit)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};

@@ -6,6 +6,8 @@ exports.genreDbSetup = function(database) {
     sqlDb = database;
     var tableName = "genre";
     console.log("Checking if %s table exists", tableName);
+    if(process.env.HYP_DROP_ALL)
+        database.schema.dropTableIfExists(tableName);
     return database.schema.hasTable(tableName).then(exists => {
         if (!exists) {
             console.log("It doesn't so we create it");
@@ -16,6 +18,7 @@ exports.genreDbSetup = function(database) {
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
+            return Promise.resolve();
         }
     });
 };

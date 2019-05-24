@@ -4,18 +4,23 @@ exports.eventDbSetup = function(database) {
     var sqlDb = database;
     var tableName = "event";
     console.log("Checking if %s table exists", tableName);
+    if(process.env.HYP_DROP_ALL)
+        database.schema.dropTableIfExists(tableName);
     return database.schema.hasTable(tableName).then(exists => {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
-                table.increments();
+                table.increments("event_id");
+                table.integer("location").unsigned();
                 table.foreign("location").references("address.address_id");
-                table.foreign("presented_book").references("book.ISBN");
+                table.integer("presented_book").unsigned();
+                table.foreign("presented_book").references("book.book_id");
                 table.string("name").notNullable();
                 table.datetime("date_time").notNullable();
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
+            return Promise.resolve();
         }
     });
 };
