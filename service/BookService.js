@@ -56,24 +56,25 @@ exports.similarBooksDbSetup = function(database) {
     });
 };
 
-
-/**
- * Books filter
- * Filter books by specified criteria
- *
- * title String Filter by name  (optional)
- * publishers List Filter by publishers' ID  (optional)
- * authors List Filter by author (optional)
- * min_price BigDecimal Filter by price higher than value (optional)
- * max_price BigDecimal Filter by price lower than value (optional)
- * genre String Filter by genre (optional)
- * best_seller Boolean Filter by bestseller (optional)
- * offset Integer Pagination offset. Default is 0. (optional)
- * limit Integer Maximum number of items per page. Default is 20 and cannot exceed 500. (optional)
- * returns List
- **/
-exports.booksGET = function (title, publisher, authors, min_price, max_price, genre, best_seller,theme, offset, limit) {
-
+    /**
+     * Books filter
+     * Filter books by specified criteria
+     *
+     * title String Filter by name  (optional)
+     * not_in_stock Boolean If true returns also books not in stock. Default is false. (optional)
+     * publishers List Filter by publishers' ID  (optional)
+     * authors List Filter by author (optional)
+     * iSBN Long Filter by ISBN (optional)
+     * min_price BigDecimal Filter by price higher than value (optional)
+     * max_price BigDecimal Filter by price lower than value (optional)
+     * genre List Filter by genres (optional)
+     * themes List Filter by themes (optional)
+     * best_seller Boolean If true returns bestsellers only (optional)
+     * offset Integer Pagination offset. Default is 0. (optional)
+     * limit Integer Maximum number of items per page. Default is 20 and cannot exceed 500. (optional)
+     * returns List
+     **/
+    exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price,max_price,genre,themes,best_seller,offset,limit) {
     return new Promise(function(resolve, reject){
 
     if(!sqlDb)

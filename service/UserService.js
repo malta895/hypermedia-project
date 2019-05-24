@@ -30,6 +30,9 @@ exports.userDbSetup = function(database) {
 };
 
 
+//TODO ricordarsi le giuste autorizzazioni quando si fanno le varie operazioni
+
+
 /**
  * Login
  * Login with a form
@@ -99,4 +102,18 @@ exports.userRegisterPOST = function(body) {
       resolve(body);
   });
 }
+
+
+/**
+ * Delete user
+ * Delete an user's account
+ *
+ * no response value expected for this operation
+ **/
+exports.userDeletePOST = function() {
+    return new Promise(function(resolve, reject) {
+        resolve();
+    });
+}
+
 
