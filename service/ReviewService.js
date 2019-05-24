@@ -1,13 +1,45 @@
 'use strict';
 
 
+let upd_avg_trig_func =
+    `
+DROP FUNCTION IF EXISTS public.update_average_rating();
+
+CREATE FUNCTION public.update_average_rating()
+    RETURNS trigger
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE NOT LEAKPROOF 
+AS $BODY$    BEGIN
+		
+		update book set average_rating = (select avg(rating)
+										  from review
+										 	where book = new.book);
+        RETURN NEW;
+    END;
+$BODY$;
+
+ALTER FUNCTION public.update_average_rating()
+    OWNER TO hypermedia;
+`;
+
+let upd_avg_trig =
+    `
+DROP TRIGGER IF EXISTS update_avg_rating ON public.review;
+
+CREATE TRIGGER update_avg_rating
+    AFTER INSERT OR UPDATE OF rating
+    ON public.review
+    FOR EACH ROW
+    EXECUTE PROCEDURE public.update_average_rating();
+`;
+
+
 exports.reviewDbSetup = function (database) {
     var sqlDb = database;
     const tableName = "review";
     console.log("Checking if %s table exists...", tableName);
     return database.schema.hasTable(tableName).then(exists => {
-        if(exists && process.env.HYP_DROP_ALL)
-            database.schema.dropTable(tableName);
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
@@ -20,14 +52,20 @@ exports.reviewDbSetup = function (database) {
                 table.integer("book").unsigned().notNullable();
                 table.foreign("book").references("book.book_id");
                 table.timestamp("date_time").notNullable();
-            });
+            })
+                .then(database.raw(upd_avg_trig_func)
+                      .then(res => console.log(res)))
+                .then(
+                    ()=> {
+                        database.raw(upd_avg_trig)
+                            .then(res => console.log(res))
+                    });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
             return Promise.resolve();
         }
     });
 };
-
 
 
 

@@ -13,7 +13,7 @@ exports.bookDbSetup = function(database) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments("book_id");
-                table.integer("isbn").notNullable().unique();
+                table.string("isbn", 15).notNullable().unique();
                 table.text("title").notNullable();
                 table.double("price").notNullable();
                 table.text("picture").notNullable();
@@ -21,7 +21,7 @@ exports.bookDbSetup = function(database) {
                 table.text("interview").notNullable().defaultTo("Lorem ipsum");
                 table.enum("status", ["Available", "Out of stock"]).defaultTo("Available");
                 table.integer("publisher").unsigned();
-                table.float("rating").defaultTo(0);
+                table.float("average_rating").nullable();
                 table.foreign("publisher").references("publisher.publisher_id");
                 table.integer("theme").unsigned();
                 table.foreign("theme").references("theme.theme_id");
