@@ -22,7 +22,12 @@ module.exports.reviewIdGET = function reviewIdGET (req, res, next) {
     .then(function (response) {
       utils.writeJson(res, response);
     })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+      .catch(function (response) {
+          let statusCode;
+          if (response.notFound)
+              statusCode = 404;
+          else
+              statusCode = 500;
+          utils.writeJson(res, response, statusCode);
+      });
 };

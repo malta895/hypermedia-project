@@ -133,14 +133,14 @@ exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price
  * bookId Long ID of book to return
  * returns Book
  **/
-exports.getBookById = function(bookId) {
-    return new Promise(function(resolve, reject) {
+exports.getBookById = function (bookId) {
+    return new Promise(function (resolve, reject) {
         let query = sqlDb(tableName).where('book_id', bookId);
 
-        query.then( rows => {
-            if(rows.length > 0){
+        query.then(rows => {
+            if (rows.length > 0) {
                 resolve(rows);
-            }else{
+            } else {
                 rows.notFound = true;
                 reject(rows);
             }
@@ -148,7 +148,7 @@ exports.getBookById = function(bookId) {
 
 
     });
-}
+};
 
 
 /**
@@ -160,18 +160,18 @@ exports.getBookById = function(bookId) {
  * limit Integer Maximum number of items per page. Default is 20 and cannot exceed 500. (optional)
  * returns List
  **/
-exports.similarBooksGET = function(bookId,offset,limit) {
+exports.similarBooksGET = function (bookId, offset, limit) {
 
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         let query = sqlDb('book')
             .where('book_id', bookId);
-        if(offset)
+        if (offset)
             query.offset(offset);
-        if(limit)
+        if (limit)
             query.limit(limit);
 
-        query.then( rows => {
-            if (rows.length > 0){
+        query.then(rows => {
+            if (rows.length > 0) {
                 resolve(rows);
             } else {
                 rows.notFound = true;
@@ -179,5 +179,5 @@ exports.similarBooksGET = function(bookId,offset,limit) {
             }
         });
     });
-}
+};
 

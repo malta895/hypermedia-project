@@ -10,7 +10,12 @@ module.exports.authorIdGET = function authorIdGET (req, res, next) {
       utils.writeJson(res, response);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+        let statusCode;
+        if (response.notFound)
+            statusCode = 404;
+        else
+            statusCode = 500;
+        utils.writeJson(res, response, statusCode);
     });
 };
 
@@ -22,6 +27,11 @@ module.exports.authorsGET = function authorsGET (req, res, next) {
       utils.writeJson(res, response);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+        let statusCode;
+        if (response.notFound)
+            statusCode = 404;
+        else
+            statusCode = 500;
+        utils.writeJson(res, response, statusCode);
     });
 };

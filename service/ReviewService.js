@@ -111,22 +111,20 @@ exports.bookReviewsGET = function(bookId,offset,limit) {
  * reviewId Long 
  * returns Review
  **/
-exports.reviewIdGET = function(reviewId) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "review_id" : 0,
-  "book" : 5,
-  "rating" : 1,
-  "text" : "text",
-  "title" : "title",
-  "user" : 6
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
-}
+exports.reviewIdGET = function (reviewId) {
+    return new Promise(function (resolve, reject) {
+        let query = sqlDb(tableName).where('review_id', reviewId);
+
+        query.then(rows => {
+            if (rows.length > 0) {
+                resolve(rows);
+            } else {
+                rows.notFound = true;
+                reject(rows);
+            }
+        });
+
+
+    });
+};f
 

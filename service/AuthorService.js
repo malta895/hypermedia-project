@@ -54,22 +54,22 @@ exports.authorDbSetup = function(database) {
  * authorId Long 
  * returns Author
  **/
-exports.authorIdGET = function(authorId) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "surname" : "Rossi",
-  "name" : "Mario",
-  "biography" : "biography",
-  "picture" : "picture"
+exports.authorIdGET = function (authorId) {
+    return new Promise(function (resolve, reject) {
+        let query = sqlDb(tableName).where('author_id', authorId);
+
+        query.then(rows => {
+            if (rows.length > 0) {
+                resolve(rows);
+            } else {
+                rows.notFound = true;
+                reject(rows);
+            }
+        });
+
+
+    });
 };
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
-}
 
 
 /**
@@ -79,24 +79,21 @@ exports.authorIdGET = function(authorId) {
  * limit Integer Maximum number of items per page. Default is 20 and cannot exceed 500. (optional)
  * returns List
  **/
-exports.authorsGET = function(offset,limit) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [ {
-  "surname" : "Rossi",
-  "name" : "Mario",
-  "biography" : "biography",
-  "picture" : "picture"
-}, {
-  "surname" : "Rossi",
-  "name" : "Mario",
-  "biography" : "biography",
-  "picture" : "picture"
-} ];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
-}
+exports.authorsGET = function (offset, limit) {
+    return new Promise(function (resolve, reject) {
+
+        if (!sqlDb)
+            reject({ status: 500, errorText: 'Database not found!' });
+
+
+        let query = sqlDb('author')
+            .select();
+        if (offset) {
+            query.offset(offset);
+        }
+        if (limit) {
+            query.limit(limit);
+        }
+        resolve(query);
+    });
+};

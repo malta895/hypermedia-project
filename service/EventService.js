@@ -78,27 +78,20 @@ exports.eventGET = function(offset,limit) {
  * eventId Long 
  * returns Event
  **/
-exports.eventIdGET = function(eventId) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "date" : "2000-01-23T04:56:07.000+00:00",
-  "event_id" : 1,
-  "name" : "name",
-  "location" : {
-    "country" : "Italy",
-    "province" : "CO",
-    "city" : "Como",
-    "address_id" : 1,
-    "street_line2" : "11",
-    "street_line1" : "Via Valleggio",
-    "zip_code" : "22100"
-  }
+exports.eventIdGET = function (eventId) {
+
+    return new Promise(function (resolve, reject) {
+        let query = sqlDb(tableName).where('event_id', evenId);
+
+        query.then(rows => {
+            if (rows.length > 0) {
+                resolve(rows);
+            } else {
+                rows.notFound = true;
+                reject(rows);
+            }
+        });
+
+
+    });
 };
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
-}
