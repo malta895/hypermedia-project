@@ -9,9 +9,9 @@ CREATE FUNCTION public.update_average_rating()
     RETURNS trigger
     LANGUAGE 'plpgsql'
     COST 100
-    VOLATILE NOT LEAKPROOF 
+    VOLATILE NOT LEAKPROOF
 AS $BODY$    BEGIN
-		
+
 		update book set average_rating = (select avg(rating)
 										  from review
 										 	where book = new.book);
@@ -28,7 +28,7 @@ let upd_avg_trig =
 DROP TRIGGER IF EXISTS update_avg_rating ON public.review;
 
 CREATE TRIGGER update_avg_rating
-    AFTER INSERT OR UPDATE OF rating
+    AFTER INSERT OR DELETE OR UPDATE OF rating
     ON public.review
     FOR EACH ROW
     EXECUTE PROCEDURE public.update_average_rating();
@@ -58,7 +58,7 @@ exports.reviewDbSetup = function (database) {
                 .then(
                     ()=> {
                         database.raw(upd_avg_trig)
-                            .then(res => console.log(res))
+                            .then(res => console.log(res));
                     });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);

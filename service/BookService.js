@@ -1,10 +1,10 @@
 'use strict';
 
 var sqlDb;
+var tableName = "book";
 
 exports.bookDbSetup = function(database) {
     sqlDb = database;
-    var tableName = "book";
     console.log("Checking if %s table exists", tableName);
     if(process.env.HYP_DROP_ALL)
         database.schema.dropTableIfExists(tableName);
@@ -56,71 +56,71 @@ exports.similarBooksDbSetup = function(database) {
     });
 };
 
-    /**
-     * Books filter
-     * Filter books by specified criteria
-     *
-     * title String Filter by name  (optional)
-     * not_in_stock Boolean If true returns also books not in stock. Default is false. (optional)
-     * publishers List Filter by publishers' ID  (optional)
-     * authors List Filter by author (optional)
-     * iSBN Long Filter by ISBN (optional)
-     * min_price BigDecimal Filter by price higher than value (optional)
-     * max_price BigDecimal Filter by price lower than value (optional)
-     * genre List Filter by genres (optional)
-     * themes List Filter by themes (optional)
-     * best_seller Boolean If true returns bestsellers only (optional)
-     * offset Integer Pagination offset. Default is 0. (optional)
-     * limit Integer Maximum number of items per page. Default is 20 and cannot exceed 500. (optional)
-     * returns List
-     **/
-    exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price,max_price,genre,themes,best_seller,offset,limit) {
+/**
+ * Books filter
+ * Filter books by specified criteria
+ *
+ * title String Filter by name  (optional)
+ * not_in_stock Boolean If true returns also books not in stock. Default is false. (optional)
+ * publishers List Filter by publishers' ID  (optional)
+ * authors List Filter by author (optional)
+ * iSBN Long Filter by ISBN (optionnnnal)
+ * min_price BigDecimal Filter by price higher than value (optional)
+ * max_price BigDecimal Filter by price lower than value (optional)
+ * genre List Filter by genres (optional)
+ * themes List Filter by themes (optional)
+ * best_seller Boolean If true returns bestsellers only (optional)
+ * offset Integer Pagination offset. Default is 0. (optional)
+ * limit Integer Maximum number of items per page. Default is 20 and cannot exceed 500. (optional)
+ * returns List
+ **/
+exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price,max_price,genre,themes,best_seller,offset,limit) {
     return new Promise(function(resolve, reject){
 
-    if(!sqlDb)
-        reject();
+        if(!sqlDb)
+            reject({status: 500, errorText: 'Database not found!'});
 
 
-    let query = sqlDb('book')
+        let query = sqlDb('book')
         // .join('publisher', 'publisher.id', '=', 'book.publisher')
         // .join('genre', 'genre.genre_id', '=', 'book.genre')
         // .join('theme', 'theme.id', '=', 'book.theme')
-        .where((filter) => {
-        if (title) {
-            filter.where('book.title', 'like', `%${title}%`);
-        }
+            .where((filter) => {
+                if (title) {
+                    filter.where('book.title', 'like', `%${title}%`);
+                }
 
-        if (publisher) {
-            filter.andWhere('book.publisher', 'like', `%${publisher}%`);
-        }
+                if (publisher) {
+                    filter.andWhere('book.publisher', 'like', `%${publisher}%`);
+                }
 
-        /*if (authors) {
-            qb.orWhere('items.category', '=', search Criteria.category);//TODO AUTHORS
-        }*/
-        if (min_price) {
-            filter.andWhere('book.price', '>=', min_price);
-        }
-        if (max_price) {
-            filter.andWhere('book.price', '<=', max_price);
-        }
-        if (genre) {
-            filter.andWhere('book.genre', '=', genre);
-        }
-        if (theme) {
-                filter.andWhere('book.genre', '=', theme);
-        }
-        if (best_seller) {
-            //TODO
-        }
+                /*if (authors) {
+                  qb.orWhere('items.category', '=', search Criteria.category);//TODO AUTHORS
+                  }*/
+                if (min_price) {
+                    filter.andWhere('book.price', '>=', min_price);
+                }
+                if (max_price) {
+                    filter.andWhere('book.price', '<=', max_price);
+                }
+                if (genre) {
+                    filter.andWhere('book.genre', '=', genre);
+                }
+                if (theme) {
+                    filter.andWhere('book.genre', '=', theme);
+                }
+                if (best_seller) {
+                    //TODO
+                }
 
-        }).select();
+            }).select();
         if (offset) {
             query.offset(offset);
         }
         if (limit) {
             query.limit(limit);
         }
-    resolve(query);
+        resolve(query);
     });
 
 };
@@ -134,43 +134,20 @@ exports.similarBooksDbSetup = function(database) {
  * returns Book
  **/
 exports.getBookById = function(bookId) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "picture_path" : "pic1.jpg",
-  "price" : {
-    "currency" : "EUR",
-    "value" : 11
-  },
-  "genre" : {
-    "name" : "Horror",
-    "description" : "Very scary"
-  },
-  "theme" : {
-    "name" : "name",
-    "description" : "description"
-  },
-  "id" : 1,
-  "title" : "Il deserto dei tartari",
-  "authors" : [ {
-    "surname" : "Rossi",
-    "name" : "Mario",
-    "biography" : "biography",
-    "picture" : "picture"
-  }, {
-    "surname" : "Rossi",
-    "name" : "Mario",
-    "biography" : "biography",
-    "picture" : "picture"
-  } ],
-  "status" : "Available"
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
+    return new Promise(function(resolve, reject) {
+        let query = sqlDb(tableName).where('book_id', bookId);
+
+        query.then( rows => {
+            if(rows.length > 0){
+                resolve(rows);
+            }else{
+                rows.notFound = true;
+                reject(rows);
+            }
+        });
+
+
+    });
 }
 
 
@@ -184,70 +161,23 @@ exports.getBookById = function(bookId) {
  * returns List
  **/
 exports.similarBooksGET = function(bookId,offset,limit) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [ {
-  "picture_path" : "pic1.jpg",
-  "price" : {
-    "currency" : "EUR",
-    "value" : 11
-  },
-  "genre" : {
-    "name" : "Horror",
-    "description" : "Very scary"
-  },
-  "theme" : {
-    "name" : "name",
-    "description" : "description"
-  },
-  "id" : 1,
-  "title" : "Il deserto dei tartari",
-  "authors" : [ {
-    "surname" : "Rossi",
-    "name" : "Mario",
-    "biography" : "biography",
-    "picture" : "picture"
-  }, {
-    "surname" : "Rossi",
-    "name" : "Mario",
-    "biography" : "biography",
-    "picture" : "picture"
-  } ],
-  "status" : "Available"
-}, {
-  "picture_path" : "pic1.jpg",
-  "price" : {
-    "currency" : "EUR",
-    "value" : 11
-  },
-  "genre" : {
-    "name" : "Horror",
-    "description" : "Very scary"
-  },
-  "theme" : {
-    "name" : "name",
-    "description" : "description"
-  },
-  "id" : 1,
-  "title" : "Il deserto dei tartari",
-  "authors" : [ {
-    "surname" : "Rossi",
-    "name" : "Mario",
-    "biography" : "biography",
-    "picture" : "picture"
-  }, {
-    "surname" : "Rossi",
-    "name" : "Mario",
-    "biography" : "biography",
-    "picture" : "picture"
-  } ],
-  "status" : "Available"
-} ];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
+
+    return new Promise(function(resolve, reject) {
+        let query = sqlDb('book')
+            .where('book_id', bookId);
+        if(offset)
+            query.offset(offset);
+        if(limit)
+            query.limit(limit);
+
+        query.then( rows => {
+            if (rows.length > 0){
+                resolve(rows);
+            } else {
+                rows.notFound = true;
+                reject(rows);
+            }
+        });
+    });
 }
 

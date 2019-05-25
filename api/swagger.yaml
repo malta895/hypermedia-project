@@ -10,8 +10,8 @@ info:
   license:
     name: "Apache-2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "virtserver.swaggerhub.com"
-basePath: "/malta895/hypermedia-project/1.0.0"
+# host: "virtserver.swaggerhub.com"
+basePath: "/api"
 tags:
 - name: "book"
   description: "Available book"
