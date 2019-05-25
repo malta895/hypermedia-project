@@ -1,7 +1,9 @@
 'use strict';
 
+var sqlDb = require('knex');
+
 exports.cartDbSetup = function (database) {
-    var sqlDb = database;
+    sqlDb = database;
     const tableName = "cart";
     console.log("Checking if %s table exists...", tableName);
     return database.schema.hasTable(tableName).then(exists => {
@@ -49,98 +51,33 @@ exports.cartBooksDbSetup = function (database) {
  * offset Integer Pagination offset. Default is 0. (optional)
  * returns Cart
  **/
-exports.cartGET = function(offset) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "total" : {
-    "currency" : "EUR",
-    "value" : 11
-  },
-  "books" : [ {
-    "picture_path" : "pic1.jpg",
-    "price" : {
-      "currency" : "EUR",
-      "value" : 11
-    },
-    "genre" : {
-      "name" : "Horror",
-      "description" : "Very scary"
-    },
-    "theme" : {
-      "name" : "name",
-      "description" : "description"
-    },
-    "id" : 1,
-    "title" : "Il deserto dei tartari",
-    "authors" : [ {
-      "surname" : "Rossi",
-      "name" : "Mario",
-      "biography" : "biography",
-      "picture" : "picture"
-    }, {
-      "surname" : "Rossi",
-      "name" : "Mario",
-      "biography" : "biography",
-      "picture" : "picture"
-    } ],
-    "status" : "Available"
-  }, {
-    "picture_path" : "pic1.jpg",
-    "price" : {
-      "currency" : "EUR",
-      "value" : 11
-    },
-    "genre" : {
-      "name" : "Horror",
-      "description" : "Very scary"
-    },
-    "theme" : {
-      "name" : "name",
-      "description" : "description"
-    },
-    "id" : 1,
-    "title" : "Il deserto dei tartari",
-    "authors" : [ {
-      "surname" : "Rossi",
-      "name" : "Mario",
-      "biography" : "biography",
-      "picture" : "picture"
-    }, {
-      "surname" : "Rossi",
-      "name" : "Mario",
-      "biography" : "biography",
-      "picture" : "picture"
-    } ],
-    "status" : "Available"
-  } ],
-  "user" : {
-    "address" : {
-      "country" : "Italy",
-      "province" : "CO",
-      "city" : "Como",
-      "street_line2" : "11",
-      "street_line1" : "Via Valleggio",
-      "id" : 1,
-      "zip_code" : "22100"
-    },
-    "surname" : "Rossi",
-    "birth_date" : "2000-01-23",
-    "name" : "Mario",
-    "id" : 1,
-    "email" : "email"
-  }
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
+exports.cartGET = function(userId, offset) {
+    return new Promise(function(resolve, reject) {
+
+        let query = sqlDb('book')
+            .whereIn('book_id',
+                     sqlDb('cart')
+                     .join('app_user', 'app_user.user_id', 'cart.user_id')
+                     .join('cart_book', 'cart_book.cart', 'cart_book.book')
+                     .where('app_user.user_id', userId)
+                     .select('cart_book.book'))
+            .then( rows => {
+                resolve(rows);
+            });
+
+    });
 }
 
 
 /**
+
+
+
+
+
+
+
+
  * Remove items from the cart
  *
  * bookId Long 
@@ -148,9 +85,9 @@ exports.cartGET = function(offset) {
  * no response value expected for this operation
  **/
 exports.cartRemoveDELETE = function(bookId,quantity) {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
+    return new Promise(function(resolve, reject) {
+        resolve();
+    });
 }
 
 
@@ -162,8 +99,8 @@ exports.cartRemoveDELETE = function(bookId,quantity) {
  * no response value expected for this operation
  **/
 exports.cartUpdatePUT = function(bookId,quantity) {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
+    return new Promise(function(resolve, reject) {
+        resolve();
+    });
 }
 

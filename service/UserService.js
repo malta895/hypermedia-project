@@ -1,6 +1,12 @@
 'use strict';
 
-var sqlDb;
+let sqlDb;
+const dbError = {
+    statusCode: 500,
+    message: "Internal Error: database not available!"
+};
+
+
 
 exports.userDbSetup = function(database) {
     sqlDb = database;
@@ -13,11 +19,11 @@ exports.userDbSetup = function(database) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments("user_id");
-                table.text("username").unique();
-                table.text("password").notNullable();
-                table.text("email").unique();
-                table.text("first_name").notNullable();
-                table.text("surname").notNullable();
+                table.string("username").unique();
+                table.string("password").notNullable();
+                table.string("email").unique();
+                table.string("first_name").notNullable();
+                table.string("surname").notNullable();
                 table.date("birth_date").notNullable();
                 table.integer("address").unsigned();
                 table.foreign("address").references("address.address_id");
@@ -42,16 +48,15 @@ exports.userDbSetup = function(database) {
  * no response value expected for this operation
  **/
 exports.userLoginPOST = function(username,password) {
-    if(sqlDb === undefined)
-        reject();
-
-    let query = sqlDb('app_user').where({
-        username: username,
-        password: password
-    }).select('email', 'first_name', 'surname');
-
-
+    if(sqlDb === undefined){
+        reject(dbError);
+    }
     return new Promise(function(resolve, reject) {
+        let query = sqlDb('app_user').where({
+            username: username,
+            password: password
+        }).select('email', 'first_name', 'surname');
+        
         resolve(query);
     });
 }
@@ -65,9 +70,9 @@ exports.userLoginPOST = function(username,password) {
  * no response value expected for this operation
  **/
 exports.userLogoutPOST = function() {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
+    return new Promise(function(resolve, reject) {
+        resolve();
+    });
 }
 
 
@@ -79,9 +84,9 @@ exports.userLogoutPOST = function() {
  * no response value expected for this operation
  **/
 exports.userModifyPUT = function(body) {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
+    return new Promise(function(resolve, reject) {
+        resolve();
+    });
 }
 
 
@@ -98,9 +103,9 @@ exports.userRegisterPOST = function(body) {
 
     let query = body;
 
-  return new Promise(function(resolve, reject) {
-      resolve(body);
-  });
+    return new Promise(function(resolve, reject) {
+        resolve(body);
+    });
 }
 
 
