@@ -20,7 +20,7 @@ AS $BODY$    BEGIN
 $BODY$;
 
 ALTER FUNCTION public.update_average_rating()
-    OWNER TO hypermedia;
+    OWNER TO current_user;
 `;
 
 let upd_avg_trig =
