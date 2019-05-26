@@ -14,6 +14,9 @@ var currSession;
 
 exports.getSession = function(req, res, next) {
 
+    if(currSession)
+        return currSession;
+
     //se non siamo su heroku il cookie non è settato come secure
     //infatti per essere secure bisogna essere in https, in localhost siamo http
     //ho settato la variabile HEROKU_ENV sulla piattaforma heroku

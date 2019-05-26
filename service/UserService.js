@@ -36,7 +36,6 @@ exports.userDbSetup = function(database) {
 };
 
 
-//TODO ricordarsi le giuste autorizzazioni quando si fanno le varie operazioni
 
 
 /**
@@ -58,7 +57,7 @@ exports.userLoginPOST = function(username,password) {
             username: username,
             password: password
         })
-            .select('email', 'first_name', 'surname')
+            .select('user_id', 'email', 'first_name', 'surname')
             .then((rows) => {
                 if(rows.length){
                     resolve(rows[0]);

@@ -27,6 +27,7 @@ module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
     //fermo tutto con return: la chiamata al db non è necessaria
     if(SessionManager.userIdExists()){
         utils.writeJson(res, {error: "Already logged in!"}, 400);
+        console.log(SessionManager.getUserId());
         return;
     }
 
@@ -36,9 +37,11 @@ module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
     User.userLoginPOST(username,password)
         .then(function (response) {
             try{
-                SessionManager.setUserId(response.userId);
+                SessionManager.setUserId(response.user_id);
+                //console.log(SessionManager.getUserId());
+                console.log(SessionManager.getSession().userId);
                 utils.writeJson(res, response);
-            }catch(e){
+            }catch(e){//non dovrebbe mai capitare
                 utils.writeJson(res, {message: "Already logged in!"}, 400);
             }
         })

@@ -228,7 +228,7 @@ paths:
       description: "Login with a form"
       operationId: "userLogoutPOST"
       consumes:
-      - "application/x-www-form-urlencoded"
+      - "application/octet-stream"
       produces:
       - "application/json"
       parameters: []
