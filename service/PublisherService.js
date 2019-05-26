@@ -71,7 +71,14 @@ exports.publishersGET = function (offset, limit) {
         if (limit) {
             query.limit(limit);
         }
-        resolve(query);
+        query.then(rows => {
+            if (rows.length > 0) {
+                resolve(rows);
+            } else {
+                rows.notFound = true;
+                reject(rows);
+            }
+        });
     });
 };
 

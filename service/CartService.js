@@ -38,6 +38,7 @@ exports.cartBooksDbSetup = function (database) {
                 table.foreign("cart").references("cart.cart_id");
                 table.integer("book").unsigned();
                 table.foreign("book").references("book.book_id");
+                table.integer("quantity").unsigned();
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
@@ -98,9 +99,9 @@ exports.cartRemoveDELETE = function(bookId,quantity) {
  * quantity Integer Number of copies to add to the cart. Default is 1. (optional)
  * no response value expected for this operation
  **/
-exports.cartUpdatePUT = function(bookId,quantity) {
-    return new Promise(function(resolve, reject) {
+exports.cartUpdatePUT = function (bookId, quantity) {
+    return new Promise(function (resolve, reject) {
         resolve();
     });
-}
+};
 

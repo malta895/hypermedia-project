@@ -27,5 +27,21 @@ exports.addressDbSetup = function(database) {
 
 
 exports.insertAddress = function(addressId, streetLine1, streetLine2, city, zip_code, province, country){
+    return new Promise(function (resolve, reject) {
 
+        if (!sqlDb)
+            reject({ status: 500, errorText: 'Database not found!' });
+
+
+        let query = sqlDb('address')
+            .insert({
+                streetLine1: streetLine1,
+                streetLine2: streetLine2,
+                city: city,
+                zip_code: zip_code,
+                province: province,
+                country:country
+            });
+        resolve(query);
+    });
 };

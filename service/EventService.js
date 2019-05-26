@@ -48,7 +48,14 @@ exports.eventGET = function (offset, limit) {
         if (limit) {
             query.limit(limit);
         }
-        resolve(query);
+        query.then(rows => {
+            if (rows.length > 0) {
+                resolve(rows);
+            } else {
+                rows.notFound = true;
+                reject(rows);
+            }
+        });
     });
 };
 
@@ -62,7 +69,7 @@ exports.eventGET = function (offset, limit) {
 exports.eventIdGET = function (eventId) {
 
     return new Promise(function (resolve, reject) {
-        let query = sqlDb(tableName).where('event_id', evenId);
+        let query = sqlDb(tableName).where('event_id', eventId);
 
         query.then(rows => {
             if (rows.length > 0) {
