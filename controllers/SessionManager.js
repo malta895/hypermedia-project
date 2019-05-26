@@ -1,36 +1,67 @@
 "use strict";
 
-let cookieSession = require('cookie-session'),
-    keygrip = require('keygrip'),
-    jwt = require('jsonwebtoken'),
-    cookieParser = require('cookie-parser');
+let session = require('express-session');
 
-
-
-const tokenSecret = "CAMBIAMI!"; //TODO inventarne uno decente e metterlo in un file config nella cartella /other
+const tokenSecret = "5232e0a776bf44460f2829871466563038152ece44d46ae60f59042163386c750780e4272d697cb9"; //TODO inventarne uno decente e metterlo in un file config nella cartella /other
 
 let calculateToken = function(payload){
-    //TODO implementare
+    //TODO implementare (serve?)
+};
+
+var currSession;
+
+
+
+exports.getSession = function(req, res, next) {
+
+    //se non siamo su heroku il cookie non è settato come secure
+    //infatti per essere secure bisogna essere in https, in localhost siamo http
+    //ho settato la variabile HEROKU_ENV sulla piattaforma heroku
+    let isSecure = process.env.HEROKU_ENV ? true : false;
+
+    currSession = session({
+        name: "session_id",
+        secret: tokenSecret,
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: isSecure },
+        maxAge: 5*60*60*1000
+    });
+
+    return currSession;
+
 };
 
 
+exports.getUserId = function(){
+        let userId = currSession.userId;
+        if(userId){
+            return userId;
+        }else{
+            throw new Error("No userId in session!");
+        }
 
-exports.getSession = function(payload) {
-    if(payload){
-        //se c'è payload devo creare una sessione da utente loggato
-        //creo un nuovo cookie da affiancare a quella da utente non loggato
-        const cookieName = "authSession";
-        //TODO implementare
+};
 
+exports.userIdExists = function() {
+    return currSession.userId !== undefined;
+};
+
+exports.unsetUserId = function(){
+    if(currSession.userId !== undefined){
+        delete currSession.userId;
     } else {
-        //se il payload è nullo genero una sessione "non autenticata",
-        //ovvero una sessione di un utente non loggato che può solo fare richieste GET
-        const cookieName = "nSession";
-        //TODO implementare
-
+        throw new Error("No userId in session!");
     }
 };
 
-exports.checkSession = function(){
+
+exports.setUserId = function(userId){
+    if(currSession.userId !== undefined){//should never happen, due to bugs in controller
+        throw new Error("userId already in session");
+    } else {
+        currSession.userId = userId;
+    }
 
 };
+

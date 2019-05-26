@@ -10,8 +10,10 @@ var jsyaml = require('js-yaml');
 var serverPort = process.env.PORT || 8080;
 
 
-let cookieSession = require("cookie-session");
-let cookieParser = require("cookie-parser");
+// let cookieSession = require("cookie-session");
+// let cookieParser = require("cookie-parser");
+
+let { getSession } = require("./controllers/SessionManager");
 
 let serveStatic = require("serve-static");
 
@@ -29,6 +31,10 @@ var options = {
 var spec = fs.readFileSync(path.join(__dirname,'api/swagger.yaml'), 'utf8');
 var swaggerDoc = jsyaml.safeLoad(spec);
 
+//Session manager
+app.use(getSession());
+
+
 // Initialize the Swagger middleware
 swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
 
@@ -41,11 +47,13 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
     // Route validated requests to appropriate controller
     app.use(middleware.swaggerRouter(options));
 
-    // Serve the Swagger documents and Swagger UI
+    // Serve the Swagger documents and Swagger II
     app.use(middleware.swaggerUi());
 
     //Serve the static web pages
     app.use(serveStatic(path.join(__dirname, "./public")));
+
+
 
     setupDataLayer().then(() => {
         // Start the server
@@ -54,19 +62,5 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
             console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
         });
     });
-
-
 });
-
-
-
-
-
-
-
-
-
-
-
-
 

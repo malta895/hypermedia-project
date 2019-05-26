@@ -2,6 +2,7 @@
 
 var utils = require('../utils/writer.js');
 var Book = require('../service/BookService');
+var sessionManager = require('./SessionManager');
 
 module.exports.bookReviewsGET = function bookReviewsGET (req, res, next) {
     var bookId = req.swagger.params['bookId'].value;
@@ -40,8 +41,6 @@ module.exports.booksGET = function booksGET (req, res, next) {
 
 module.exports.getBookById = function getBookById (req, res, next) {
     var bookId = req.swagger.params['bookId'].value;
-
-
     Book.getBookById(bookId)
         .then(function (response) {
             utils.writeJson(res, response);

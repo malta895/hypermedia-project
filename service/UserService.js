@@ -2,7 +2,7 @@
 
 let sqlDb;
 const dbError = {
-    statusCode: 500,
+    code: 500,
     message: "Internal Error: database not available!"
 };
 
@@ -48,16 +48,28 @@ exports.userDbSetup = function(database) {
  * no response value expected for this operation
  **/
 exports.userLoginPOST = function(username,password) {
-    if(sqlDb === undefined){
-        reject(dbError);
-    }
+
     return new Promise(function(resolve, reject) {
+        if(sqlDb === undefined){
+            reject(dbError);
+        }
+
         let query = sqlDb('app_user').where({
             username: username,
             password: password
-        }).select('email', 'first_name', 'surname');
-        
-        resolve(query);
+        })
+            .select('email', 'first_name', 'surname')
+            .then((rows) => {
+                if(rows.length){
+                    resolve(rows[0]);
+                } else {
+                    reject({message: "Wrong username/password!", code: 403});
+                }
+            })
+            .catch(() => {
+                reject(dbError);
+            })
+
     });
 }
 
@@ -70,6 +82,7 @@ exports.userLoginPOST = function(username,password) {
  * no response value expected for this operation
  **/
 exports.userLogoutPOST = function() {
+    //TODO implement
     return new Promise(function(resolve, reject) {
         resolve();
     });
@@ -84,6 +97,7 @@ exports.userLogoutPOST = function() {
  * no response value expected for this operation
  **/
 exports.userModifyPUT = function(body) {
+    //TODO implement
     return new Promise(function(resolve, reject) {
         resolve();
     });
