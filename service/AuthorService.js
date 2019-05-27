@@ -35,8 +35,8 @@ exports.authorDbSetup = function(database) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments("author_id");
-                table.string('first_name').notNullable();
-                table.string('surname').notNullable();
+                table.string('name').notNullable()
+                    .description("Name and surname of the author");
                 table.text('biography');
             });
         } else {

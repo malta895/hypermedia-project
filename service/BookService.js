@@ -19,7 +19,8 @@ exports.bookDbSetup = function(database) {
                 table.text("picture").notNullable();
                 table.text("abstract").notNullable().defaultTo("Lorem ipsum");
                 table.text("interview").notNullable().defaultTo("Lorem ipsum");
-                table.enum("status", ["Available", "Out of stock"]).defaultTo("Available");
+                table.enum("status", ["Available", "Out of stock"])
+                    .defaultTo("Available");
                 table.integer("publisher").unsigned();
                 table.float("average_rating").nullable();
                 table.foreign("publisher").references("publisher.publisher_id");
