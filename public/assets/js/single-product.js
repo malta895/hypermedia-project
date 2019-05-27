@@ -19,22 +19,27 @@ var getUrlParameter = function getUrlParameter(sParam) {
 };
 
 $(window).on("load",function () {
-    //var id = getUrlParameter('id');
-    $.getJSON('/book.json', function (data) {  // GET BOOK BY ID /api/book/{bookId}    
+    var id = getUrlParameter('id');
+    $.getJSON('/api/books/'+id, function (data) {  // GET BOOK BY ID /api/book/{bookId}    
         console.log(data);
-            var id = data.id;
-            var title = data.title;
-            var authors = data.authors[0];
-            var price = data.price.value;
-            var picture = data.picture_path;
-            var genre = data.genre;
+        for (i = 0; i < data.length; i++) {
+            var id = data[i].id;
+            var title = data[i].title;
+            var isbn = data[i].isbn;
+
+            var authors = data[i].authors;
+            var price = data[i].price;
+            var picture = data[i].picture;
+            var genre = data[i].genre;
             var elem = '';
             $("#title").html(title);
-            $("#author").html(authors);
+            $("#author").html("<span>Author</span>"+authors);
             $("#price").html(price);
-            $("#genre").html(genre.name);
-            $("#theme").html(theme.name);
-
+            $("#isbn").html("<span>ISBN</span>"+isbn);
+            $("#genre").html("<span>Genre</span>" + genre);
+            var img = '<div class="item"><img src="' + picture + '" id="img" class="img - responsive" alt=""></div>';
+            $("#product-carousel").append(img);
+        }
         
 
 
