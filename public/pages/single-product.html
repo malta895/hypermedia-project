@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <!-- ==========================
@@ -191,7 +191,7 @@
                         </div>
                         <div class="col-xs-8">
                             <div class="product-body">
-                                <h3>Harry Fotter</h3>
+                                <h3 id="title"></h3>
                                 <div class="product-rating">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -200,16 +200,16 @@
                                     <i class="fa fa-star-o"></i>
                                 </div>
                                 <span class="price">
-                                    <ins><span class="amount">$30.00</span></ins>
+                                    <ins><span class="amount" id="price"></span></ins>
                                 </span>
                                 <ul class="list-unstyled product-info">
-                                    <li><span>Author</span>JKR</li>
-                                    <li><span>ISBN</span>U-187423</li>
-                                    <li><span>Release Date</span>10/05/2019</li>
-                                    <li><span>Genre</span>Fantasy, Drammatic</li>
-                                    <li><span>Themes</span>Wizard, Magic</li>
+                                    <li><span id="author">Author</span></li>
+                                    <li><span id="isbn">ISBN</span></li>
+                                    <li><span id="release">Release Date</span></li>
+                                    <li><span id="genre">Genre</span></li>
+                                    <li><span id="theme">Themes</span></li>
                                 </ul>
-                                <p>La storia ha inizio il 31 ottobre 1981. Harry viene a sapere di essere un mago dopo che i Dursley gliel'avevano sempre tenuto nascosto. Conosce Ron, Hermione, Hagrid e Silente e combatte per la prima volta contro Lord Voldemort, ridotto ad un semplice parassita e costretto a vivere nel corpo del professor Raptor (professor Quirrell nella nuova versione), insegnante di Difesa contro le Arti Oscure. Dopo che Harry uccide quest'ultimo grazie alla protezione di sua madre Lily, che gli aveva trasmesso salvandolo dallo stesso Voldemort quando era neonato, Voldemort torna a vivere sotto forma di anima.</p>
+                                <p id="summary"></p>
                                     <div class="product-form clearfix">
                                         <div class="row row-no-padding">
 
@@ -244,7 +244,8 @@
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane" id="description">
                             <h4>Trama</h4>
-                            <p>La storia ha inizio il 31 ottobre 1981. Harry viene a sapere di essere un mago dopo che i Dursley gliel'avevano sempre tenuto nascosto. Conosce Ron, Hermione, Hagrid e Silente e combatte per la prima volta contro Lord Voldemort, ridotto ad un semplice parassita e costretto a vivere nel corpo del professor Raptor (professor Quirrell nella nuova versione), insegnante di Difesa contro le Arti Oscure. Dopo che Harry uccide quest'ultimo grazie alla protezione di sua madre Lily, che gli aveva trasmesso salvandolo dallo stesso Voldemort quando era neonato, Voldemort torna a vivere sotto forma di anima.</p>
+                            <p id="summary2">
+                                </p>
                             <h4>Protagonisti</h4>
                             <ul>
                                 <li>Harry</li>
@@ -574,5 +575,6 @@
     <script src="../assets/js/twitterFetcher_min.js"></script>
     <script src="../assets/js/color-switcher.js"></script>
     <script src="../assets/js/custom.js"></script>
+    <script src="../assets/js/single-product.js"></script>
 </body>
 </html>
