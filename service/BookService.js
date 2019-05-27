@@ -76,51 +76,48 @@ exports.similarBooksDbSetup = function(database) {
  **/
 exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price,max_price,genre,themes,best_seller,offset,limit) {
     return new Promise(function(resolve, reject){
-
-        if(!sqlDb)
+        if(!sqlDb){
             reject({status: 500, errorText: 'Database not found!'});
+            return;
+        }
 
-
-        let query = sqlDb('book')
+        let query = sqlDb('book');
         // .join('publisher', 'publisher.id', '=', 'book.publisher')
         // .join('genre', 'genre.genre_id', '=', 'book.genre')
         // .join('theme', 'theme.id', '=', 'book.theme')
-            .where((filter) => {
-                if (title) {
-                    filter.where('book.title', 'like', `%${title}%`);
-                }
 
-                if (publisher) {
-                    filter.andWhere('book.publisher', 'like', `%${publisher}%`);
-                }
+        if (title) {
+            query.where('book.title', 'like', `%${title}%`);
+        }
 
-                /*if (authors) {
-                  qb.orWhere('items.category', '=', search Criteria.category);//TODO AUTHORS
-                  }*/
-                if (min_price) {
-                    filter.andWhere('book.price', '>=', min_price);
-                }
-                if (max_price) {
-                    filter.andWhere('book.price', '<=', max_price);
-                }
-                if (genre) {
-                    filter.andWhere('book.genre', '=', genre);
-                }
-                if (theme) {
-                    filter.andWhere('book.genre', '=', theme);
-                }
-                if (best_seller) {
-                    //TODO
-                }
+        if (min_price) {
+            query.where('book.price', '>=', min_price);
+        }
+        if (max_price) {
+            query.where('book.price', '<=', max_price);
+        }
 
-            }).select();
+        if(iSBN){
+            query.where('book.isbn', 'like', `${iSBN}`);
+        }
+
+        //TODO in_stock, publishers, authors
+
+        query.select();
+
         if (offset) {
             query.offset(offset);
         }
         if (limit) {
             query.limit(limit);
         }
-        resolve(query);
+
+        query.then( (rows) => {
+            resolve(rows);
+        })
+            .catch((error) => reject(error));
+
+
     });
 
 };

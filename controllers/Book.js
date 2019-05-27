@@ -31,10 +31,11 @@ module.exports.booksGET = function booksGET (req, res, next) {
     var limit = req.swagger.params['limit'].value;
     Book.booksGET(title,not_in_stock,publishers,authors,iSBN,min_price,max_price,genre,themes,best_seller,offset,limit)
         .then(function (response) {
+            console.log(response);
             utils.writeJson(res, response);
         })
         .catch(function (response) {
-            utils.writeJson(res, response);
+            utils.writeJson(res, response, 500);
         });
 };
 
