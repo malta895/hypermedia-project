@@ -4,6 +4,7 @@ from urllib.parse import urlparse
 
 import os
 from random import randint
+import re
 
 def db_connect():
     db_url = os.getenv('DATABASE_URL')
@@ -39,13 +40,18 @@ print("INSERIMENTO...")
 for index, row in df.iterrows():
     if row['book_id'] % 100 == 0:
         print("Progresso: " + str(row['book_id']))
+
+    image_path = row['image_url']
+
+    image_path = re.sub(r'm?(/[0-9]+.jpg)', r'l\1', image_path)
+
     insert_book (
         cur,
         row['book_id'],
         str(row['isbn']),
         row['original_title'],
         randint(8, 49),
-        row['image_url']
+        image_path
     )
 
 db_conn.commit()
