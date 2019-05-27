@@ -43,6 +43,7 @@ for index, row in df.iterrows():
 
     image_path = row['image_url']
 
+    # scarico la versione large delle immagini
     image_path = re.sub(r'm?(/[0-9]+.jpg)', r'l\1', image_path)
 
     insert_book (

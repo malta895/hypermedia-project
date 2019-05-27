@@ -5825,3 +5825,9 @@ footer.navbar a:hover {
 		content:"" !important;
 	}
 }
+
+.product-overlay img {
+    height: 350px;
+}
+
+
