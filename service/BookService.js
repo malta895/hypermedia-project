@@ -26,8 +26,6 @@ exports.bookDbSetup = function(database) {
                 table.foreign("publisher").references("publisher.publisher_id");
                 table.integer("theme").unsigned();
                 table.foreign("theme").references("theme.theme_id");
-                table.integer("genre").unsigned();
-                table.foreign("genre").references("genre.genre_id");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);

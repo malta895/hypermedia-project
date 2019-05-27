@@ -14,9 +14,11 @@ exports.authorBookDbSetup = function(database) {
             return database.schema.createTable(tableName, table => {
                 table.increments();
                 table.integer("book").unsigned();
-                table.foreign("book").references("book.book_id");
+                table.foreign("book").references("book.book_id")
+                    .onUpdate("CASCADE").onDelete("CASCADE");
                 table.integer("author").unsigned();
-                table.foreign("author").references("author.author_id");
+                table.foreign("author").references("author.author_id")
+                    .onUpdate("CASCADE").onDelete("CASCADE");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
@@ -35,9 +37,9 @@ exports.authorDbSetup = function(database) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments("author_id");
-                table.string('name').notNullable()
-                    .description("Name and surname of the author");
+                table.string('name').notNullable();
                 table.text('biography');
+                table.string('picture');
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);

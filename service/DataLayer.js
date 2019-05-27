@@ -5,7 +5,7 @@ let { userDbSetup } = require("./UserService");
 let { orderDbSetup } = require("./OrderService");
 let { addressDbSetup } = require("./AddressService");
 let { eventDbSetup } = require("./EventService");
-let { genreDbSetup } = require("./GenreService");
+let { genreDbSetup, genreBookDbSetup } = require("./GenreService");
 let { publisherDbSetup } = require("./PublisherService");
 let { themeDbSetup } = require("./ThemeService");
 let { authorDbSetup, authorBookDbSetup } = require("./AuthorService");
@@ -31,6 +31,7 @@ async function setupDataLayer() {
         userDbSetup,//dipende da address
         publisherDbSetup,//dipende da address
         bookDbSetup,// dipende da genre, theme e publisher
+        genreBookDbSetup,// dipende da genre e da book
         similarBooksDbSetup,
         reviewDbSetup,// dipende da book, app_user
         authorDbSetup,//dipende da book
