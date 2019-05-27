@@ -2,11 +2,11 @@
 
 var utils = require('../utils/writer.js');
 var User = require('../service/UserService');
-var SessionManager = require('./SessionManager');
+var session = require('../utils/SessionManager.js');
 
 module.exports.userDeletePOST = function userDeletePOST (req, res, next) {
     try{
-        let userId = SessionManager.getUserId();
+        let userId = session.getUserId();
 
         User.userDeletePOST()
             .then(function (response) {
@@ -25,9 +25,9 @@ module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
 
     //se l'utente è già loggato non può fare il login nuovamente
     //fermo tutto con return: la chiamata al db non è necessaria
-    if(SessionManager.userIdExists()){
+    if(session.userIdExists()){
         utils.writeJson(res, {error: "Already logged in!"}, 400);
-        console.log(SessionManager.getUserId());
+        console.log(session.getUserId());
         return;
     }
 
@@ -37,22 +37,22 @@ module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
     User.userLoginPOST(username,password)
         .then(function (response) {
             try{
-                SessionManager.setUserId(response.user_id);
-                //console.log(SessionManager.getUserId());
-                console.log(SessionManager.getSession().userId);
+                session.setUserId(response.user_id);
+                //console.log(sessiongetUserId());
+                console.log(session.getSession().userId);
                 utils.writeJson(res, response);
             }catch(e){//non dovrebbe mai capitare
                 utils.writeJson(res, {message: "Already logged in!"}, 400);
             }
         })
         .catch(function (response) {
-            utils.writeJson(res, {message: response.message}, response.code);
+            utils.writeJspon(res, {message: response.message}, response.code);
         });
 };
 
 module.exports.userLogoutPOST = function userLogoutPOST (req, res, next) {
     try{
-        SessionManager.unsetUserId();
+        session.unsetUserId();
         utils.writeJson(res, {message:"Succesful logout!"});
     } catch(e){
         utils.writeJson(res, {message: "You were not logged in!"}, 400);
@@ -71,7 +71,7 @@ module.exports.userLogoutPOST = function userLogoutPOST (req, res, next) {
 
 module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
 
-    if(!SessionManager.userIdExists()){
+    if(!session.userIdExists()){
         utils.writeJson(res, {message: "You were not logged in!"}, 403);
         return;
     }
@@ -89,7 +89,7 @@ module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
 
 module.exports.userRegisterPOST = function userRegisterPOST (req, res, next) {
 
-    if(!SessionManager.userIdExists()){
+    if(!session.userIdExists()){
         utils.writeJson(res, {message: "You were not logged in!"}, 403);
         return;
     }

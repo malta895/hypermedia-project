@@ -2,7 +2,6 @@
 
 var utils = require('../utils/writer.js');
 var Book = require('../service/BookService');
-var sessionManager = require('./SessionManager');
 
 module.exports.bookReviewsGET = function bookReviewsGET (req, res, next) {
     var bookId = req.swagger.params['bookId'].value;

@@ -13,7 +13,7 @@ var serverPort = process.env.PORT || 8080;
 // let cookieSession = require("cookie-session");
 // let cookieParser = require("cookie-parser");
 
-let { getSession } = require("./controllers/SessionManager");
+let { getSession } = require("./utils/SessionManager");
 
 let serveStatic = require("serve-static");
 

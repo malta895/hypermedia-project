@@ -2,11 +2,8 @@
 
 let session = require('express-session');
 
-const tokenSecret = "5232e0a776bf44460f2829871466563038152ece44d46ae60f59042163386c750780e4272d697cb9"; //TODO inventarne uno decente e metterlo in un file config nella cartella /other
+const tokenSecret = "5232e0a776bf44460f2829871466563038152ece44d46ae60f59042163386c750780e4272d697cb9";
 
-let calculateToken = function(payload){
-    //TODO implementare (serve?)
-};
 
 var currSession;
 

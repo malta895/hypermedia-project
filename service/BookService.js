@@ -44,9 +44,9 @@ exports.similarBooksDbSetup = function(database) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments();
-                table.integer("book1").unsigned();
+                table.integer("book1").unsigned().notNullable();
                 table.foreign("book1").references("book.book_id");
-                table.integer("book2").unsigned();
+                table.integer("book2").unsigned().notNullable();
                 table.foreign("book2").references("book.book_id");
             });
         } else {
@@ -160,11 +160,20 @@ exports.getBookById = function (bookId) {
  * limit Integer Maximum number of items per page. Default is 20 and cannot exceed 500. (optional)
  * returns List
  **/
-exports.similarBooksGET = function (bookId, offset, limit) {
+exports.relatedBooksGET = function (bookId, offset, limit) {
 
     return new Promise(function (resolve, reject) {
-        let query = sqlDb('book')
-            .where('book_id', bookId);
+        let query = sqlDb
+            .select()
+            .from('book')
+            .where('book_id', bookId)
+            .whereIn('bookId', () => {
+                this.select('book1').from('similar_book')
+                    .unionAll(() => {
+                        this.select('book2').from('similar_book');
+                    });
+            });
+
         if (offset)
             query.offset(offset);
         if (limit)
