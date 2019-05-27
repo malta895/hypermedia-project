@@ -1,0 +1,32 @@
+{
+  "id": 1,
+  "title": "Il deserto dei tartari",
+  "authors": [
+    {
+      "name": "Mario",
+      "surname": "Rossi",
+      "biography": "string",
+      "picture": "string"
+    }
+  ],
+  "isbn": 12345,
+  "price": {
+    "currency": "EUR",
+    "value": 11
+  },
+  "picture_path": "pic1.jpg",
+  "status": "Available",
+  "genre": [
+    {
+      "genre_id": 1,
+      "name": "Horror"
+    }
+  ],
+  "theme": [
+    {
+      "name": "string",
+      "description": "string"
+    }
+  ],
+  "average_rating": 0
+}

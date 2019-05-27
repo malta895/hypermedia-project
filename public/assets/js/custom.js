@@ -348,7 +348,7 @@ $(document).ready(function() {
 	/*------------------------------
 		YOUTUBE VIDEO BACKGROUND
 	------------------------------*/
-	$(".player").YTPlayer();
+	
 	
 	/*------------------------------
 		TWITTER QUERY
