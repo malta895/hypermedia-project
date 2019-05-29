@@ -1,4 +1,4 @@
-const sqlDbFactory = require("knex");
+const knex = require("knex");
 
 let { bookDbSetup, similarBooksDbSetup } = require("./BookService");
 let { userDbSetup } = require("./UserService");
@@ -12,42 +12,54 @@ let { authorDbSetup, authorBookDbSetup } = require("./AuthorService");
 let { reviewDbSetup } = require("./ReviewService");
 
 
-let sqlDb = sqlDbFactory({
-    client: "pg",
-    connection: process.env.DATABASE_URL,
-    ssl: true,
-    debug: true //TODO cambiare in false a progetto finito
-});
 
-async function setupDataLayer() {
-    console.log("Setting up data layer....");
 
-    // mantenere l'ordine giusto, le foreign key devono riferirsi a tabelle già esistenti
+exports.setupDataLayer = function () {
+    return new Promise((resolve, reject) => {
+        console.log("Setting up data layer....");
 
-    let createTables = [
-        addressDbSetup,
-        genreDbSetup,
-        themeDbSetup,
-        userDbSetup,//dipende da address
-        publisherDbSetup,//dipende da address
-        bookDbSetup,// dipende da genre, theme e publisher
-        genreBookDbSetup,// dipende da genre e da book
-        similarBooksDbSetup,
-        reviewDbSetup,// dipende da book, app_user
-        authorDbSetup,//dipende da book
-        authorBookDbSetup,
-        eventDbSetup,//dipende da address, book
-        orderDbSetup//dipende da user, book, address
-    ];
+        let sqlDb = knex({
+            client: "pg",
+            connection: process.env.DATABASE_URL,
+            ssl: true,
+            debug: true //TODO cambiare in false a progetto finito
+        });
 
-    let p = Promise.resolve();
+        sqlDb.select(1) // query di test
+            .then(() => {
+                // mantenere l'ordine giusto, le foreign key devono riferirsi a tabelle già esistenti
+                let createTables = [
+                    addressDbSetup,
+                    genreDbSetup,
+                    themeDbSetup,
+                    userDbSetup,//dipende da address
+                    publisherDbSetup,//dipende da address
+                    bookDbSetup,// dipende da genre, theme e publisher
+                    genreBookDbSetup,// dipende da genre e da book
+                    similarBooksDbSetup,
+                    reviewDbSetup,// dipende da book, app_user
+                    authorDbSetup,//dipende da book
+                    authorBookDbSetup,
+                    eventDbSetup,//dipende da address, book
+                    orderDbSetup//dipende da user, book, address
+                ];
 
-    createTables.forEach( table => {
-        p = p.then(() => table(sqlDb));
+                let p = Promise.resolve(); // creo una promise vuota
+
+                // e la concateno a se stessa creando tutte le tabelle
+                createTables.forEach( table => {
+                    p = p
+                        .then(() => table(sqlDb)) // creo la tabella
+                        .catch((tableName) => {
+                            console.error(`Errore durante
+la creazione della tabella ${tableName}`);
+                        });
+                });
+
+                resolve(p);
+            })
+            .catch(() =>{
+                reject("Errore connessione al DB");
+            });
     });
-
-    return p;
-
-}
-
-module.exports = { database: sqlDb, setupDataLayer };
+};

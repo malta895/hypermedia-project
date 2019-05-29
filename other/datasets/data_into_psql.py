@@ -8,6 +8,7 @@ import re
 
 def db_connect():
     db_url = os.getenv('DATABASE_URL')
+    # db_url = HYP_DATABASE_URL
     result = urlparse(db_url)
     username = result.username
     password = result.password
@@ -35,6 +36,7 @@ def insert_author(cur, name, book_id):
         cur.execute(query, data)
 
 
+
 def insert_book(cur, book_id, isbn, title, price, picture, status='Available'):
     query = "INSERT INTO book (book_id, isbn, title, price, picture, status)\
 VALUES(%s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING RETURNING book_id"
@@ -58,6 +60,9 @@ print("INSERIMENTO...")
 for index, row in df.iterrows():
     if row['book_id'] % 100 == 0:
         print("Progresso: " + str(row['book_id']))
+
+    if row['book_id'] > 5000:
+        break
 
     image_path = row['image_url']
 
@@ -86,7 +91,6 @@ for index, row in df.iterrows():
 
 
 db_conn.commit()
-
 
 cur.close()
 db_conn.close()

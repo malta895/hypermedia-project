@@ -80,10 +80,20 @@ exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price
             return;
         }
 
-        let query = sqlDb('book');
-        // .join('publisher', 'publisher.id', '=', 'book.publisher')
-        // .join('genre', 'genre.genre_id', '=', 'book.genre')
-        // .join('theme', 'theme.id', '=', 'book.theme')
+        let query = sqlDb('book')
+            .select('book_id', 'isbn', 'title', 'price',
+                    'book.picture as picture', 'abstract', 'interview',
+                    'status', 'theme.name as theme', 'publisher.name as publisher',
+                    sqlDb.raw("array_agg(distinct(genre.name)) as genres"),
+                    sqlDb.raw("array_agg(author.name) as authors"))
+        //sono tutte left join perche le tabelle potrebbero essere vuote
+            .leftJoin('publisher', 'publisher.publisher_id', '=', 'book.publisher')
+            .leftJoin('book_genre', 'book.book_id', 'book_genre.book')
+            .leftJoin('genre', 'book_genre.genre', 'genre.genre_id')
+            .leftJoin('theme', 'theme.theme_id', '=', 'book.theme')
+            .leftJoin("author_book", "author_book.book", "book.book_id")
+            .leftJoin("author", "author_book.author", "author.author_id")
+            .groupBy('book.book_id', 'theme.name', 'publisher.name');
 
         if (title) {
             query.where('book.title', 'like', `%${title}%`);
@@ -131,18 +141,32 @@ exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price
  **/
 exports.getBookById = function (bookId) {
     return new Promise(function (resolve, reject) {
-        let query = sqlDb(tableName).where('book_id', bookId);
+
+        //TODO aggiungere similar books
+
+        let query = sqlDb(tableName)
+            .where('book.book_id', bookId);
 
         query.then(rows => {
             if (rows.length > 0) {
-                resolve(rows);
+
+                // metto anche gli autori nel risultato
+                let query2 = sqlDb('author')
+                    .join("author_book", "author_book.author", "author.author_id")
+                    .where("author_book.book", bookId)
+                    .select('author_id', 'name', 'biography', 'picture');
+
+                query2.then( rows2 => {
+                    rows[0].authors = rows2;
+                    resolve(rows);
+                });
+
             } else {
                 rows.notFound = true;
                 reject(rows);
             }
+
         });
-
-
     });
 };
 
