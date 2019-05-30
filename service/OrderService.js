@@ -12,7 +12,7 @@ exports.orderDbSetup = function(database) {
             return database.schema.createTable(tableName, table => {
                 table.increments();
                 table.integer("user_id").unsigned();
-                table.foreign("user_id").references("app_user.user_id");
+                table.foreign("user_id").references("user.user_id");
                 table.integer("ship_address").unsigned();
                 table.foreign("ship_address").references("address.address_id");
                 table.timestamp("order_date").notNullable();
@@ -41,24 +41,26 @@ exports.orderToBookDbSetup = function(database) {
                 table.foreign("order").references("order.order_id");
             });
         } else {
-            console.log(`Table ${tableName} already exists, skipping...`)
+            console.log(`Table ${tableName} already exists, skipping...`);
         }
     });
 };
-
-
-
 
 
 /**
  * Place a new order
  * Place a new order from the cart
  *
+ * addressStreetLine1 String 
+ * city String 
+ * zip_code String 
+ * province String 
+ * country String 
+ * addressStreetLine2 String  (optional)
  * no response value expected for this operation
  **/
-exports.orderPlacePOST = function() {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
-}
-
+exports.orderPlacePOST = function(addressStreetLine1,city,zip_code,province,country,addressStreetLine2) {
+    return new Promise(function(resolve, reject) {
+        resolve();
+    });
+};

@@ -16,16 +16,17 @@ exports.bookDbSetup = function(database) {
                 table.string("isbn", 15).notNullable().unique();
                 table.text("title").notNullable();
                 table.double("price").notNullable();
+                table.string("price_currency", 5);
                 table.text("picture").notNullable();
-                table.text("abstract").notNullable().defaultTo("Lorem ipsum");
-                table.text("interview").notNullable().defaultTo("Lorem ipsum");
+                table.text("abstract").notNullable()
+                    .defaultTo("Lorem ipsum");// TODO mettere qualcosa di sensato
+                table.text("interview").notNullable()
+                    .defaultTo("Lorem ipsum");// TODO mettere qualcosa di sensato
                 table.enum("status", ["Available", "Out of stock"])
                     .defaultTo("Available");
                 table.integer("publisher").unsigned();
                 table.float("average_rating").nullable();
                 table.foreign("publisher").references("publisher.publisher_id");
-                table.integer("theme").unsigned();
-                table.foreign("theme").references("theme.theme_id");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
@@ -75,57 +76,69 @@ exports.similarBooksDbSetup = function(database) {
  **/
 exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price,max_price,genre,themes,best_seller,offset,limit) {
     return new Promise(function(resolve, reject){
+
         if(!sqlDb){
             reject({status: 500, errorText: 'Database not found!'});
             return;
         }
 
         let query = sqlDb('book')
-            .select('book_id', 'isbn', 'title', 'price',
+
+            .select('book_id', 'isbn', 'title', 'price', 'status',
                     'book.picture as picture', 'abstract', 'interview',
-                    'status', 'theme.name as theme', 'publisher.name as publisher',
+                    'theme.name as theme', 'publisher.name as publisher',
                     sqlDb.raw("array_agg(distinct(genre.name)) as genres"),
                     sqlDb.raw("array_agg(author.name) as authors"))
-        //sono tutte left join perche le tabelle potrebbero essere vuote
+
+        // sono tutte left join perche le tabelle a destra potrebbero
+        // non avere righe corrispondenti
             .leftJoin('publisher', 'publisher.publisher_id', '=', 'book.publisher')
             .leftJoin('book_genre', 'book.book_id', 'book_genre.book')
             .leftJoin('genre', 'book_genre.genre', 'genre.genre_id')
-            .leftJoin('theme', 'theme.theme_id', '=', 'book.theme')
+            .leftJoin('book_theme', 'book.book_id', 'book_theme.book')
+            .leftJoin('theme', 'theme.theme_id', '=', 'book_theme.theme')
             .leftJoin("author_book", "author_book.book", "book.book_id")
             .leftJoin("author", "author_book.author", "author.author_id")
+
             .groupBy('book.book_id', 'theme.name', 'publisher.name');
 
-        if (title) {
+        if (title)
             query.where('book.title', 'like', `%${title}%`);
-        }
 
-        if (min_price) {
+        if (min_price)
             query.where('book.price', '>=', min_price);
-        }
-        if (max_price) {
+
+        if (max_price)
             query.where('book.price', '<=', max_price);
-        }
 
-        if(iSBN){
-            query.where('book.isbn', 'like', `${iSBN}`);
-        }
+        if(iSBN)
+            query.where('book.isbn', 'like', `%${iSBN}%`);
 
-        //TODO in_stock, publishers, authors
+        if(publishers)
+            query.where('book.publisher', 'in', publishers);
 
-        query.select();
+        if(authors)
+            query.where('author_book.author', 'in', authors);
 
-        if (offset) {
+        if(genre)
+            query.where('book_genre.genre', 'in', genre);
+
+        if(themes)
+            query.where('book_theme.theme', 'in', themes);
+
+        if (offset)
             query.offset(offset);
-        }
-        if (limit) {
+
+        if (limit)
             query.limit(limit);
-        }
 
         query.then( (rows) => {
-            resolve(rows);
+            if(rows)
+                resolve(rows);
+            else
+                reject(404);
         })
             .catch((error) => reject(error));
-
 
     });
 
@@ -141,8 +154,6 @@ exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price
  **/
 exports.getBookById = function (bookId) {
     return new Promise(function (resolve, reject) {
-
-        //TODO aggiungere similar books
 
         let query = sqlDb(tableName)
             .where('book.book_id', bookId);
@@ -209,4 +220,3 @@ exports.relatedBooksGET = function (bookId, offset, limit) {
         });
     });
 };
-

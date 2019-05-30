@@ -4,6 +4,22 @@ var utils = require('../utils/writer.js');
 var User = require('../service/UserService');
 var session = require('../utils/SessionManager.js');
 
+module.exports.userAddAddressPOST = function userAddAddressPOST (req, res, next) {
+    var addressStreetLine1 = req.swagger.params['addressStreetLine1'].value;
+    var city = req.swagger.params['city'].value;
+    var zip_code = req.swagger.params['zip_code'].value;
+    var province = req.swagger.params['province'].value;
+    var country = req.swagger.params['country'].value;
+    var addressStreetLine2 = req.swagger.params['addressStreetLine2'].value;
+    User.userAddAddressPOST(addressStreetLine1,city,zip_code,province,country,addressStreetLine2)
+        .then(function (response) {
+            utils.writeJson(res, response);
+        })
+        .catch(function (response) {
+            utils.writeJson(res, response);
+        });
+};
+
 module.exports.userDeletePOST = function userDeletePOST (req, res, next) {
     try{
         let userId = session.getUserId();
@@ -19,6 +35,16 @@ module.exports.userDeletePOST = function userDeletePOST (req, res, next) {
         utils.writeJson(res, {error: "You were not logged in!"}, 400);
     }
 
+};
+
+module.exports.userGetDetailsGET = function userGetDetailsGET (req, res, next) {
+    User.userGetDetailsGET()
+        .then(function (response) {
+            utils.writeJson(res, response);
+        })
+        .catch(function (response) {
+            utils.writeJson(res, response);
+        });
 };
 
 module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
@@ -46,7 +72,7 @@ module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
             }
         })
         .catch(function (response) {
-            utils.writeJspon(res, {message: response.message}, response.code);
+            utils.writeJson(res, {message: response.message}, response.code);
         });
 };
 
@@ -76,7 +102,12 @@ module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
         return;
     }
 
-    var body = req.swagger.params['body'].value;
+    var username = req.swagger.params['username'].value;
+    var password = req.swagger.params['password'].value;
+    var email = req.swagger.params['email'].value;
+    var firstName = req.swagger.params['firstName'].value;
+    var surname = req.swagger.params['surname'].value;
+    var birthDate = req.swagger.params['birthDate'].value;
 
     User.userModifyPUT(body)
         .then(function (response) {
@@ -95,12 +126,31 @@ module.exports.userRegisterPOST = function userRegisterPOST (req, res, next) {
     }
 
 
-    var body = req.swagger.params['body'].value;
+    var username = req.swagger.params['username'].value;
+    var password = req.swagger.params['password'].value;
+    var email = req.swagger.params['email'].value;
+    var firstName = req.swagger.params['firstName'].value;
+    var surname = req.swagger.params['surname'].value;
+    var birthDate = req.swagger.params['birthDate'].value;
+
     User.userRegisterPOST(body)
         .then(function (response) {
             utils.writeJson(res, response);
         })
         .catch(function (response) {
             utils.writeJson(res, {message: response.message}, response.code);
+        });
+};
+
+module.exports.userReviewsGET = function userReviewsGET (req, res, next) {
+    var userId = req.swagger.params['userId'].value;
+    var offset = req.swagger.params['offset'].value;
+    var limit = req.swagger.params['limit'].value;
+    User.userReviewsGET(userId,offset,limit)
+        .then(function (response) {
+            utils.writeJson(res, response);
+        })
+        .catch(function (response) {
+            utils.writeJson(res, response);
         });
 };

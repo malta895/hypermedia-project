@@ -83,3 +83,31 @@ exports.eventIdGET = function (eventId) {
 
     });
 };
+
+/**
+ * Get events of a book
+ * Given a book Id, returns all the events in which was presented
+ *
+ * bookId Long Id of the book to get the reviews
+ * offset Integer Pagination offset. Default is 0. (optional)
+ * limit Integer Maximum number of items per page. Default is 20 and cannot exceed 500. (optional)
+ * returns List
+ **/
+exports.bookEventsGET = function(bookId,offset,limit) {
+    return new Promise(function(resolve, reject) {
+
+        let query = sqlDb('event')
+            .where('book', book)
+
+            .then(rows => {
+                if (rows) {
+                    resolve(rows);
+                } else {
+                    reject(404);
+                }
+            });
+    });
+};
+
+
+

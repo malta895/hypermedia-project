@@ -45,13 +45,13 @@ exports.reviewDbSetup = function (database) {
             return database.schema.createTable(tableName, table => {
                 table.increments("review_id");
                 table.integer("user").unsigned().notNullable();
-                table.foreign("user").references("app_user.user_id");
+                table.foreign("user").references("user.user_id");
                 table.string("title");
                 table.text("text");
                 table.integer("rating").notNullable();
                 table.integer("book").unsigned().notNullable();
                 table.foreign("book").references("book.book_id");
-                table.timestamp("date_time").notNullable();
+                table.timestamp("timestamp_added").notNullable();
             })
                 .then(database.raw(upd_avg_trig_func)
                       .then(res => console.log(res)))
@@ -123,3 +123,30 @@ exports.reviewIdGET = function (reviewId) {
 
     });
 };
+
+/**
+ * Get reviews from a user
+ * Given a user Id, returns all the reviews posted by that user
+ *
+ * userId Long Id of the user to get the reviews
+ * offset Integer Pagination offset. Default is 0. (optional)
+ * limit Integer Maximum number of items per page. Default is 20 and cannot exceed 500. (optional)
+ * returns List
+ **/
+exports.userReviewsGET = function(userId,offset,limit) {
+    return new Promise(function(resolve, reject) {
+
+        let query = sqlDb('review')
+            .where('user', userId);
+
+        query.then(rows => {
+            if (rows) {
+                resolve(rows);
+            }else{
+                reject(404);
+            }
+        })
+
+    });
+};
+

@@ -28,24 +28,39 @@ exports.addressDbSetup = function(database) {
     });
 };
 
-
-exports.insertAddress = function(addressId, streetLine1, streetLine2, city, zip_code, province, country){
-    return new Promise(function (resolve, reject) {
-
-        if (!sqlDb){
-            reject({ status: 500, errorText: 'Database not found!' });
-            return;
-        }
-
-        let query = sqlDb('address')
-            .insert({
-                streetLine1: streetLine1,
-                streetLine2: streetLine2,
-                city: city,
-                zip_code: zip_code,
-                province: province,
-                country:country
-            });
-        resolve(query);
+/**
+ * Add address to the current user
+ * Add an address to the user
+ *
+ * addressStreetLine1 String 
+ * city String 
+ * zip_code String 
+ * province String 
+ * country String 
+ * addressStreetLine2 String  (optional)
+ * no response value expected for this operation
+ **/
+exports.userAddAddressPOST = function(addressStreetLine1,city,zip_code,province,country,addressStreetLine2) {
+    return new Promise(function(resolve, reject) {
+        resolve();
     });
-};
+}
+
+
+/**
+ * Modify address of the current user
+ * Modify address of the current user
+ *
+ * addressStreetLine1 String 
+ * city String 
+ * zip_code String 
+ * province String 
+ * country String 
+ * addressStreetLine2 String  (optional)
+ * no response value expected for this operation
+ **/
+exports.userModifyAddressPOST = function(addressStreetLine1,city,zip_code,province,country,addressStreetLine2) {
+    return new Promise(function(resolve, reject) {
+        resolve();
+    });
+}
