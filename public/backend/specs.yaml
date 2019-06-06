@@ -395,7 +395,7 @@ paths:
               $ref: "#/definitions/Author"
         404:
           description: "Author not found!"
-      x-swagger-router-controller: "Author"
+    x-swagger-router-controller: "Author"
 
   /author/{authorId}:
     get:
@@ -573,7 +573,7 @@ paths:
         description: "Pagination offset. Default is 0."
         required: false
         type: "integer"
-      - name: "limit"
+      - name: "lnimit"
         in: "query"
         description: "Maximum number of items per page. Default is 20 and cannot exceed\
           \ 500."

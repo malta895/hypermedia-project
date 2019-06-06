@@ -33,6 +33,8 @@ tags:
   description: "Operations about an author"
 - name: "review"
   description: "Operations about books reviews"
+- name: "address"
+  description: "Operations about an address"
 
 paths:
 
@@ -118,7 +120,6 @@ paths:
               $ref: "#/definitions/Book"
         404:
           description: "No books found"
-      x-swagger-router-controller: "Book"
 
   /book/{bookId}:
     get:
@@ -187,7 +188,6 @@ paths:
           description: "Invalid Request!"
         404:
           description: "Book not found"
-      x-swagger-router-controller: "Book"
 
   /book/{bookId}/related:
     get:
@@ -227,7 +227,6 @@ paths:
           description: "Bad Input!"
         404:
           description: "Unexpected error"
-      x-swagger-router-controller: "Book"
 
   /user/login:
     post:
@@ -255,7 +254,7 @@ paths:
           description: "Successful login"
         403:
           description: "Wrong username/password"
-      x-swagger-router-controller: "User"
+
 
   /user/logout:
     post:
@@ -271,7 +270,7 @@ paths:
           description: "Successful logout"
         400:
           description: "Invalid request"
-      x-swagger-router-controller: "User"      
+
 
   /user/register:
     post:
@@ -316,7 +315,6 @@ paths:
           description: "Successful registration"
         400:
           description: "Invalid Request!"
-    x-swagger-router-controller: "User"
 
   /user/delete:
     delete:
@@ -332,14 +330,11 @@ paths:
           description: "Unauthorized"
         400:
           description: "Invalid request"
-    x-swagger-router-controller: "User"
-
 
   /user/add/address:
     post:
       tags:
       - "user"
-      - "address"
       summary: "Add address to the current user"
       description: "Add an address to the user"
       operationId: "userAddAddressPOST"
@@ -378,16 +373,15 @@ paths:
           description: "Not authorized!"
         400:
           description: "Invalid request!"
-    x-swagger-router-controller: "User"
 
   /user/modify/address:
-    post:
+    put:
       tags:
       - "user"
-      - "address"
       summary: "Modify address of the current user"
-      description: "Modify address of the current user"
-      operationId: "userModifyAddressPOST"
+      description: "Modify address of the current user. \
+      \ If no parameters are specified throws a 400 error"
+      operationId: "userModifyAddressPUT"
       consumes:
       - "application/x-www-form-urlencoded"
       produces:
@@ -396,26 +390,21 @@ paths:
         - name: "addressStreetLine1"
           in: "formData"
           type: "string"
-          required: true
         - name: "addressStreetLine2"
           in: "formData"
           type: "string"
         - name: "city"
           in: "formData"
           type: "string"
-          required: true
         - name: "zip_code"
           in: "formData"
           type: "string"
-          required: true
         - name: "province"
           in: "formData"
           type: "string"
-          required: true
         - name: "country"
           in: "formData"
           type: "string"
-          required: true
       responses:
         200:
           description: "Successful update!"
@@ -423,7 +412,6 @@ paths:
           description: "Not authorized!"
         400:
           description: "Invalid request!"
-    x-swagger-router-controller: "User"
 
   /user/update:
     put:
@@ -431,7 +419,8 @@ paths:
       - "user"
       summary: "Update user's data"
       description: "Put request to modify some of the user's data. \
-      \ One can modify single values, so nothing is required."
+      \ One can modify single values, so nothing is required. \
+      \ If no parameter is set a 400 error is thrown."
       operationId: "userModifyPUT"
       consumes:
       - "application/x-www-form-urlencoded"
@@ -465,7 +454,6 @@ paths:
           description: "Unathorized"
         400:
           description: "Invalid request"
-    x-swagger-router-controller: "User"
 
   /user/details:
     get:
@@ -480,30 +468,11 @@ paths:
         200:
           description: "Successful operation"
           schema:
-            type: "object"
-            properties:
-              userId:
-                type: "integer"
-                format: "int64"
-              username:
-                type: "string"
-              email:
-                type: "string"
-                format: "email"
-              firstName:
-                type: "string"
-              surname:
-                type: "string"
-              birth_date:
-                type: "string"
-                format: "date"
-              address:
-                $ref: "#/definitions/Address"
+            $ref: "#/definitions/User"
         403:
           description: "Not Authorized!"
         400:
           description: "Invalid request!"
-    x-swagger-router-controller: "User"
 
   /book/{bookId}/events:
     get:
@@ -544,7 +513,6 @@ paths:
           description: "No events found!"
         400:
           description: "Invalid request"
-    x-swagger-router-controller: "Event"
 
   /user/{userId}/reviews:
     get:
@@ -585,8 +553,6 @@ paths:
           description: "No reviews found!"
         400:
           description: "Invalid request"
-    x-swagger-router-controller: "Review"
-
 
   /cart:
     get:
@@ -615,7 +581,6 @@ paths:
           description: "Unauthorized"
         400:
           description: "Invalid request!"
-      x-swagger-router-controller: "Cart"
 
   /cart/add/{bookId}:
     put:
@@ -640,7 +605,6 @@ paths:
           description: "Book not available in inventory"
         400:
           description: "Bad request"
-    x-swagger-router-controller: "Cart"
 
   /cart/remove/{bookId}:
     delete:
@@ -665,7 +629,6 @@ paths:
           description: "Book not found"
         400:
           description: "Bad request"
-    x-swagger-router-controller: "Cart"
 
   /authors:
     get:
@@ -696,7 +659,6 @@ paths:
               $ref: "#/definitions/Author"
         404:
           description: "Author not found!"
-    x-swagger-router-controller: "Author"
 
   /author/{authorId}:
     get:
@@ -721,7 +683,6 @@ paths:
           description: "Author not found!"
         400:
           description: "Invalid request!"
-    x-swagger-router-controller: "Author"
 
   /publishers:
     get:
@@ -752,7 +713,6 @@ paths:
               $ref: "#/definitions/Publisher"
         404:
           description: "Not found!"
-      x-swagger-router-controller: "Publisher"
 
   /publisher/{publisherId}:
     get:
@@ -775,7 +735,6 @@ paths:
             $ref: "#/definitions/Publisher"
         404:
           description: "Publisher not found!"
-    x-swagger-router-controller: "Publisher"
 
   /event/{eventId}:
     get:
@@ -798,7 +757,6 @@ paths:
             $ref: "#/definitions/Event"
         404:
           description: "Event not found!"
-    x-swagger-router-controller: "Publisher"
           
   /events:
     get:
@@ -842,7 +800,6 @@ paths:
           description: "No events found!"
         400:
           description: "Invalid request"
-    x-swagger-router-controller: "Event"
 
   /order/create:
     post:
@@ -886,7 +843,6 @@ paths:
           description: "Unauthorized"
         400:
           description: "Bad Request"
-    x-swagger-router-controller: "Order"
 
   /book/{bookId}/reviews:
     get:
@@ -927,7 +883,6 @@ paths:
           description: "No reviews found!"
         400:
           description: "Invalid request"
-    x-swagger-router-controller: "Review"
 
   /review/{reviewId}:
     get:
@@ -950,8 +905,32 @@ paths:
             $ref: "#/definitions/Review"
         404:
           description: "Review not found!"
-    x-swagger-router-controller: "Review"
 
+  /order/{orderId}/address:
+    get:
+      tags:
+      - "order"
+      summary: "Get shipment address of a order"
+      description: "Given an order id, returns the shipment address set to that order, if user is authorized to see it"
+      operationId: "orderAddressGET"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "orderId"
+          in: "path"
+          description: "The id of the order. Must be associated to the current logged in user"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Address"
+        404:
+          description: "Review not found!"
+        403:
+          description: "Not authorized!"
 
 definitions:
   User:
@@ -1007,7 +986,6 @@ definitions:
     title: "Cart"
     description: "Order for books"
 
-  
   Book:
     type: "object"
     required:
@@ -1256,10 +1234,6 @@ definitions:
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
-# Added by API Auto Mocking Plugin
-# host: virtserver.swaggerhub.com
-# basePath: /malta895/hypermedia-project/1.0.0
-# host: "localhost"
 
 schemes:
  - https
