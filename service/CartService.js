@@ -76,21 +76,22 @@ exports.cartGET = function(userId, limit, offset) {
         query.then( rows => resolve(rows));
 
     });
-}
+};
 
 
 /**
- * Remove items from the cart
+ * Remove items from the cartn
  *
  * bookId Long 
  * quantity Integer Number of copies to remove from the cart (optional)
  * no response value expected for this operation
  **/
 exports.cartRemoveDELETE = function(bookId,quantity) {
+    //TODO IMPLEMENTARE
     return new Promise(function(resolve, reject) {
-        resolve();
+        
     });
-}
+};
 
 
 /**
@@ -101,6 +102,7 @@ exports.cartRemoveDELETE = function(bookId,quantity) {
  * no response value expected for this operation
  **/
 exports.cartUpdatePUT = function (bookId, quantity) {
+    //TODO IMPLEMENTARE
     return new Promise(function (resolve, reject) {
         resolve();
     });

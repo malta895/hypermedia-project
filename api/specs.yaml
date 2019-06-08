@@ -121,7 +121,7 @@ paths:
         404:
           description: "No books found"
 
-  /book/{bookId}:
+  /books/{bookId}:
     get:
       tags:
       - "book"
@@ -189,7 +189,7 @@ paths:
         404:
           description: "Book not found"
 
-  /book/{bookId}/related:
+  /books/{bookId}/related:
     get:
       tags:
       - "book"
@@ -228,6 +228,86 @@ paths:
         404:
           description: "Unexpected error"
 
+  /books/{bookId}/events:
+    get:
+      tags:
+      - "event"
+      - "book"
+      summary: "Get events of a book"
+      description: "Given a book Id, returns all the events in which was presented"
+      operationId: "bookEventsGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "Id of the book to get the events"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "offset"
+        in: "query"
+        description: "Pagination offset. Default is 0."
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Maximum number of items per page. Default is 20 and cannot exceed\
+          \ 500."
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operations"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Event"
+        404:
+          description: "No events found!"
+        400:
+          description: "Invalid request"
+
+  /books/{bookId}/reviews:
+    get:
+      tags:
+      - "review"
+      - "book"
+      summary: "Get reviews of a book"
+      description: "Given a book Id, returns all the reviews"
+      operationId: "bookReviewsGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "Id of the book to get the reviews"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "offset"
+        in: "query"
+        description: "Pagination offset. Default is 0."
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Maximum number of items per page. Default is 20 and cannot exceed\
+          \ 500."
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Review"
+        404:
+          description: "No reviews found!"
+        400:
+          description: "Invalid request"
+
   /user/login:
     post:
       tags:
@@ -254,7 +334,6 @@ paths:
           description: "Successful login"
         403:
           description: "Wrong username/password"
-
 
   /user/logout:
     post:
@@ -334,6 +413,7 @@ paths:
   /user/add/address:
     post:
       tags:
+      - "address"
       - "user"
       summary: "Add address to the current user"
       description: "Add an address to the user"
@@ -374,9 +454,10 @@ paths:
         400:
           description: "Invalid request!"
 
-  /user/modify/address:
+  /user/update/address:
     put:
       tags:
+      - "address"
       - "user"
       summary: "Modify address of the current user"
       description: "Modify address of the current user. \
@@ -455,11 +536,11 @@ paths:
         400:
           description: "Invalid request"
 
-  /user/details:
+  /me:
     get:
       tags:
       - "user"
-      summary: "Get user's data"
+      summary: "Get current user's data"
       description: "Get current logged in user data"
       operationId: "userGetDetailsGET"
       produces:
@@ -473,46 +554,6 @@ paths:
           description: "Not Authorized!"
         400:
           description: "Invalid request!"
-
-  /book/{bookId}/events:
-    get:
-      tags:
-      - "event"
-      - "book"
-      summary: "Get events of a book"
-      description: "Given a book Id, returns all the events in which was presented"
-      operationId: "bookEventsGET"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "bookId"
-        in: "path"
-        description: "Id of the book to get the reviews"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "offset"
-        in: "query"
-        description: "Pagination offset. Default is 0."
-        required: false
-        type: "integer"
-      - name: "limit"
-        in: "query"
-        description: "Maximum number of items per page. Default is 20 and cannot exceed\
-          \ 500."
-        required: false
-        type: "integer"
-      responses:
-        200:
-          description: "Successful operations"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Event"
-        404:
-          description: "No events found!"
-        400:
-          description: "Invalid request"
 
   /user/{userId}/reviews:
     get:
@@ -582,11 +623,12 @@ paths:
         400:
           description: "Invalid request!"
 
-  /cart/add/{bookId}:
+  /cart/add/book/{bookId}:
     put:
       tags:
       - "cart"
-      summary: "Add/remove elements to the cart"
+      summary: "Add/remove items to the cart"
+      description: "Adds the given book by id to the cart. Optional quantity, defaults to 1"
       operationId: "cartUpdatePUT"
       parameters:
       - name: "bookId"
@@ -606,11 +648,12 @@ paths:
         400:
           description: "Bad request"
 
-  /cart/remove/{bookId}:
+  /cart/remove/book/{bookId}:
     delete:
       tags:
       - "cart"
       summary: "Remove items from the cart"
+      description: "Remove the given book by id to the cart. Optional quantity, defaults to 1"
       operationId: "cartRemoveDELETE"
       parameters:
       - name: "bookId"
@@ -626,7 +669,7 @@ paths:
         200:
           description: "Successful operation"
         404:
-          description: "Book not found"
+          description: "Book not in the cart"
         400:
           description: "Bad request"
 
@@ -660,7 +703,7 @@ paths:
         404:
           description: "Author not found!"
 
-  /author/{authorId}:
+  /authors/{authorId}:
     get:
       tags:
       - "author"
@@ -714,7 +757,7 @@ paths:
         404:
           description: "Not found!"
 
-  /publisher/{publisherId}:
+  /publishers/{publisherId}:
     get:
       tags:
       - "publisher"
@@ -735,28 +778,6 @@ paths:
             $ref: "#/definitions/Publisher"
         404:
           description: "Publisher not found!"
-
-  /event/{eventId}:
-    get:
-      tags:
-      - "event"
-      summary: "Get an event in which a book is presented"
-      operationId: "eventIdGET"
-      produces:
-      - "application/json"
-      parameters:
-        - name: "eventId"
-          in: "path"
-          required: true
-          type: "integer"
-          format: "int64"
-      responses:
-        200:
-          description: "Successful operation"
-          schema:
-            $ref: "#/definitions/Event"
-        404:
-          description: "Event not found!"
           
   /events:
     get:
@@ -801,7 +822,60 @@ paths:
         400:
           description: "Invalid request"
 
-  /order/create:
+  /events/{eventId}:
+    get:
+      tags:
+      - "event"
+      summary: "Get an event in which a book is presented"
+      operationId: "eventIdGET"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "eventId"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Event"
+        404:
+          description: "Event not found!"
+
+  /orders:
+    get:
+      tags:
+      - "order"
+      summary: "Current user's orders"
+      description: "Collection of orders placed by the current user"
+      operationId: "ordersGET"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "offset"
+          in: "query"
+          description: "Pagination offset. Default is 0."
+          required: false
+          type: "integer"
+        - name: "limit"
+          in: "query"
+          description: "Maximum number of items per page. Default is 20 and cannot exceed\
+          \ 500."
+          required: false
+          type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Order"
+        400:
+          description: "Invalid request"
+        403:
+          description: "Not authorized!"
+
+  /orders/create:
     post:
       tags:
       - "order"
@@ -844,69 +918,7 @@ paths:
         400:
           description: "Bad Request"
 
-  /book/{bookId}/reviews:
-    get:
-      tags:
-      - "review"
-      - "book"
-      summary: "Get reviews of a book"
-      description: "Given a book Id, returns all the reviews"
-      operationId: "bookReviewsGET"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "bookId"
-        in: "path"
-        description: "Id of the book to get the reviews"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "offset"
-        in: "query"
-        description: "Pagination offset. Default is 0."
-        required: false
-        type: "integer"
-      - name: "limit"
-        in: "query"
-        description: "Maximum number of items per page. Default is 20 and cannot exceed\
-          \ 500."
-        required: false
-        type: "integer"
-      responses:
-        200:
-          description: "Successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Review"
-        404:
-          description: "No reviews found!"
-        400:
-          description: "Invalid request"
-
-  /review/{reviewId}:
-    get:
-      tags:
-      - "review"
-      summary: "Get a review by Id"
-      operationId: "reviewIdGET"
-      produces:
-      - "application/json"
-      parameters:
-        - name: "reviewId"
-          in: "path"
-          required: true
-          type: "integer"
-          format: "int64"
-      responses:
-        200:
-          description: "Successful operation"
-          schema:
-            $ref: "#/definitions/Review"
-        404:
-          description: "Review not found!"
-
-  /order/{orderId}/address:
+  /orders/{orderId}/address:
     get:
       tags:
       - "order"
@@ -931,6 +943,28 @@ paths:
           description: "Review not found!"
         403:
           description: "Not authorized!"
+
+  /reviews/{reviewId}:
+    get:
+      tags:
+      - "review"
+      summary: "Get a review by Id"
+      operationId: "reviewIdGET"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "reviewId"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Review"
+        404:
+          description: "Review not found!"
 
 definitions:
   User:
@@ -1230,6 +1264,35 @@ definitions:
         description: "Id of the reviewed book"
     title: "Review"
     description: "A review of a book, with rating and optional title and text"
+
+  Order:
+    type: "object"
+    required:
+    - "order_id"
+    - "user_id"
+    - "items"
+    - "total_amount"
+    - "shipment_address"
+    properties:
+      order_id:
+        type: "integer"
+        format: "int64"
+        description: "Id of the order"
+      user_id:
+        type: "integer"
+        format: "int64"
+        description: "UserId of who placed the order"
+      items:
+        type: "array"
+        items:
+          $ref: "#/definitions/Book"
+      total_amount:
+        $ref: "#/definitions/Amount"
+      shipment_address:
+        $ref: "#/definitions/Address"
+      order_date:
+        type: "string"
+        format: "date-time"
 
 externalDocs:
   description: "Find out more about Swagger"

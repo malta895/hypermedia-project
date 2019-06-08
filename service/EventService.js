@@ -1,7 +1,9 @@
 'use strict';
 
+var sqlDb;
+
 exports.eventDbSetup = function(database) {
-    var sqlDb = database;
+    sqlDb = database;
     var tableName = "event";
     console.log("Checking if %s table exists", tableName);
     if(process.env.HYP_DROP_ALL)
@@ -13,8 +15,8 @@ exports.eventDbSetup = function(database) {
                 table.increments("event_id");
                 table.integer("location").unsigned();
                 table.foreign("location").references("address.address_id");
-                table.integer("presented_book").unsigned();
-                table.foreign("presented_book").references("book.book_id");
+                table.integer("book").unsigned();
+                table.foreign("book").references("book.book_id");
                 table.string("name").notNullable();
                 table.datetime("date_time").notNullable();
             });
@@ -55,7 +57,8 @@ exports.eventGET = function (offset, limit) {
                 rows.notFound = true;
                 reject(rows);
             }
-        });
+        })
+            .catch( err => reject({error: err, errorCode: 500}));
     });
 };
 
@@ -78,9 +81,8 @@ exports.eventIdGET = function (eventId) {
                 rows.notFound = true;
                 reject(rows);
             }
-        });
-
-
+        })
+            .catch( err => reject({error: err, errorCode: 500}));
     });
 };
 
@@ -97,17 +99,21 @@ exports.bookEventsGET = function(bookId,offset,limit) {
     return new Promise(function(resolve, reject) {
 
         let query = sqlDb('event')
-            .where('book', book)
+            .where('book', bookId);
 
-            .then(rows => {
-                if (rows) {
-                    resolve(rows);
-                } else {
-                    reject(404);
-                }
-            });
+        if(offset)
+            query.offset(offset);
+
+        if(limit)
+            query.limit(limit);
+
+        query.then(rows => {
+            if (rows) {
+                resolve(rows);
+            } else {
+                reject({errorCode: 404});
+            }
+        })
+            .catch( err => reject({error: err, errorCode: 500}));
     });
 };
-
-
-

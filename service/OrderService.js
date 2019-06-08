@@ -13,8 +13,8 @@ exports.orderDbSetup = function(database) {
                 table.increments();
                 table.integer("user_id").unsigned();
                 table.foreign("user_id").references("user.user_id");
-                table.integer("ship_address").unsigned();
-                table.foreign("ship_address").references("address.address_id");
+                table.integer("shipment_address").unsigned();
+                table.foreign("shipment_address").references("address.address_id");
                 table.timestamp("order_date").notNullable();
             });
         } else {
@@ -46,6 +46,18 @@ exports.orderToBookDbSetup = function(database) {
     });
 };
 
+/**
+ * Get shipment address of a order
+ * Given an order id, returns the shipment address set to that order, if user is authorized to see it
+ *
+ * orderId Long The id of the order. Must be associated to the current logged in user
+ * returns Address
+ **/
+exports.orderAddressGET = function(orderId) {
+    return new Promise(function(resolve, reject) {
+        //TODO IMPLEMENTARE
+    });
+};
 
 /**
  * Place a new order
@@ -61,6 +73,21 @@ exports.orderToBookDbSetup = function(database) {
  **/
 exports.orderPlacePOST = function(addressStreetLine1,city,zip_code,province,country,addressStreetLine2) {
     return new Promise(function(resolve, reject) {
-        resolve();
+        //TODO IMPLEMENTARE
     });
 };
+
+/**
+ * Current user's orders
+ * Collection of orders placed by the current user
+ *
+ * offset Integer Pagination offset. Default is 0. (optional)
+ * limit Integer Maximum number of items per page. Default is 20 and cannot exceed 500. (optional)
+ * returns Order
+ **/
+exports.ordersGET = function(offset,limit) {
+    return new Promise(function(resolve, reject) {
+        //TODO IMPLEMENTARE
+    });
+}
+

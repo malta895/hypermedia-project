@@ -3,11 +3,11 @@
 var utils = require('../utils/writer.js');
 var Book = require('../service/BookService');
 
-module.exports.bookReviewsGET = function bookReviewsGET (req, res, next) {
+module.exports.bookEventsGET = function bookEventsGET (req, res, next) {
     var bookId = req.swagger.params['bookId'].value;
     var offset = req.swagger.params['offset'].value;
     var limit = req.swagger.params['limit'].value;
-    Book.bookReviewsGET(bookId,offset,limit)
+    Book.bookEventsGET(bookId,offset,limit)
         .then(function (response) {
             utils.writeJson(res, response);
         })
@@ -42,6 +42,8 @@ module.exports.booksGET = function booksGET (req, res, next) {
     var best_seller = req.swagger.params['best_seller'].value;
     var offset = req.swagger.params['offset'].value;
     var limit = req.swagger.params['limit'].value;
+
+    //TODO IMPLEMENTARE
     Book.booksGET(title,not_in_stock,publishers,authors,iSBN,min_price,max_price,genre,themes,best_seller,offset,limit)
         .then(function (response) {
             utils.writeJson(res, response);

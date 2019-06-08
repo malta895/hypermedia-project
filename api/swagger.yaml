@@ -10,8 +10,7 @@ info:
   license:
     name: "Apache-2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "virtserver.swaggerhub.com"
-basePath: "/malta895/hypermedia-project/1.0.0"
+basePath: "/api"
 tags:
 - name: "book"
   description: "Available book"
@@ -29,6 +28,8 @@ tags:
   description: "Operations about an author"
 - name: "review"
   description: "Operations about books reviews"
+- name: "address"
+  description: "Operations about an address"
 schemes:
 - "https"
 - "http"
@@ -130,7 +131,7 @@ paths:
         404:
           description: "No books found"
       x-swagger-router-controller: "Book"
-  /book/{bookId}:
+  /books/{bookId}:
     get:
       tags:
       - "book"
@@ -199,7 +200,7 @@ paths:
         404:
           description: "Book not found"
       x-swagger-router-controller: "Book"
-  /book/{bookId}/related:
+  /books/{bookId}/related:
     get:
       tags:
       - "book"
@@ -238,6 +239,86 @@ paths:
         404:
           description: "Unexpected error"
       x-swagger-router-controller: "Book"
+  /books/{bookId}/events:
+    get:
+      tags:
+      - "event"
+      - "book"
+      summary: "Get events of a book"
+      description: "Given a book Id, returns all the events in which was presented"
+      operationId: "bookEventsGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "Id of the book to get the events"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "offset"
+        in: "query"
+        description: "Pagination offset. Default is 0."
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Maximum number of items per page. Default is 20 and cannot exceed\
+          \ 500."
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operations"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Event"
+        400:
+          description: "Invalid request"
+        404:
+          description: "No events found!"
+      x-swagger-router-controller: "Event"
+  /books/{bookId}/reviews:
+    get:
+      tags:
+      - "review"
+      - "book"
+      summary: "Get reviews of a book"
+      description: "Given a book Id, returns all the reviews"
+      operationId: "bookReviewsGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "Id of the book to get the reviews"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "offset"
+        in: "query"
+        description: "Pagination offset. Default is 0."
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Maximum number of items per page. Default is 20 and cannot exceed\
+          \ 500."
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Review"
+        400:
+          description: "Invalid request"
+        404:
+          description: "No reviews found!"
+      x-swagger-router-controller: "Review"
   /user/login:
     post:
       tags:
@@ -325,7 +406,6 @@ paths:
         400:
           description: "Invalid Request!"
       x-swagger-router-controller: "User"
-    x-swagger-router-controller: "User"
   /user/delete:
     delete:
       tags:
@@ -342,12 +422,11 @@ paths:
         403:
           description: "Unauthorized"
       x-swagger-router-controller: "User"
-    x-swagger-router-controller: "User"
   /user/add/address:
     post:
       tags:
-      - "user"
       - "address"
+      - "user"
       summary: "Add address to the current user"
       description: "Add an address to the user"
       operationId: "userAddAddressPOST"
@@ -387,16 +466,16 @@ paths:
           description: "Invalid request!"
         403:
           description: "Not authorized!"
-      x-swagger-router-controller: "User"
-    x-swagger-router-controller: "User"
-  /user/modify/address:
-    post:
+      x-swagger-router-controller: "Address"
+  /user/update/address:
+    put:
       tags:
-      - "user"
       - "address"
+      - "user"
       summary: "Modify address of the current user"
-      description: "Modify address of the current user"
-      operationId: "userModifyAddressPOST"
+      description: "Modify address of the current user.  If no parameters are specified\
+        \ throws a 400 error"
+      operationId: "userModifyAddressPUT"
       consumes:
       - "application/x-www-form-urlencoded"
       produces:
@@ -404,7 +483,7 @@ paths:
       parameters:
       - name: "addressStreetLine1"
         in: "formData"
-        required: true
+        required: false
         type: "string"
       - name: "addressStreetLine2"
         in: "formData"
@@ -412,19 +491,19 @@ paths:
         type: "string"
       - name: "city"
         in: "formData"
-        required: true
+        required: false
         type: "string"
       - name: "zip_code"
         in: "formData"
-        required: true
+        required: false
         type: "string"
       - name: "province"
         in: "formData"
-        required: true
+        required: false
         type: "string"
       - name: "country"
         in: "formData"
-        required: true
+        required: false
         type: "string"
       responses:
         200:
@@ -433,15 +512,15 @@ paths:
           description: "Invalid request!"
         403:
           description: "Not authorized!"
-      x-swagger-router-controller: "User"
-    x-swagger-router-controller: "User"
+      x-swagger-router-controller: "Address"
   /user/update:
     put:
       tags:
       - "user"
       summary: "Update user's data"
       description: "Put request to modify some of the user's data.  One can modify\
-        \ single values, so nothing is required."
+        \ single values, so nothing is required.  If no parameter is set a 400 error\
+        \ is thrown."
       operationId: "userModifyPUT"
       consumes:
       - "application/x-www-form-urlencoded"
@@ -482,12 +561,11 @@ paths:
         403:
           description: "Unathorized"
       x-swagger-router-controller: "User"
-    x-swagger-router-controller: "User"
-  /user/details:
+  /me:
     get:
       tags:
       - "user"
-      summary: "Get user's data"
+      summary: "Get current user's data"
       description: "Get current logged in user data"
       operationId: "userGetDetailsGET"
       produces:
@@ -497,72 +575,12 @@ paths:
         200:
           description: "Successful operation"
           schema:
-            type: "object"
-            properties:
-              userId:
-                type: "integer"
-                format: "int64"
-              username:
-                type: "string"
-              email:
-                type: "string"
-                format: "email"
-              firstName:
-                type: "string"
-              surname:
-                type: "string"
-              birth_date:
-                type: "string"
-                format: "date"
-              address:
-                $ref: "#/definitions/Address"
+            $ref: "#/definitions/User"
         400:
           description: "Invalid request!"
         403:
           description: "Not Authorized!"
       x-swagger-router-controller: "User"
-    x-swagger-router-controller: "User"
-  /book/{bookId}/events:
-    get:
-      tags:
-      - "event"
-      - "book"
-      summary: "Get events of a book"
-      description: "Given a book Id, returns all the events in which was presented"
-      operationId: "bookEventsGET"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "bookId"
-        in: "path"
-        description: "Id of the book to get the reviews"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "offset"
-        in: "query"
-        description: "Pagination offset. Default is 0."
-        required: false
-        type: "integer"
-      - name: "limit"
-        in: "query"
-        description: "Maximum number of items per page. Default is 20 and cannot exceed\
-          \ 500."
-        required: false
-        type: "integer"
-      responses:
-        200:
-          description: "Successful operations"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Event"
-        400:
-          description: "Invalid request"
-        404:
-          description: "No events found!"
-      x-swagger-router-controller: "Event"
-    x-swagger-router-controller: "Event"
   /user/{userId}/reviews:
     get:
       tags:
@@ -603,7 +621,6 @@ paths:
         404:
           description: "No reviews found!"
       x-swagger-router-controller: "Review"
-    x-swagger-router-controller: "Review"
   /cart:
     get:
       tags:
@@ -633,11 +650,13 @@ paths:
         403:
           description: "Unauthorized"
       x-swagger-router-controller: "Cart"
-  /cart/add/{bookId}:
+  /cart/add/book/{bookId}:
     put:
       tags:
       - "cart"
-      summary: "Add/remove elements to the cart"
+      summary: "Add/remove items to the cart"
+      description: "Adds the given book by id to the cart. Optional quantity, defaults\
+        \ to 1"
       operationId: "cartUpdatePUT"
       parameters:
       - name: "bookId"
@@ -658,12 +677,13 @@ paths:
         404:
           description: "Book not available in inventory"
       x-swagger-router-controller: "Cart"
-    x-swagger-router-controller: "Cart"
-  /cart/remove/{bookId}:
+  /cart/remove/book/{bookId}:
     delete:
       tags:
       - "cart"
       summary: "Remove items from the cart"
+      description: "Remove the given book by id to the cart. Optional quantity, defaults\
+        \ to 1"
       operationId: "cartRemoveDELETE"
       parameters:
       - name: "bookId"
@@ -682,9 +702,8 @@ paths:
         400:
           description: "Bad request"
         404:
-          description: "Book not found"
+          description: "Book not in the cart"
       x-swagger-router-controller: "Cart"
-    x-swagger-router-controller: "Cart"
   /authors:
     get:
       tags:
@@ -715,8 +734,7 @@ paths:
         404:
           description: "Author not found!"
       x-swagger-router-controller: "Author"
-    x-swagger-router-controller: "Author"
-  /author/{authorId}:
+  /authors/{authorId}:
     get:
       tags:
       - "author"
@@ -740,7 +758,6 @@ paths:
         404:
           description: "Author not found!"
       x-swagger-router-controller: "Author"
-    x-swagger-router-controller: "Author"
   /publishers:
     get:
       tags:
@@ -771,7 +788,7 @@ paths:
         404:
           description: "Not found!"
       x-swagger-router-controller: "Publisher"
-  /publisher/{publisherId}:
+  /publishers/{publisherId}:
     get:
       tags:
       - "publisher"
@@ -793,30 +810,6 @@ paths:
         404:
           description: "Publisher not found!"
       x-swagger-router-controller: "Publisher"
-    x-swagger-router-controller: "Publisher"
-  /event/{eventId}:
-    get:
-      tags:
-      - "event"
-      summary: "Get an event in which a book is presented"
-      operationId: "eventIdGET"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "eventId"
-        in: "path"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        200:
-          description: "Successful operation"
-          schema:
-            $ref: "#/definitions/Event"
-        404:
-          description: "Event not found!"
-      x-swagger-router-controller: "Event"
-    x-swagger-router-controller: "Publisher"
   /events:
     get:
       tags:
@@ -863,8 +856,60 @@ paths:
         404:
           description: "No events found!"
       x-swagger-router-controller: "Event"
-    x-swagger-router-controller: "Event"
-  /order/create:
+  /events/{eventId}:
+    get:
+      tags:
+      - "event"
+      summary: "Get an event in which a book is presented"
+      operationId: "eventIdGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Event"
+        404:
+          description: "Event not found!"
+      x-swagger-router-controller: "Event"
+  /orders:
+    get:
+      tags:
+      - "order"
+      summary: "Current user's orders"
+      description: "Collection of orders placed by the current user"
+      operationId: "ordersGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "offset"
+        in: "query"
+        description: "Pagination offset. Default is 0."
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Maximum number of items per page. Default is 20 and cannot exceed\
+          \ 500."
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Order"
+        400:
+          description: "Invalid request"
+        403:
+          description: "Not authorized!"
+      x-swagger-router-controller: "Order"
+  /orders/create:
     post:
       tags:
       - "order"
@@ -908,49 +953,35 @@ paths:
         403:
           description: "Unauthorized"
       x-swagger-router-controller: "Order"
-    x-swagger-router-controller: "Order"
-  /book/{bookId}/reviews:
+  /orders/{orderId}/address:
     get:
       tags:
-      - "review"
-      - "book"
-      summary: "Get reviews of a book"
-      description: "Given a book Id, returns all the reviews"
-      operationId: "bookReviewsGET"
+      - "order"
+      summary: "Get shipment address of a order"
+      description: "Given an order id, returns the shipment address set to that order,\
+        \ if user is authorized to see it"
+      operationId: "orderAddressGET"
       produces:
       - "application/json"
       parameters:
-      - name: "bookId"
+      - name: "orderId"
         in: "path"
-        description: "Id of the book to get the reviews"
+        description: "The id of the order. Must be associated to the current logged\
+          \ in user"
         required: true
         type: "integer"
         format: "int64"
-      - name: "offset"
-        in: "query"
-        description: "Pagination offset. Default is 0."
-        required: false
-        type: "integer"
-      - name: "limit"
-        in: "query"
-        description: "Maximum number of items per page. Default is 20 and cannot exceed\
-          \ 500."
-        required: false
-        type: "integer"
       responses:
         200:
           description: "Successful operation"
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Review"
-        400:
-          description: "Invalid request"
+            $ref: "#/definitions/Address"
+        403:
+          description: "Not authorized!"
         404:
-          description: "No reviews found!"
-      x-swagger-router-controller: "Review"
-    x-swagger-router-controller: "Review"
-  /review/{reviewId}:
+          description: "Review not found!"
+      x-swagger-router-controller: "Order"
+  /reviews/{reviewId}:
     get:
       tags:
       - "review"
@@ -972,7 +1003,6 @@ paths:
         404:
           description: "Review not found!"
       x-swagger-router-controller: "Review"
-    x-swagger-router-controller: "Review"
 definitions:
   User:
     type: "object"
@@ -1007,6 +1037,21 @@ definitions:
         $ref: "#/definitions/Address"
     title: "User"
     description: "A user of the application."
+    example:
+      address:
+        country: "Italy"
+        province: "CO"
+        city: "Como"
+        address_id: 1
+        street_line2: "11"
+        street_line1: "Via Valleggio"
+        zip_code: "22100"
+      user_id: 1
+      surname: "Rossi"
+      birth_date: "2000-01-23"
+      first_name: "Mario"
+      email: "email"
+      username: "malta895"
   Cart:
     type: "object"
     required:
@@ -1048,7 +1093,7 @@ definitions:
             zip_code: "22100"
           name: "Zanichelli"
           description: "description"
-        average_rating: 0.8008281904610115
+        average_rating: 0.80082819046101150206595775671303272247314453125
         theme:
           name: "name"
           description: "description"
@@ -1085,7 +1130,7 @@ definitions:
             zip_code: "22100"
           name: "Zanichelli"
           description: "description"
-        average_rating: 0.8008281904610115
+        average_rating: 0.80082819046101150206595775671303272247314453125
         theme:
           name: "name"
           description: "description"
@@ -1174,7 +1219,7 @@ definitions:
           zip_code: "22100"
         name: "Zanichelli"
         description: "description"
-      average_rating: 0.8008281904610115
+      average_rating: 0.80082819046101150206595775671303272247314453125
       theme:
         name: "name"
         description: "description"
@@ -1339,7 +1384,7 @@ definitions:
             zip_code: "22100"
           name: "Zanichelli"
           description: "description"
-        average_rating: 0.8008281904610115
+        average_rating: 0.80082819046101150206595775671303272247314453125
         theme:
           name: "name"
           description: "description"
@@ -1464,6 +1509,124 @@ definitions:
       text: "text"
       title: "title"
       user: 6
+  Order:
+    type: "object"
+    required:
+    - "items"
+    - "order_id"
+    - "shipment_address"
+    - "total_amount"
+    - "user_id"
+    properties:
+      order_id:
+        type: "integer"
+        format: "int64"
+        description: "Id of the order"
+      user_id:
+        type: "integer"
+        format: "int64"
+        description: "UserId of who placed the order"
+      items:
+        type: "array"
+        items:
+          $ref: "#/definitions/Book"
+      total_amount:
+        $ref: "#/definitions/Amount"
+      shipment_address:
+        $ref: "#/definitions/Address"
+      order_date:
+        type: "string"
+        format: "date-time"
+    example:
+      order_date: "2000-01-23T04:56:07.000+00:00"
+      user_id: 6
+      total_amount:
+        currency: "EUR"
+        value: 11
+      shipment_address:
+        country: "Italy"
+        province: "CO"
+        city: "Como"
+        address_id: 1
+        street_line2: "11"
+        street_line1: "Via Valleggio"
+        zip_code: "22100"
+      order_id: 0
+      items:
+      - picture_path: "pic1.jpg"
+        price:
+          currency: "EUR"
+          value: 11
+        isbn: "123456679"
+        genre:
+          name: "Horror"
+          description: "Very scary"
+          genre_id: 1
+        publisher:
+          publisher_id: 1
+          hq_location:
+            country: "Italy"
+            province: "CO"
+            city: "Como"
+            address_id: 1
+            street_line2: "11"
+            street_line1: "Via Valleggio"
+            zip_code: "22100"
+          name: "Zanichelli"
+          description: "description"
+        average_rating: 0.80082819046101150206595775671303272247314453125
+        theme:
+          name: "name"
+          description: "description"
+        book_id: 1
+        title: "Il deserto dei tartari"
+        authors:
+        - surname: "Rossi"
+          name: "Mario"
+          biography: "biography"
+          picture: "picture"
+        - surname: "Rossi"
+          name: "Mario"
+          biography: "biography"
+          picture: "picture"
+        status: "Available"
+      - picture_path: "pic1.jpg"
+        price:
+          currency: "EUR"
+          value: 11
+        isbn: "123456679"
+        genre:
+          name: "Horror"
+          description: "Very scary"
+          genre_id: 1
+        publisher:
+          publisher_id: 1
+          hq_location:
+            country: "Italy"
+            province: "CO"
+            city: "Como"
+            address_id: 1
+            street_line2: "11"
+            street_line1: "Via Valleggio"
+            zip_code: "22100"
+          name: "Zanichelli"
+          description: "description"
+        average_rating: 0.80082819046101150206595775671303272247314453125
+        theme:
+          name: "name"
+          description: "description"
+        book_id: 1
+        title: "Il deserto dei tartari"
+        authors:
+        - surname: "Rossi"
+          name: "Mario"
+          biography: "biography"
+          picture: "picture"
+        - surname: "Rossi"
+          name: "Mario"
+          biography: "biography"
+          picture: "picture"
+        status: "Available"
   inline_response_200:
     properties:
       book_id:
@@ -1509,7 +1672,7 @@ definitions:
           type: "string"
     example:
       isbn: "isbn"
-      average_rating: 1.4658129805029452
+      average_rating: 1.46581298050294517310021547018550336360931396484375
       book_id: 0
       abstract: "abstract"
       title: "title"
@@ -1517,7 +1680,7 @@ definitions:
       themes:
       - "themes"
       - "themes"
-      price: 6.027456183070403
+      price: 6.02745618307040320615897144307382404804229736328125
       genres:
       - "genres"
       - "genres"
@@ -1528,40 +1691,6 @@ definitions:
       authors:
       - "authors"
       - "authors"
-  inline_response_200_1:
-    properties:
-      userId:
-        type: "integer"
-        format: "int64"
-      username:
-        type: "string"
-      email:
-        type: "string"
-        format: "email"
-      firstName:
-        type: "string"
-      surname:
-        type: "string"
-      birth_date:
-        type: "string"
-        format: "date"
-      address:
-        $ref: "#/definitions/Address"
-    example:
-      firstName: "firstName"
-      address:
-        country: "Italy"
-        province: "CO"
-        city: "Como"
-        address_id: 1
-        street_line2: "11"
-        street_line1: "Via Valleggio"
-        zip_code: "22100"
-      surname: "surname"
-      birth_date: "2000-01-23"
-      userId: 0
-      email: "email"
-      username: "username"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

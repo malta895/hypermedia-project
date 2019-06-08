@@ -7,7 +7,7 @@ module.exports.cartGET = function cartGET (req, res, next) {
     var offset = req.swagger.params['offset'].value;
 
     //TODO se la sessione è valida, recupero userId e chiamo il service
-
+    //TODO IMPLEMENTARE
     if(false){
         var userId = 1;
         Cart.cartGET(userId, offset)
@@ -28,6 +28,8 @@ module.exports.cartGET = function cartGET (req, res, next) {
 module.exports.cartRemoveDELETE = function cartRemoveDELETE (req, res, next) {
     var bookId = req.swagger.params['bookId'].value;
     var quantity = req.swagger.params['quantity'].value;
+
+    //TODO IMPLEMENTARE
     Cart.cartRemoveDELETE(bookId,quantity)
         .then(function (response) {
             utils.writeJson(res, response);
@@ -40,6 +42,8 @@ module.exports.cartRemoveDELETE = function cartRemoveDELETE (req, res, next) {
 module.exports.cartUpdatePUT = function cartUpdatePUT (req, res, next) {
     var bookId = req.swagger.params['bookId'].value;
     var quantity = req.swagger.params['quantity'].value;
+
+    //TODO IMPLEMENTARE
     Cart.cartUpdatePUT(bookId,quantity)
         .then(function (response) {
             utils.writeJson(res, response);

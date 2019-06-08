@@ -3,24 +3,28 @@
 
 let upd_avg_trig_func =
     `
-DROP FUNCTION IF EXISTS public.update_average_rating();
+-- FUNCTION: public.update_average_rating()
+
+-- DROP FUNCTION public.update_average_rating();
 
 CREATE FUNCTION public.update_average_rating()
     RETURNS trigger
     LANGUAGE 'plpgsql'
     COST 100
-    VOLATILE NOT LEAKPROOF
+    VOLATILE NOT LEAKPROOF 
 AS $BODY$    BEGIN
 
 		update book set average_rating = (select avg(rating)
 										  from review
-										 	where book = new.book);
+										 	where book = new.book)
+                WHERE book.book_id = new.book;
         RETURN NEW;
     END;
 $BODY$;
 
 ALTER FUNCTION public.update_average_rating()
-    OWNER TO current_user;
+    OWNER TO CURRENT_USER;
+
 `;
 
 let upd_avg_trig =
@@ -80,7 +84,7 @@ exports.reviewDbSetup = function (database) {
  **/
 exports.bookReviewsGET = function(bookId,offset,limit) {
     return new Promise(function (resolve, reject) {
-        let query = sqlDb(tableName).where('book', bookId);
+        let query = sqlDb('review').where('book', bookId);
         if (offset) {
             query.offset(offset);
         }
@@ -95,10 +99,8 @@ exports.bookReviewsGET = function(bookId,offset,limit) {
                 reject(rows);
             }
         });
-
-
     });
-}
+};
 
 
 /**
@@ -109,7 +111,8 @@ exports.bookReviewsGET = function(bookId,offset,limit) {
  **/
 exports.reviewIdGET = function (reviewId) {
     return new Promise(function (resolve, reject) {
-        let query = sqlDb(tableName).where('review_id', reviewId);
+        let query = sqlDb('review')
+            .where('review_id', reviewId);
 
         query.then(rows => {
             if (rows.length > 0) {
@@ -145,8 +148,7 @@ exports.userReviewsGET = function(userId,offset,limit) {
             }else{
                 reject(404);
             }
-        })
-
+        });
     });
 };
 

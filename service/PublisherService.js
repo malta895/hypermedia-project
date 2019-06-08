@@ -40,14 +40,22 @@ exports.publisherIdGET = function (publisherId) {
                 reject(rows);
             }
         });
-
-
     });
 };
 
 
 
-
+/**
+ * Get a publisher by Id
+ *
+ * publisherId Long 
+ * returns Publisher
+ **/
+exports.publisherIdGET = function(publisherId) {
+    return new Promise(function(resolve, reject) {
+        //TODO IMPLEMENTARE
+    });
+}
 
 /**
  * Get all publishers

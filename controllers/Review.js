@@ -3,6 +3,8 @@
 var utils = require('../utils/writer.js');
 var Review = require('../service/ReviewService');
 
+//TODO IMPLEMENTARE TUTTO
+
 module.exports.bookReviewsGET = function bookReviewsGET (req, res, next) {
   var bookId = req.swagger.params['bookId'].value;
   var offset = req.swagger.params['offset'].value;

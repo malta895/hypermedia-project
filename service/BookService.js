@@ -194,14 +194,15 @@ exports.getBookById = function (bookId) {
 exports.relatedBooksGET = function (bookId, offset, limit) {
 
     return new Promise(function (resolve, reject) {
-        let query = sqlDb
-            .select()
-            .from('book')
-            .where('book_id', bookId)
-            .whereIn('bookId', () => {
-                this.select('book1').from('similar_book')
-                    .unionAll(() => {
-                        this.select('book2').from('similar_book');
+        let query = sqlDb('book')
+            .whereIn('book_id', function() {
+                this.select('book1')
+                    .from('similar_book')
+                    .where('book2', bookId)
+                    .unionAll(function() {
+                        this.select('book2')
+                            .from('similar_book')
+                            .where('book1', bookId);
                     });
             });
 

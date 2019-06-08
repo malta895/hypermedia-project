@@ -4,31 +4,6 @@ var utils = require('../utils/writer.js');
 var User = require('../service/UserService');
 var session = require('../utils/SessionManager.js');
 
-
-module.exports.userAddAddressPOST = function userAddAddressPOST (req, res, next) {
-
-    if(!session.userIdExists()){
-        utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
-        return;
-    }
-
-    let userId = session.getUserId();
-
-    var addressStreetLine1 = req.swagger.params['addressStreetLine1'].value;
-    var city = req.swagger.params['city'].value;
-    var zip_code = req.swagger.params['zip_code'].value;
-    var province = req.swagger.params['province'].value;
-    var country = req.swagger.params['country'].value;
-    var addressStreetLine2 = req.swagger.params['addressStreetLine2'].value;
-    User.userAddAddressPOST(addressStreetLine1,city,zip_code,province,country,addressStreetLine2)
-        .then(function (response) {
-            utils.writeJson(res, response);
-        })
-        .catch(function (response) {
-            utils.writeJson(res, response);
-        });
-};
-
 module.exports.userDeletePOST = function userDeletePOST (req, res, next) {
 
     if(!session.userIdExists()){
@@ -65,31 +40,6 @@ module.exports.userGetDetailsGET = function userGetDetailsGET (req, res, next) {
             utils.writeJson(res, response);
         });
 };
-
-module.exports.userModifyAddressPUT = function userModifyAddressPUT (req, res, next) {
-
-    if(!session.userIdExists()){
-        utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
-        return;
-    }
-
-    let userId = session.getUserId();
-
-    var addressStreetLine1 = req.swagger.params['addressStreetLine1'].value;
-    var addressStreetLine2 = req.swagger.params['addressStreetLine2'].value;
-    var city = req.swagger.params['city'].value;
-    var zip_code = req.swagger.params['zip_code'].value;
-    var province = req.swagger.params['province'].value;
-    var country = req.swagger.params['country'].value;
-    User.userModifyAddressPUT(userId, addressStreetLine1,addressStreetLine2,city,zip_code,province,country)
-        .then(function (response) {
-            utils.writeJson(res, response);
-        })
-        .catch(function (response) {
-            utils.writeJson(res, response);
-        });
-};
-
 
 module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
 
@@ -173,12 +123,6 @@ module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
 
 module.exports.userRegisterPOST = function userRegisterPOST (req, res, next) {
 
-    if(!session.userIdExists()){
-        utils.writeJson(res, {message: "You were not logged in!"}, 403);
-        return;
-    }
-
-
     var username = req.swagger.params['username'].value;
     var password = req.swagger.params['password'].value;
     var email = req.swagger.params['email'].value;
@@ -186,24 +130,16 @@ module.exports.userRegisterPOST = function userRegisterPOST (req, res, next) {
     var surname = req.swagger.params['surname'].value;
     var birthDate = req.swagger.params['birthDate'].value;
 
+    if(!session.userIdExists()){
+        utils.writeJson(res, {message: "You were not logged in!"}, 403);
+        return;
+    }
+
     User.userRegisterPOST(body)
         .then(function (response) {
             utils.writeJson(res, response);
         })
         .catch(function (response) {
             utils.writeJson(res, {message: response.message}, response.code);
-        });
-};
-
-module.exports.userReviewsGET = function userReviewsGET (req, res, next) {
-    var userId = req.swagger.params['userId'].value;
-    var offset = req.swagger.params['offset'].value;
-    var limit = req.swagger.params['limit'].value;
-    User.userReviewsGET(userId,offset,limit)
-        .then(function (response) {
-            utils.writeJson(res, response);
-        })
-        .catch(function (response) {
-            utils.writeJson(res, response);
         });
 };
