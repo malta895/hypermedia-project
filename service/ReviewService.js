@@ -5,7 +5,7 @@ let upd_avg_trig_func =
     `
 -- FUNCTION: public.update_average_rating()
 
--- DROP FUNCTION public.update_average_rating();
+DROP FUNCTION IF EXISTS public.update_average_rating();
 
 CREATE FUNCTION public.update_average_rating()
     RETURNS trigger
