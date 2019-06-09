@@ -13,12 +13,25 @@ module.exports.userDeletePOST = function userDeletePOST (req, res, next) {
 
     let userId = session.getUserId();
 
-    User.userDeletePOST()
+    User.userDeletePOST(userId)
         .then(function (response) {
+            //module.exports.userLogoutPOST();
             utils.writeJson(res, {message: "Succesful operation!"});
         })
         .catch(function (response) {
-            utils.writeJson(res, {message: "Errors performing the operation!"}, 500);
+            utils.writeJson(res, response, 500);
+        });
+};
+
+
+module.exports.userEmailAvailableGET = function userEmailAvailableGET (req, res, next) {
+    var email = req.swagger.params['email'].value;
+    User.userEmailAvailableGET(email)
+        .then(function (response) {
+            utils.writeJson(res, response);
+        })
+        .catch(function (response) {
+            utils.writeJson(res, response, response.errorCode);
         });
 };
 
@@ -30,6 +43,8 @@ module.exports.userGetDetailsGET = function userGetDetailsGET (req, res, next) {
     }
 
     let userId = session.getUserId();
+
+
 
 
     User.userGetDetailsGET(userId)
@@ -58,11 +73,10 @@ module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
         .then(function (response) {
             try{
                 session.setUserId(response.user_id);
-                //console.log(sessiongetUserId());
-                console.log(session.getSession().userId);
                 utils.writeJson(res, response);
             }catch(e){//non dovrebbe mai capitare
-                utils.writeJson(res, {message: "Already logged in!"}, 400);
+                console.log("Si è verificato un errore: " + e);
+                utils.writeJson(res, e, 500);
             }
         })
         .catch(function (response) {
@@ -130,16 +144,35 @@ module.exports.userRegisterPOST = function userRegisterPOST (req, res, next) {
     var surname = req.swagger.params['surname'].value;
     var birthDate = req.swagger.params['birthDate'].value;
 
-    if(!session.userIdExists()){
-        utils.writeJson(res, {message: "You were not logged in!"}, 403);
+    if(session.userIdExists()){
+        utils.writeJson(res, {message: "You must logout before registering!"}, 403);
         return;
     }
 
-    User.userRegisterPOST(body)
+    User.userRegisterPOST(username, password, email, firstName, surname, birthDate)
         .then(function (response) {
             utils.writeJson(res, response);
         })
         .catch(function (response) {
-            utils.writeJson(res, {message: response.message}, response.code);
+            let error = response.error;
+
+            if(error && error.constraint) {
+                if(error.constraint.endsWith('username_unique'))
+                    utils.writeJson(res, {message: "Username already existing"}, 409);
+                else if(error.constraint.endsWith('email_unique'))
+                    utils.writeJson(res, {message: "Email already existing"}, 409);
+            } else
+                utils.writeJson(res, response, response.errorCode);
+        });
+};
+
+module.exports.userUsernameAvailableGET = function userUsernameAvailableGET (req, res, next) {
+    var username = req.swagger.params['username'].value;
+    User.userUsernameAvailableGET(username)
+        .then(function (response) {
+            utils.writeJson(res, response);
+        })
+        .catch(function (response) {
+            utils.writeJson(res, response, response.errorCode);
         });
 };

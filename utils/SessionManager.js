@@ -8,11 +8,12 @@ const tokenSecret = "5232e0a776bf44460f2829871466563038152ece44d46ae60f590421633
 var currSession;
 
 
+exports.createSession = function(req, res, next) {
 
-exports.getSession = function(req, res, next) {
-
-    if(currSession)
+    if(currSession){
+        console.log("Warning: session already exists!");
         return currSession;
+    }
 
     //se non siamo su heroku il cookie non è settato come secure
     //infatti per essere secure bisogna essere in https, in localhost siamo http
@@ -44,11 +45,12 @@ exports.getUserId = function(){
 };
 
 exports.userIdExists = function() {
-    return currSession.userId !== undefined;
+    return currSession.userId !== undefined ? true : false;
 };
 
 exports.unsetUserId = function(){
     if(currSession.userId !== undefined){
+        delete currSession.secureParameters;
         delete currSession.userId;
     } else {
         throw new Error("No userId in session!");
@@ -57,11 +59,59 @@ exports.unsetUserId = function(){
 
 
 exports.setUserId = function(userId){
-    if(currSession.userId !== undefined){//should never happen, due to bugs in controller
+    if(exports.userIdExists()){//should never happen, due to bugs in controller
+        console.log("ERRORE IN setUserId");
         throw new Error("userId already in session");
     } else {
         currSession.userId = userId;
+        console.log("UserId settato a " + userId);
+        currSession.secureParameters = {};//parametri che sono associati al login dell'utente, da distruggere al logout
     }
 
 };
 
+/**
+* Set a parameter for the current session.
+* If isSecure is true, the parameter is destroyed at loguot
+*
+**/
+exports.setParameter = function(key, value, isSecure) {
+
+    if(key === "userId")
+        throw new Error("Cannot set user id with this method! Use setUserId() instead");
+
+    if(isSecure)
+        currSession.secureParameters[key] = value;
+    else
+        currSession[key] = value;
+
+};
+
+exports.setSecureParameter = function(key, value) {
+    exports.setParameter(key, value, true);
+};
+
+exports.unsetParameter = function(key, isSecure) {
+    if(key === "userId")
+        throw new Error("Cannot unset user id with this method! Use unsetUserId() instead");
+
+    if(isSecure)
+        delete currSession.secureParameters[key];
+    else
+        delete currSession[key];
+
+};
+
+exports.unsetSecureParameter = function(key, value) {
+    exports.unsetParameter(key, value, true);
+};
+
+exports.getParameter = function (key, isSecure) {
+    if(isSecure)
+        return currSession.secureParameters[key];
+    return currSession[key];
+};
+
+exports.getSecureParameter = function(key, value) {
+    exports.getParameter(key, value, true);
+};

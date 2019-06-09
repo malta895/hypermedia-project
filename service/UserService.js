@@ -37,32 +37,40 @@ exports.userDbSetup = function(database) {
 };
 
 /**
- * Add address to the current user
- * Add an address to the user
- *
- * addressStreetLine1 String 
- * city String 
- * zip_code String 
- * province String 
- * country String 
- * addressStreetLine2 String  (optional)
- * no response value expected for this operation
- **/
-exports.userAddAddressPOST = function(addressStreetLine1,city,zip_code,province,country,addressStreetLine2) {
-    return new Promise(function(resolve, reject) {
-        //TODO IMPLEMENTARE
-    });
-};
-
-/**
  * Delete user
  * Delete an user's account
  *
  * no response value expected for this operation
  **/
-exports.userDeletePOST = function() {
+exports.userDeletePOST = function(userId) {
     return new Promise(function(resolve, reject) {
-        //TODO IMPLEMENTARE
+        let query = sqlDb('user')
+            .del()
+            .where('user_id', userId)
+            .then(() => resolve())
+            // .catch(err => reject(err));
+    });
+};
+
+/**
+ * Check email availability
+ * Given an email address, returns true if it is not used by someone else
+ *
+ * email String 
+ * no response value expected for this operation
+ **/
+exports.userEmailAvailableGET = function(email) {
+    return new Promise(function(resolve, reject) {
+        let query = sqlDb('user')
+            .where('email', email);
+
+        query.then( rows => {
+            if(rows.length)
+                reject({message: "Email already exists", errorCode: 409 });
+            else
+                resolve();
+        })
+            .catch( err => reject({error: err, errorCode: 500}));
     });
 };
 
@@ -72,9 +80,44 @@ exports.userDeletePOST = function() {
  *
  * returns User
  **/
-exports.userGetDetailsGET = function() {
+exports.userGetDetailsGET = function(userId) {
     return new Promise(function(resolve, reject) {
-        //TODO IMPLEMENTARE
+
+        let query = sqlDb('user')
+            .leftJoin('address', 'address.address_id', 'user.address')
+            .where('user_id', userId)
+            .select('user_id', 'username', 'first_name', 'surname', 'email',
+                    'email', 'birth_date', 'address_id', 'street_line1', 'street_line2',
+                    'city', 'zip_code', 'province', 'country')
+            .then( rows => {
+                if(rows.length > 0){
+                    let res = rows[0];
+
+                    res.address = {};
+                    res.address.address_id = res.address_id;
+                    delete res.address_id;
+                    res.address.street_line1 = res.street_line1;
+                    delete res.street_line1;
+                    res.address.street_line2 = res.street_line2;
+                    delete res.street_line2;
+                    res.address.city = res.city;
+                    delete res.city;
+                    res.address.zip_code = res.zip_code;
+                    delete res.zip_code;
+                    res.address.province = res.province;
+                    delete res.province;
+                    res.address.country = res.country;
+                    delete res.country;
+
+                    resolve(res);
+                } else {
+                    reject({message: "The user doesn't exist in the database!",
+                            errorCode:500});
+                }
+
+            })
+            .catch( err => reject(err));
+
     });
 };
 
@@ -83,7 +126,7 @@ exports.userGetDetailsGET = function() {
  * Login with a form
  *
  * username String
- * pnnassword String
+ * password String
  * no response value expected for this operation
  **/
 exports.userLoginPOST = function(username,password) {
@@ -97,12 +140,12 @@ exports.userLoginPOST = function(username,password) {
             username: username,
             password: password
         })
-            .select('user_id', 'email', 'first_name', 'surname')
+            .select('user_id')
             .then((rows) => {
-                if(rows.length){
+                if(rows.length === 1){
                     resolve(rows[0]);
                 } else {
-                    reject({message: "Wrong username/password!", code: 403});
+                    reject({message: "Wrong username/password!", code: 401});
                 }
             })
             .catch((error) => {
@@ -127,55 +170,6 @@ exports.userLoginPOST = function(username,password) {
 // });
 // };
 
-/**
- * Modify address of the current user
- * Modify address of the current user.  If no parameters are specified throws a 400 error
- *
- * addressStreetLine1 String  (optional)
- * addressStreetLine2 String  (optional)
- * city String  (optional)
- * zip_code String  (optional)
- * province String  (optional)
- * country String  (optional)
- * no response value expected for this operation
- **/
-exports.userModifyAddressPUT = function(addressStreetLine1,addressStreetLine2,city,zip_code,province,country) {
-    return new Promise(function(resolve, reject) {
-        //TODO IMPLEMENTARE
-    });
-};
-
-
-/**
- * Delete user
- * Delete an user's account
- *
- * no response value expected for this operation
- **/
-exports.userDeletePOST = function() {
-    return new Promise(function(resolve, reject) {
-        //TODO IMPLEMENTARE
-    });
-}
-
-/**
- * Modify address of the current user
- * Modify address of the current user.  If no parameters are specified throws a 400 error
- *
- * addressStreetLine1 String  (optional)
- * addressStreetLine2 String  (optional)
- * city String  (optional)
- * zip_code String  (optional)
- * province String  (optional)
- * country String  (optional)
- * no response value expected for this operation
- **/
-exports.userModifyAddressPUT = function(addressStreetLine1,addressStreetLine2,city,zip_code,province,country) {
-    return new Promise(function(resolve, reject) {
-        //TODO IMPLEMENTARE
-    });
-};
-
 
 /**
  * Update user's data
@@ -192,9 +186,29 @@ exports.userModifyAddressPUT = function(addressStreetLine1,addressStreetLine2,ci
 exports.userModifyPUT = function(userId,username,password,email,firstName,surname,birthDate) {
 
     return new Promise(function(resolve, reject) {
-        //TODO IMPLEMENTARE
+        let query = sqlDb('user')
+            .where('user_id', userId);
+
+        if(username)
+            query.update('username', username);
+
+        if(email)
+            query.update('email', email);
+
+        if(firstName)
+            query.update('first_name', firstName);
+
+        if(surname)
+            query.update('surname', surname);
+
+        if(birthDate)
+            query.update('birth_date', birthDate);
+
+        query.then(resolve)
+            .catch( err => reject({error: err, errorCode: 500}));
+
     });
-}
+};
 
 /**
  * Register
@@ -210,7 +224,7 @@ exports.userModifyPUT = function(userId,username,password,email,firstName,surnam
  **/
 exports.userRegisterPOST = function(username,password,email,firstName,surname,birthDate) {
     return new Promise(function(resolve, reject) {
-        let query = sqlDb
+        let query = sqlDb('user')
             .insert({
                 username: username,
                 password: password,
@@ -219,8 +233,36 @@ exports.userRegisterPOST = function(username,password,email,firstName,surname,bi
                 surname: surname,
                 birth_date: birthDate
             })
+            .returning('user_id')
+            .then( rows => {
+                if(rows.length > 0){
+                    resolve({message: "User registered correctly"});
+                }
+            })
+            .catch(err => {
+                reject({error: err, errorCode: 500});
+            } );
+    });
+};
 
-            .then(() => resolve())
-            .catch(error => reject(error));
+/**
+ * Check username availability
+ * Given an username, returns true if it is not used by someone else
+ *
+ * username String 
+ * no response value expected for this operation
+ **/
+exports.userUsernameAvailableGET = function(username) {
+    return new Promise(function(resolve, reject) {
+        let query = sqlDb('user')
+            .where('username', username);
+
+        query.then( rows => {
+            if(rows.length)
+                reject({message: "Username already exists", errorCode: 409 });
+            else
+                resolve();
+        })
+            .catch( err => reject({error: err, errorCode: 500}));
     });
 };

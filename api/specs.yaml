@@ -394,6 +394,45 @@ paths:
           description: "Successful registration"
         400:
           description: "Invalid Request!"
+        409:
+          description: "Duplicate values for username and/or email."
+
+  /user/usernameAvailable/{username}:
+    get:
+      tags:
+      - "user"
+      summary: "Check username availability"
+      description: "Given an username, returns true if it is not used by someone else"
+      operationId: "userUsernameAvailableGET"
+      parameters:
+      - name: "username"
+        in: "path"
+        type: "string"
+        required: true
+      responses:
+        200:
+          description: "The username is available"
+        404:
+          description: "The username is not available"
+
+  /user/emailAvailable/{email}:
+    get:
+      tags:
+      - "user"
+      summary: "Check email availability"
+      description: "Given an email address, returns true if it is not used by someone else"
+      operationId: "userEmailAvailableGET"
+      parameters:
+      - name: "email"
+        in: "path"
+        type: "string"
+        format: "email"
+        required: true
+      responses:
+        200:
+          description: "The email is not already registered"
+        404:
+          description: "An user was previously registered with this email."
 
   /user/delete:
     delete:

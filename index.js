@@ -13,7 +13,7 @@ var serverPort = process.env.PORT || 8080;
 // let cookieSession = require("cookie-session");
 // let cookieParser = require("cookie-parser");
 
-let { getSession } = require("./utils/SessionManager");
+let { createSession } = require("./utils/SessionManager");
 
 let serveStatic = require("serve-static");
 
@@ -32,7 +32,7 @@ var spec = fs.readFileSync(path.join(__dirname,'api/swagger.yaml'), 'utf8');
 var swaggerDoc = jsyaml.safeLoad(spec);
 
 //Session manager
-app.use(getSession());
+app.use(createSession());
 
 
 // Initialize the Swagger middleware
@@ -62,7 +62,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
             http.createServer(app).listen(serverPort, function () {
                 console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
                 console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
-            })
+            });
         })
         .catch(() => {
             console.error("Impossibile connettersi al db. L'applicazione sarà chiusa");

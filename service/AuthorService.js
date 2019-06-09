@@ -58,7 +58,8 @@ exports.authorDbSetup = function(database) {
  **/
 exports.authorIdGET = function (authorId) {
     return new Promise(function (resolve, reject) {
-        let query = sqlDb(tableName).where('author_id', authorId);
+        let query = sqlDb('author')
+            .where('author_id', authorId);
 
         query.then(rows => {
             if (rows.length > 0) {

@@ -1,17 +1,16 @@
 'use strict';
 
+var sqlDb = require('knex');
 
-let upd_avg_trig_func =
+let upd_avg_trig_func_new =
     `
--- FUNCTION: public.update_average_rating()
+DROP FUNCTION IF EXISTS public.update_average_rating_new();
 
-DROP FUNCTION IF EXISTS public.update_average_rating();
-
-CREATE FUNCTION public.update_average_rating()
+CREATE FUNCTION public.update_average_rating_new()
     RETURNS trigger
     LANGUAGE 'plpgsql'
     COST 100
-    VOLATILE NOT LEAKPROOF 
+    VOLATILE NOT LEAKPROOF
 AS $BODY$    BEGIN
 
 		update book set average_rating = (select avg(rating)
@@ -22,25 +21,58 @@ AS $BODY$    BEGIN
     END;
 $BODY$;
 
-ALTER FUNCTION public.update_average_rating()
+ALTER FUNCTION public.update_average_rating_new()
     OWNER TO CURRENT_USER;
-
 `;
 
-let upd_avg_trig =
+let upd_avg_trig_func_old =
     `
-DROP TRIGGER IF EXISTS update_avg_rating ON public.review;
+DROP FUNCTION IF EXISTS public.update_average_rating_old();
 
-CREATE TRIGGER update_avg_rating
-    AFTER INSERT OR DELETE OR UPDATE OF rating
+CREATE FUNCTION public.update_average_rating_old()
+    RETURNS trigger
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE NOT LEAKPROOF
+AS $BODY$    BEGIN
+
+		update book set average_rating = (select avg(rating)
+										  from review
+										 	where book = old.book)
+                WHERE book.book_id = old.book;
+        RETURN NEW;
+    END;
+$BODY$;
+
+ALTER FUNCTION public.update_average_rating_old()
+    OWNER TO CURRENT_USER;
+`;
+
+let upd_avg_trig_insert_update =
+    `
+DROP TRIGGER IF EXISTS update_avg_rating_iu ON public.review;
+
+CREATE TRIGGER update_avg_rating_iu
+    AFTER INSERT OR UPDATE OF rating
     ON public.review
     FOR EACH ROW
-    EXECUTE PROCEDURE public.update_average_rating();
+    EXECUTE PROCEDURE public.update_average_rating_new();
+`;
+
+let upd_avg_trig_delete =
+    `
+DROP TRIGGER IF EXISTS update_avg_rating_d ON public.review;
+
+CREATE TRIGGER update_avg_rating_d
+    AFTER DELETE
+    ON public.review
+    FOR EACH ROW
+    EXECUTE PROCEDURE public.update_average_rating_old();
 `;
 
 
 exports.reviewDbSetup = function (database) {
-    var sqlDb = database;
+    sqlDb = database;
     const tableName = "review";
     console.log("Checking if %s table exists...", tableName);
     return database.schema.hasTable(tableName).then(exists => {
@@ -57,11 +89,18 @@ exports.reviewDbSetup = function (database) {
                 table.foreign("book").references("book.book_id");
                 table.timestamp("timestamp_added").notNullable();
             })
-                .then(database.raw(upd_avg_trig_func)
+                .then(database.raw(upd_avg_trig_func_new)
+                      .then(res => console.log(res)))
+                .then(database.raw(upd_avg_trig_func_old)
                       .then(res => console.log(res)))
                 .then(
                     ()=> {
-                        database.raw(upd_avg_trig)
+                        database.raw(upd_avg_trig_insert_update)
+                            .then(res => console.log(res));
+                    })
+                .then(
+                    ()=> {
+                        database.raw(upd_avg_trig_delete)
                             .then(res => console.log(res));
                     });
         } else {
@@ -84,7 +123,8 @@ exports.reviewDbSetup = function (database) {
  **/
 exports.bookReviewsGET = function(bookId,offset,limit) {
     return new Promise(function (resolve, reject) {
-        let query = sqlDb('review').where('book', bookId);
+        let query = sqlDb('review')
+            .where('book', bookId);
         if (offset) {
             query.offset(offset);
         }
@@ -106,7 +146,7 @@ exports.bookReviewsGET = function(bookId,offset,limit) {
 /**
  * Get a review by Id
  *
- * reviewId Long 
+ * reviewId Long
  * returns Review
  **/
 exports.reviewIdGET = function (reviewId) {
@@ -142,13 +182,12 @@ exports.userReviewsGET = function(userId,offset,limit) {
         let query = sqlDb('review')
             .where('user', userId);
 
-        query.then(rows => {
-            if (rows) {
-                resolve(rows);
-            }else{
-                reject(404);
-            }
-        });
+        if(offset)
+            query.offset(offset);
+        if(limit)
+            query.limit(limit);
+
+        query.then(rows => resolve(rows))
+            .catch( err => reject(err));
     });
 };
-
