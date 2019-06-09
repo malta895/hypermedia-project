@@ -2,6 +2,8 @@
 
 var utils = require('../utils/writer.js');
 var Cart = require('../service/CartService');
+var session = require('../utils/SessionManager');
+
 
 module.exports.cartGET = function cartGET (req, res, next) {
     var offset = req.swagger.params['offset'].value;
@@ -13,6 +15,7 @@ module.exports.cartGET = function cartGET (req, res, next) {
         Cart.cartGET(userId, offset)
             .then(function (response) {
                 utils.writeJson(res, response);
+                //TODO salvare il carrello nella sessione
             })
             .catch(function (response) {
                 utils.writeJson(res, response);

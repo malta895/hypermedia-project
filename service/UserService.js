@@ -45,8 +45,8 @@ exports.userDbSetup = function(database) {
 exports.userDeletePOST = function(userId) {
     return new Promise(function(resolve, reject) {
         let query = sqlDb('user')
-            .del()
             .where('user_id', userId)
+            .del()
             .then(() => resolve())
             // .catch(err => reject(err));
     });
@@ -204,8 +204,8 @@ exports.userModifyPUT = function(userId,username,password,email,firstName,surnam
         if(birthDate)
             query.update('birth_date', birthDate);
 
-        query.then(resolve)
-            .catch( err => reject({error: err, errorCode: 500}));
+        query.then(() => resolve())
+            // .catch( err => reject({error: err, errorCode: 500}));
 
     });
 };

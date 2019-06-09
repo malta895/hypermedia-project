@@ -15,7 +15,7 @@ module.exports.userDeletePOST = function userDeletePOST (req, res, next) {
 
     User.userDeletePOST(userId)
         .then(function (response) {
-            //module.exports.userLogoutPOST();
+            session.unsetUserId();
             utils.writeJson(res, {message: "Succesful operation!"});
         })
         .catch(function (response) {
@@ -42,6 +42,13 @@ module.exports.userGetDetailsGET = function userGetDetailsGET (req, res, next) {
         return;
     }
 
+    let userData = session.getSecureParameter('userData');
+    if(userData) { //se i dati dell'utente sono già in sessione li recupero
+        console.log("Dati utente da sessione");
+        utils.writeJson(res, userData);
+        return;
+    }
+
     let userId = session.getUserId();
 
 
@@ -49,7 +56,9 @@ module.exports.userGetDetailsGET = function userGetDetailsGET (req, res, next) {
 
     User.userGetDetailsGET(userId)
         .then(function (response) {
+            console.log("Dati utente da db");
             utils.writeJson(res, response);
+            session.setSecureParameter('userData', response);
         })
         .catch(function (response) {
             utils.writeJson(res, response);
@@ -117,21 +126,25 @@ module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
     var surname = req.swagger.params['surname'].value;
     var birthDate = req.swagger.params['birthDate'].value;
 
-    if(!(username &&
-         password &&
-         email &&
-         firstName &&
-         surname &&
+    if(!(username ||
+         password ||
+         email ||
+         firstName ||
+         surname ||
          birthDate)){
         utils.writeJson(res, {message: "No parameter set!"}, 400);
+        return;
     }
 
-    User.userModifyPUT(username, password, email, firstName, surname, birthDate)
+    let userId = session.getUserId();
+
+    User.userModifyPUT(userId,username, password, email, firstName, surname, birthDate)
         .then(function (response) {
             utils.writeJson(res, response);
         })
         .catch(function (response) {
-            utils.writeJson(res, {message: response.message}, response.code);
+            //TODO CONTROLLO SU USERNAME/EMAIL DUPLICATI
+            utils.writeJson(res, {message: response.message}, response.errorCode);
         });
 };
 

@@ -84,7 +84,6 @@ exports.setParameter = function(key, value, isSecure) {
         currSession.secureParameters[key] = value;
     else
         currSession[key] = value;
-
 };
 
 exports.setSecureParameter = function(key, value) {
@@ -112,6 +111,6 @@ exports.getParameter = function (key, isSecure) {
     return currSession[key];
 };
 
-exports.getSecureParameter = function(key, value) {
-    exports.getParameter(key, value, true);
+exports.getSecureParameter = function(key) {
+    return exports.getParameter(key, true);
 };
