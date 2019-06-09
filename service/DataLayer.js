@@ -19,7 +19,8 @@ exports.setupDataLayer = function () {
     return new Promise((resolve, reject) => {
         console.log("Setting up data layer....");
 
-        const DB_URL = process.env.DATABASE_URL;
+        const DB_URL = 'postgres://postgres:root@localhost:5432/postgres' || process.env.DATABASE_URL;
+        
 
         if(!DB_URL){
             reject("La variabile di sistema DATABASE_URL non esiste!");

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <!-- ==========================
@@ -181,11 +181,11 @@
             <div class="container">
                 <article class="product-item product-single">
                     <div class="row">
-                        <div class="col-xs-4">
+                        <div class="col-xs-4" id="pic">
                             <div class="item"><img src="../assets/images/products/product-1.jpg" class="img-responsive" alt=""></div>
                         </div>
                         <div class="col-xs-8">
-                            <div class="product-body">
+                            <div class="product-body" id="prod">
                                 <br />
                                 <h3>Presentation: Harry Potter (Author: J. K. Rowling)</h3>
                                 <h4>Date:</h4>
@@ -301,15 +301,8 @@
     <script src="../assets/js/twitterFetcher_min.js"></script>
     <script src="../assets/js/color-switcher.js"></script>
     <script src="../assets/js/custom.js"></script>
-    <script>
-      var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 45.463781, lng: 9.189432},
-          zoom: 8
-        });
-      }
-    </script>
+    <script src="../assets/js/single-event.js"></script>
+   
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCumswTW7o8zkw0wKGDmXqnFH-VCa5tOE8&callback=initMap" async defer></script>
 </body>
 </html>
