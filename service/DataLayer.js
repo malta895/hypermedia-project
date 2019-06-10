@@ -15,20 +15,19 @@ let { cartDbSetup, cartBooksDbSetup } = require("./CartService");
 
 
 
-exports.setupDataLayer = function () {
+exports.setupDataLayer = function (dbUrl) {
     return new Promise((resolve, reject) => {
-        console.log("Setting up data layer....");
+        console.log("Setting up data layer...");
+        console.log("Database url: " +  dbUrl);
 
-        const DB_URL = process.env.DATABASE_URL;
-
-        if(!DB_URL){
+        if(!dbUrl){
             reject("La variabile di sistema DATABASE_URL non esiste!");
             return;
         }
 
         let sqlDb = knex({
             client: "pg",
-            connection: DB_URL,
+            connection: dbUrl,
             ssl: true,
             debug: true //TODO cambiare in false a progetto finito
         });
@@ -66,10 +65,10 @@ exports.setupDataLayer = function () {
 la creazione della tabella ${tableName}`);
                         });
                 });
-
                 resolve(p);
             })
-            .catch(() =>{
+            .catch((err) =>{
+                console.log(err);
                 reject("Errore connessione al DB");
             });
     });

@@ -2,7 +2,10 @@
 
 var fs = require('fs'),
     path = require('path'),
-    http = require('http');
+    http = require('http'),
+    dotenv = require('dotenv');
+
+dotenv.config(); // salvo variabili d'ambiente nel file .env
 
 var app = require('connect')();
 var swaggerTools = require('swagger-tools');
@@ -54,9 +57,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
     app.use(serveStatic(path.join(__dirname, "./public")));
 
 
-    console.log(setupDataLayer);
-
-    setupDataLayer()
+    setupDataLayer(process.env.DATABASE_URL)
         .then(() => {
             // Start the server
             http.createServer(app).listen(serverPort, function () {
@@ -64,15 +65,9 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
                 console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
             });
         })
-        .catch(() => {
+        .catch((err) => {
+            console.log(err);
             console.error("Impossibile connettersi al db. L'applicazione sarà chiusa");
         });
 
 });
-
-
-
-
-
-
-
