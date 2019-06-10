@@ -87,7 +87,7 @@ exports.reviewDbSetup = function (database) {
                 table.integer("rating").notNullable();
                 table.integer("book").unsigned().notNullable();
                 table.foreign("book").references("book.book_id");
-                table.timestamp("timestamp_added").notNullable();
+                table.timestamp("date_published").notNullable();
             })
                 .then(database.raw(upd_avg_trig_func_new)
                       .then(res => console.log(res)))
@@ -110,8 +110,6 @@ exports.reviewDbSetup = function (database) {
     });
 };
 
-
-
 /**
  * Get reviews of a book
  * Given a book Id, returns all the reviews
@@ -123,14 +121,24 @@ exports.reviewDbSetup = function (database) {
  **/
 exports.bookReviewsGET = function(bookId,offset,limit) {
     return new Promise(function (resolve, reject) {
+
         let query = sqlDb('review')
-            .where('book', bookId);
-        if (offset) {
+            .where('book', bookId)
+            .select('review_id',
+                    'title',
+                    'text',
+                    'rating',
+                    'book',
+                    'date_published',
+                    sqlDb.raw("json_build_object(	'username', username,	'first_name', first_name,	'surname', surname) as user"))
+            .join('user', 'review.user', 'user.user_id');
+
+        if (offset)
             query.offset(offset);
-        }
-        if (limit) {
+
+        if (limit)
             query.limit(limit);
-        }
+
         query.then(rows => {
             if (rows.length > 0) {
                 resolve(rows);
@@ -152,7 +160,15 @@ exports.bookReviewsGET = function(bookId,offset,limit) {
 exports.reviewIdGET = function (reviewId) {
     return new Promise(function (resolve, reject) {
         let query = sqlDb('review')
-            .where('review_id', reviewId);
+            .where('review_id', reviewId)
+            .select('review_id',
+                    'title',
+                    'text',
+                    'rating',
+                    'book',
+                    'date_published',
+                    sqlDb.raw("json_build_object(	'username', username,	'first_name', first_name,	'surname', surname) as user"))
+            .join('user', 'review.user', 'user.user_id');
 
         query.then(rows => {
             if (rows.length > 0) {
@@ -180,7 +196,15 @@ exports.userReviewsGET = function(userId,offset,limit) {
     return new Promise(function(resolve, reject) {
 
         let query = sqlDb('review')
-            .where('user', userId);
+            .where('user', userId)
+            .select('review_id',
+                    'title',
+                    'text',
+                    'rating',
+                    'book',
+                    'date_published',
+                    sqlDb.raw("json_build_object(	'username', username,	'first_name', first_name,	'surname', surname) as user"))
+            .join('user', 'review.user', 'user.user_id');
 
         if(offset)
             query.offset(offset);

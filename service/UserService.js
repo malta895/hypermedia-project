@@ -48,7 +48,7 @@ exports.userDeletePOST = function(userId) {
             .where('user_id', userId)
             .del()
             .then(() => resolve())
-            // .catch(err => reject(err));
+        // .catch(err => reject(err));
     });
 };
 
@@ -87,29 +87,11 @@ exports.userGetDetailsGET = function(userId) {
             .leftJoin('address', 'address.address_id', 'user.address')
             .where('user_id', userId)
             .select('user_id', 'username', 'first_name', 'surname', 'email',
-                    'email', 'birth_date', 'address_id', 'street_line1', 'street_line2',
-                    'city', 'zip_code', 'province', 'country')
+                    'email', 'birth_date',
+                    sqlDb.raw("json_build_object('address_id', address_id, 'street_line1', street_line1, 'street_line2', street_line2, 'city', city, 'zip_code', zip_code, 'province', province, 'country', country) as address"))
             .then( rows => {
                 if(rows.length > 0){
-                    let res = rows[0];
-
-                    res.address = {};
-                    res.address.address_id = res.address_id;
-                    delete res.address_id;
-                    res.address.street_line1 = res.street_line1;
-                    delete res.street_line1;
-                    res.address.street_line2 = res.street_line2;
-                    delete res.street_line2;
-                    res.address.city = res.city;
-                    delete res.city;
-                    res.address.zip_code = res.zip_code;
-                    delete res.zip_code;
-                    res.address.province = res.province;
-                    delete res.province;
-                    res.address.country = res.country;
-                    delete res.country;
-
-                    resolve(res);
+                    resolve(rows[0]);
                 } else {
                     reject({message: "The user doesn't exist in the database!",
                             errorCode:500});
