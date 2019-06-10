@@ -17,6 +17,17 @@ module.exports.orderAddressGET = function orderAddressGET (req, res, next) {
     });
 };
 
+module.exports.orderDetailsGET = function orderDetailsGET (req, res, next) {
+    var orderId = req.swagger.params['orderId'].value;
+    Order.orderDetailsGET(orderId)
+        .then(function (response) {
+            utils.writeJson(res, response);
+        })
+        .catch(function (response) {
+            utils.writeJson(res, response);
+        });
+};
+
 module.exports.orderPlacePOST = function orderPlacePOST (req, res, next) {
   var addressStreetLine1 = req.swagger.params['addressStreetLine1'].value;
   var city = req.swagger.params['city'].value;

@@ -1,9 +1,11 @@
 "use strict";
 
 let session = require('express-session');
+const dotenv = require('dotenv');
 
-const tokenSecret = "5232e0a776bf44460f2829871466563038152ece44d46ae60f59042163386c750780e4272d697cb9";
+dotenv.config();
 
+const tokenSecret = process.env.TOKEN_SECRET;
 
 var currSession;
 
@@ -19,6 +21,9 @@ exports.createSession = function(req, res, next) {
     //infatti per essere secure bisogna essere in https, in localhost siamo http
     //ho settato la variabile HEROKU_ENV sulla piattaforma heroku
     let isSecure = process.env.HEROKU_ENV ? true : false;
+
+    if(!tokenSecret)
+        console.log("WARNING: tokenSecret is undefined! Ensure the env variable TOKEN_SECRET is set!");
 
     currSession = session({
         name: "session_id",

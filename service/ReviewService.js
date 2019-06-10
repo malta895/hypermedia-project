@@ -172,7 +172,7 @@ exports.reviewIdGET = function (reviewId) {
 
         query.then(rows => {
             if (rows.length > 0) {
-                resolve(rows);
+                resolve(rows[0]);
             } else {
                 rows.notFound = true;
                 reject(rows);

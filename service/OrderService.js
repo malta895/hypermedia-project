@@ -1,7 +1,9 @@
 'use strict';
 
+var sqlDb;
+
 exports.orderDbSetup = function(database) {
-    var sqlDb = database;
+    sqlDb = database;
     const tableName = "order";
     console.log("Checking if %s table exists...", tableName);
     if(process.env.HYP_DROP_ALL)
@@ -10,11 +12,13 @@ exports.orderDbSetup = function(database) {
         if (!exists) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
-                table.increments();
-                table.integer("user_id").unsigned();
-                table.foreign("user_id").references("user.user_id");
-                table.integer("shipment_address").unsigned();
-                table.foreign("shipment_address").references("address.address_id");
+                table.increments("order_id");
+                table.integer("user_id").unsigned().notNullable();
+                table.foreign("user_id").references("user.user_id")
+                    .onDelete('NO ACTION').onUpdate('CASCADE');
+                table.integer("shipment_address").unsigned().notNullable();
+                table.foreign("shipment_address").references("address.address_id")
+                    .onDelete('RESTRICT').onUpdate('CASCADE');
                 table.timestamp("order_date").notNullable();
             });
         } else {
@@ -35,10 +39,12 @@ exports.orderToBookDbSetup = function(database) {
             console.log("It doesn't so we create it");
             return database.schema.createTable(tableName, table => {
                 table.increments();
-                table.integer("book").unsigned();
-                table.foreign("book").references("book.book_id");
-                table.integer("order").unsigned();
-                table.foreign("order").references("order.order_id");
+                table.integer("book").unsigned().notNullable();
+                table.foreign("book").references("book.book_id")
+                    .onDelete('CASCADE').onUpdate('CASCADE');
+                table.integer("order").unsigned().notNullable();
+                table.foreign("order").references("order.order_id")
+                    .onDelete('CASCADE').onUpdate('CASCADE');
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
@@ -55,9 +61,41 @@ exports.orderToBookDbSetup = function(database) {
  **/
 exports.orderAddressGET = function(orderId) {
     return new Promise(function(resolve, reject) {
+        let query = sqlDb('order')
+            .join('address', 'address.address_id', 'order.shipment_address')
+            .where('order_id', orderId)
+            .then( rows => {
+                if(rows.length > 0)
+                    resolve(rows);
+                else
+                    reject({message: "Not found!", errorCode: 404});
+            });
+    });
+};
+
+/**
+ * Get an order by id
+ *
+ * orderId Long 
+ * returns Order
+ **/
+exports.orderDetailsGET = function(orderId) {
+    return new Promise(function(resolve, reject) {
+        let query = sqlDb('order')
+            .join('address', 'address.address_id', 'order.shipment_address')
+            .join('order_book', 'order.order_id', 'order_book.order')
+            .join('book', 'order_book.book', 'book.book_id')
+            .where('order_id', orderId)
+            .then( rows => {
+                if(rows.length > 0)
+                    resolve(rows[0]);
+                else
+                    reject({message: "Not found!", errorCode: 404});
+            });
         //TODO IMPLEMENTARE
     });
 };
+
 
 /**
  * Place a new order
@@ -89,5 +127,5 @@ exports.ordersGET = function(offset,limit) {
     return new Promise(function(resolve, reject) {
         //TODO IMPLEMENTARE
     });
-}
+};
 

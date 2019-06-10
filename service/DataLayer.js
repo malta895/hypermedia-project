@@ -2,7 +2,7 @@ const knex = require("knex");
 
 let { bookDbSetup, similarBooksDbSetup } = require("./BookService");
 let { userDbSetup } = require("./UserService");
-let { orderDbSetup } = require("./OrderService");
+let { orderDbSetup, orderToBookDbSetup } = require("./OrderService");
 let { addressDbSetup } = require("./AddressService");
 let { eventDbSetup } = require("./EventService");
 let { genreDbSetup, genreBookDbSetup } = require("./GenreService");
@@ -51,7 +51,8 @@ exports.setupDataLayer = function (dbUrl) {
                     authorDbSetup,//dipende da book
                     authorBookDbSetup, // dipende da author, book
                     eventDbSetup,//dipende da address, book
-                    orderDbSetup//dipende da user, book, address
+                    orderDbSetup,//dipende da user, book, address
+                    orderToBookDbSetup // dipende da order, book
                 ];
 
                 let p = Promise.resolve(); // creo una promise vuota
