@@ -56,6 +56,10 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
     //Serve the static web pages
     app.use(serveStatic(path.join(__dirname, "./public")));
 
+    //Serve statically the api specs
+    app.use(serveStatic(path.join(__dirname, "backend/spec.yaml")));
+
+
 
     setupDataLayer(process.env.DATABASE_URL)
         .then(() => {
