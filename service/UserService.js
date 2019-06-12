@@ -6,6 +6,33 @@ const dbError = {
     message: "Internal Error: database not available!"
 };
 
+const createCartFunction = `
+DROP FUNCTION IF EXISTS public.create_cart();
+
+CREATE FUNCTION public.create_cart()
+    RETURNS trigger
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE NOT LEAKPROOF 
+AS $BODY$BEGIN
+INSERT INTO cart("user") VALUES(new.user_id);
+RETURN NEW;
+END;$BODY$;
+
+ALTER FUNCTION public.create_cart()
+    OWNER TO CURRENT_USER;
+`;
+
+const createCartTrigger = `
+DROP TRIGGER IF EXISTS create_cart_trig ON public."user";
+
+CREATE TRIGGER create_cart_trig
+    AFTER INSERT
+    ON public."user"
+    FOR EACH ROW
+    EXECUTE PROCEDURE public.create_cart();
+`;
+
 
 exports.userDbSetup = function(database) {
     sqlDb = database;
@@ -28,7 +55,14 @@ exports.userDbSetup = function(database) {
                 table.foreign("address").references("address.address_id")
                     .onUpdate("CASCADE").onDelete("CASCADE");
                 table.timestamp("time_registered");
-            });
+            })
+                .then(database.raw(createCartFunction)
+                      .then(res => console.log(res)))
+                .then(
+                    ()=> {
+                        database.raw(createCartTrigger)
+                            .then(res => console.log(res));
+                    });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
             return Promise.resolve();
@@ -187,7 +221,7 @@ exports.userModifyPUT = function(userId,username,password,email,firstName,surnam
             query.update('birth_date', birthDate);
 
         query.then(() => resolve())
-            // .catch( err => reject({error: err, errorCode: 500}));
+        // .catch( err => reject({error: err, errorCode: 500}));
 
     });
 };

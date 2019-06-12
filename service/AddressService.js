@@ -60,8 +60,6 @@ exports.userAddAddressPOST = function(userId, addressStreetLine1,city,zip_code,p
                 .returning('address_id')
                 .then ((address_id) => {
 
-                    console.log("Indira's " + address_id);
-
                     return new Promise(function(resolve, reject) {
                         sqlDb('user')
                             .transacting(trx)
