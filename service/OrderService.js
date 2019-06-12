@@ -62,13 +62,16 @@ exports.orderDbSetup = function(database) {
                     .onDelete('CASCADE').onUpdate('CASCADE');
                 table.timestamp("order_date").notNullable();
             })
-                .then(database.raw(updateCartOnOrderFunction)
-                      .then(res => console.log(res)))
+                .then(() => {
+                    database.raw(updateCartOnOrderFunction)
+                        .then(res => console.log(res));
+                })
                 .then(
                     ()=> {
                         database.raw(updateCartOnOrderTrigger)
                             .then(res => console.log(res));
-                    });
+                    })
+                .catch( err => reject(err));
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
             return Promise.resolve();

@@ -1,4 +1,5 @@
-const knex = require("knex");
+const knex = require("knex"),
+      fs = require('fs');
 
 let { bookDbSetup, similarBooksDbSetup } = require("./BookService");
 let { userDbSetup } = require("./UserService");
@@ -66,11 +67,20 @@ exports.setupDataLayer = function (dbUrl) {
 la creazione della tabella ${tableName}`);
                         });
                 });
-                resolve(p);
+
+                let viewsSql = fs.readFileSync('./other/views.sql').toString();
+
+                console.log(viewsSql);
+
+                sqlDb.raw(viewsSql)
+                    .then(res => resolve(res))
+                    .catch(err => reject(err));
+
+                resolve();
             })
             .catch((err) =>{
                 console.log(err);
-                reject("Errore connessione al DB");
+                reject("Errore connessione al DB. Query di prova non riuscita.");
             });
     });
 };

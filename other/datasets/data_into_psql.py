@@ -1,10 +1,53 @@
-import psycopg2 as db
-import pandas as pd
 from urllib.parse import urlparse
-
 import os
 from random import randint
+from random import sample
 import re
+
+import psycopg2 as db
+import pandas as pd
+
+GENRES = ['Fantasy', 'Noir', 'Thriller', 'Hystorical',
+          'Noir', 'Comedy', 'Drama', 'Horror', 'Humor'
+          'Poetry', 'Legend', 'Religious']
+
+THEMES = ['Love', 'Life', 'Death', 'Good vs. Evil', 'Coming of Age', 'Betrayal',
+          'Power and Corruption', 'Survival', 'Courage and Heroism', 'Prejudice',
+          'Society', 'War']
+
+PUBLISHERS = ['Zanichelli', 'La Feltrinelli', 'Garzanti', 'Mondadori',
+              'Hoepli', 'Editori Riuniti', 'Pearson']
+
+def insert_publishers(cur):
+    query = "INSERT INTO publisher (\"name\") VALUES(%s) RETURNING publisher_id"
+    i = 0
+    for publisher_name in PUBLISHERS:
+        data = (publisher_name, )
+        cur.execute(query, data)
+        publisher_id = cur.fetchall()[0][0]
+        PUBLISHERS[i] = (publisher_id, publisher_name)
+        i += 1
+
+def insert_genres(cur):
+    query = "INSERT INTO genre(\"name\") VALUES(%s) RETURNING genre_id";
+    i = 0
+    for genre_name in GENRES:
+        data = (genre_name, )
+        cur.execute(query, data)
+        genre_id = cur.fetchall()[0][0]
+        GENRES[i] = (genre_id, genre_name)
+        i += 1
+
+def insert_themes(cur):
+    query = "INSERT INTO theme(\"name\") VALUES(%s) RETURNING theme_id";
+    i = 0
+    for theme_name in THEMES:
+        data = (theme_name, )
+        cur.execute(query, data)
+        theme_id = cur.fetchall()[0][0]
+        THEMES[i] = (theme_id, theme_name)
+        i += 1
+
 
 def db_connect():
     db_url = os.getenv('DATABASE_URL')
@@ -37,10 +80,10 @@ def insert_author(cur, name, book_id):
 
 
 
-def insert_book(cur, book_id, isbn, title, price, picture, status='Available'):
-    query = "INSERT INTO book (book_id, isbn, title, price, picture, status)\
-VALUES(%s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING RETURNING book_id"
-    data = (book_id, isbn, title, price, picture, status)
+def insert_book(cur, book_id, isbn, title, price, picture, publisher, status='Available'):
+    query = "INSERT INTO book (book_id, isbn, title, price, picture, status, publisher)\
+VALUES(%s, %s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING RETURNING book_id"
+    data = (book_id, isbn, title, price, picture, status, publisher)
     cur.execute(query, data)
     return cur.fetchall()
 
@@ -54,8 +97,43 @@ cur.execute('TRUNCATE book CASCADE')
 db_conn.commit()
 cur.execute('TRUNCATE author CASCADE')
 db_conn.commit()
+
 cur.execute('TRUNCATE author_book CASCADE')
 db_conn.commit()
+cur.execute('TRUNCATE genre CASCADE')
+db_conn.commit()
+cur.execute('TRUNCATE theme CASCADE')
+db_conn.commit()
+cur.execute('TRUNCATE publisher CASCADE')
+db_conn.commit()
+
+print("Inserisco generi e temi...")
+insert_genres(cur)
+insert_themes(cur)
+insert_publishers(cur)
+
+db_conn.commit()
+
+def assign_genre(cur, book_id):
+    # numero casuale di generi tra 1 e 3
+    n = randint(1, 3)
+    # genere casuale
+    n_genre = sample(range(len(GENRES)), n)
+    query = "INSERT INTO book_genre(book, genre) VALUES(%s, %s)"
+    for g in n_genre:
+        data = (book_id, GENRES[g][0])
+        cur.execute(query, data)
+
+def assign_theme(cur, book_id):
+    # numero casuale di generi tra 1 e 3
+    n = randint(1, 3)
+    # genere casuale
+    n_theme = sample(range(len(THEMES)), n)
+    query = "INSERT INTO book_theme(book, theme) VALUES(%s, %s)"
+    for t in n_theme:
+        data = (book_id, THEMES[t][0])
+        cur.execute(query, data)
+
 print("INSERIMENTO...")
 for index, row in df.iterrows():
     if row['book_id'] % 100 == 0:
@@ -64,23 +142,32 @@ for index, row in df.iterrows():
     if row['book_id'] > 5000:
         break
 
+    if row['original_title'] == 'NaN':
+        continue
+
     image_path = row['image_url']
 
     # scarico la versione large delle immagini
     image_path = re.sub(r'm?(/[0-9]+.jpg)', r'l\1', image_path)
 
+    publisher_n = randint(0, len(PUBLISHERS) - 1)
+    publisher_id = PUBLISHERS[publisher_n][0]
     res = insert_book (
         cur,
         row['book_id'],
         str(row['isbn']),
         row['original_title'],
         randint(8, 49),
-        image_path
+        image_path,
+        publisher_id
     )
     if len(res) == 0: # la riga non è stata inserita
         continue
 
     authors_names = row['authors'].split(',')
+
+    assign_genre(cur, row['book_id'])
+    assign_theme(cur, row['book_id'])
 
     for author_name in authors_names:
         insert_author(
