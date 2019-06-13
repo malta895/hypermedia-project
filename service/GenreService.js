@@ -40,7 +40,7 @@ exports.genreBookDbSetup = function(database) {
                 table.integer("genre").unsigned().notNullable();
                 table.foreign("genre").references("genre.genre_id")
                     .onUpdate("CASCADE").onDelete("CASCADE");
-
+                table.unique(['book', 'genre'], "book_genre_unique");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);

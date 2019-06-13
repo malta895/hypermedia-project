@@ -48,6 +48,7 @@ exports.similarBooksDbSetup = function(database) {
                 table.foreign("book1").references("book.book_id");
                 table.integer("book2").unsigned().notNullable();
                 table.foreign("book2").references("book.book_id");
+                table.unique(['book1', 'book2'], "book1_book2_unique");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);

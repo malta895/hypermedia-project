@@ -40,6 +40,7 @@ exports.themeBookDbSetup = function(database) {
                 table.integer("theme").unsigned().notNullable();
                 table.foreign("theme").references("theme.theme_id")
                     .onUpdate("CASCADE").onDelete("CASCADE");
+                table.unique(['book', 'theme'], "book_theme_unique");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);

@@ -200,6 +200,7 @@ exports.orderPlacePOST = function(userId,addressStreetLine1,city,zip_code,provin
                                             order_date: new Date(),
                                             cart: cartId
                                         })
+                                    //TODO controllare che il carrello contenga robe
                                         .then( res => {
                                             resolve(res);
                                         })

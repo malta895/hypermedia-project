@@ -77,6 +77,7 @@ exports.cartBooksDbSetup = function (database) {
                     .onUpdate('CASCADE').onDelete('CASCADE');
                 table.integer("quantity").unsigned().notNullable()
                     .defaultTo(1);
+                table.unique(['cart', 'book'], "cart_book_unique");
             });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
