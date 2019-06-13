@@ -88,6 +88,7 @@ exports.reviewDbSetup = function (database) {
                 table.integer("book").unsigned().notNullable();
                 table.foreign("book").references("book.book_id");
                 table.timestamp("date_published").notNullable();
+                table.unique(['user', 'book'], 'user_book_unique');//gli do un nome così posso facilmente identificare una violazione in caso di errore
             })
                 .then(database.raw(upd_avg_trig_func_new)
                       .then(res => console.log(res)))
@@ -137,7 +138,12 @@ exports.bookAddReviewPOST = function(userId, bookId,rating,title,text) {
                 let reviewId = res[0];
                 resolve({reviewId: reviewId});
             })
-            .catch( err => reject({error: err, statusCode: 500}));
+            .catch( err => {
+                if(err && err.constraint === 'user_book_unique')
+                    reject({message: "User already has a review on this book!", statusCode: 409});
+                else
+                    reject({error: err, message: "Server internal error, please contact a webmaster!", statusCode: 500});
+            });
     });
 };
 
@@ -172,13 +178,9 @@ exports.bookReviewsGET = function(bookId,offset,limit) {
             query.limit(limit);
 
         query.then(rows => {
-            if (rows.length > 0) {
                 resolve(rows);
-            } else {
-                rows.notFound = true;
-                reject(rows);
-            }
-        });
+        })
+            .catch(err => reject(err));
     });
 };
 
@@ -203,13 +205,9 @@ exports.reviewIdGET = function (reviewId) {
             .join('user', 'review.user', 'user.user_id');
 
         query.then(rows => {
-            if (rows.length > 0) {
                 resolve(rows[0]);
-            } else {
-                rows.notFound = true;
-                reject(rows);
-            }
-        });
+        })
+            .catch(err => resolve(err));
 
 
     });

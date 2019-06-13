@@ -5,55 +5,51 @@ var Review = require('../service/ReviewService');
 var sanitizeHtml = require('sanitize-html'),
     session = require('../utils/SessionManager');
 
-//TODO IMPLEMENTARE TUTTO
-
 module.exports.bookAddReviewPOST = function bookAddReviewPOST (req, res, next) {
     var bookId = req.swagger.params['bookId'].value;
     var rating = req.swagger.params['rating'].value;
-    var title = req.swagger.params['title'].value;
+    var title = req.swagger.params['tistle'].value;
     var text = req.swagger.params['text'].value;
 
-    if(!session.sessionIdExists()){
-        
+    if(!session.userIdExists()){
+        utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
+        return;
     }
 
-    Review.bookAddReviewPOST(bookId,rating,title,text)
+    let userId = session.getUserId();
+
+    Review.bookAddReviewPOST(userId, bookId,rating,title,text)
         .then(function (response) {
             utils.writeJson(res, response);
         })
         .catch(function (response) {
-            utils.writeJson(res, response);
+            utils.writeJson(res, response, response.statusCode || 500);
         });
 };
 
 
 module.exports.bookReviewsGET = function bookReviewsGET (req, res, next) {
-  var bookId = req.swagger.params['bookId'].value;
-  var offset = req.swagger.params['offset'].value;
-  var limit = req.swagger.params['limit'].value;
-  Review.bookReviewsGET(bookId,offset,limit)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+    var bookId = req.swagger.params['bookId'].value;
+    var offset = req.swagger.params['offset'].value;
+    var limit = req.swagger.params['limit'].value;
+    Review.bookReviewsGET(bookId,offset,limit)
+        .then(function (response) {
+            utils.writeJson(res, response, response.length ? 200 : 404);
+        })
+        .catch(function (response) {
+            utils.writeJson(res, response, response.statusCode || 500);
+        });
 };
 
 module.exports.reviewIdGET = function reviewIdGET (req, res, next) {
-  var reviewId = req.swagger.params['reviewId'].value;
-  Review.reviewIdGET(reviewId)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-      .catch(function (response) {
-          let statusCode;
-          if (response.notFound)
-              statusCode = 404;
-          else
-              statusCode = 500;
-          utils.writeJson(res, response, statusCode);
-      });
+    var reviewId = req.swagger.params['reviewId'].value;
+    Review.reviewIdGET(reviewId)
+        .then(function (response) {
+            utils.writeJson(res, response, response.length ? 200 : 404);
+        })
+        .catch(function (response) {
+            utils.writeJson(res, response, response.statusCode || 500);
+        });
 };
 
 module.exports.userReviewsGET = function userReviewsGET (req, res, next) {
@@ -62,9 +58,9 @@ module.exports.userReviewsGET = function userReviewsGET (req, res, next) {
     var limit = req.swagger.params['limit'].value;
     Review.userReviewsGET(userId,offset,limit)
         .then(function (response) {
-            utils.writeJson(res, response);
+            utils.writeJson(res, response, response.length ? 200 : 404);
         })
         .catch(function (response) {
-            utils.writeJson(res, response);
+            utils.writeJson(res, response, response.statusCode || 500);
         });
 };
