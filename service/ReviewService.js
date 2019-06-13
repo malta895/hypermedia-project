@@ -121,9 +121,23 @@ exports.reviewDbSetup = function (database) {
  * text String  (optional)
  * no response value expected for this operation
  **/
-exports.bookAddReviewPOST = function(bookId,rating,title,text) {
+exports.bookAddReviewPOST = function(userId, bookId,rating,title,text) {
     return new Promise(function(resolve, reject) {
-        //TODO IMPLEMENTARE
+        sqlDb('review')
+            .insert({
+                user: userId,
+                title: title || null,
+                text: text || null,
+                rating: rating,
+                book: bookId,
+                date_published: new Date()
+            })
+            .returning('review_id')
+            .then(res => {
+                let reviewId = res[0];
+                resolve({reviewId: reviewId});
+            })
+            .catch( err => reject({error: err, statusCode: 500}));
     });
 };
 

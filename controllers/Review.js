@@ -2,7 +2,8 @@
 
 var utils = require('../utils/writer.js');
 var Review = require('../service/ReviewService');
-var sanitizeHtml = require('sanitize-html');
+var sanitizeHtml = require('sanitize-html'),
+    session = require('../utils/SessionManager');
 
 //TODO IMPLEMENTARE TUTTO
 
@@ -11,6 +12,11 @@ module.exports.bookAddReviewPOST = function bookAddReviewPOST (req, res, next) {
     var rating = req.swagger.params['rating'].value;
     var title = req.swagger.params['title'].value;
     var text = req.swagger.params['text'].value;
+
+    if(!session.sessionIdExists()){
+        
+    }
+
     Review.bookAddReviewPOST(bookId,rating,title,text)
         .then(function (response) {
             utils.writeJson(res, response);

@@ -56,7 +56,7 @@ b.status,
 row_to_json(pu.*) AS publisher,
 array_agg(DISTINCT ge.name) AS genres,
 array_agg(DISTINCT th.name) AS themes,
-json_agg(row_to_json(au.*)) AS authors,
+json_agg(DISTINCT to_jsonb(au.*)) AS authors,
 b.average_rating
 FROM book b
 LEFT JOIN publisher_essential pu ON b.publisher = pu.publisher_id

@@ -152,20 +152,10 @@ exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price
 exports.getBookById = function (bookId) {
     return new Promise(function (resolve, reject) {
 
-        let query = sqlDb(tableName)
-            .where('book.book_id', bookId);
-
-        query.then(rows => {
-                // metto anche gli autori nel risultato
-                let query2 = sqlDb('author')
-                    .join("author_book", "author_book.author", "author.author_id")
-                    .where("author_book.book", bookId)
-                    .select('author_id', 'name', 'biography', 'picture');
-
-                query2.then( rows2 => {
-                    rows[0].authors = rows2;
-                    resolve(rows);
-                });
+        let query = sqlDb('book_essentials')
+            .where('book_id', bookId)
+            .then(rows => {
+                resolve(rows);
             })
             .catch( err => reject({error: err, statusCode: 500}));
     });
