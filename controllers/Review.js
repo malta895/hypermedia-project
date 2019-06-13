@@ -2,8 +2,24 @@
 
 var utils = require('../utils/writer.js');
 var Review = require('../service/ReviewService');
+var sanitizeHtml = require('sanitize-html');
 
 //TODO IMPLEMENTARE TUTTO
+
+module.exports.bookAddReviewPOST = function bookAddReviewPOST (req, res, next) {
+    var bookId = req.swagger.params['bookId'].value;
+    var rating = req.swagger.params['rating'].value;
+    var title = req.swagger.params['title'].value;
+    var text = req.swagger.params['text'].value;
+    Review.bookAddReviewPOST(bookId,rating,title,text)
+        .then(function (response) {
+            utils.writeJson(res, response);
+        })
+        .catch(function (response) {
+            utils.writeJson(res, response);
+        });
+};
+
 
 module.exports.bookReviewsGET = function bookReviewsGET (req, res, next) {
   var bookId = req.swagger.params['bookId'].value;

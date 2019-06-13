@@ -110,6 +110,24 @@ exports.reviewDbSetup = function (database) {
     });
 };
 
+
+/**
+ * Add a new review
+ * Add a new review to the given book
+ *
+ * bookId Long 
+ * rating Integer 
+ * title String  (optional)
+ * text String  (optional)
+ * no response value expected for this operation
+ **/
+exports.bookAddReviewPOST = function(bookId,rating,title,text) {
+    return new Promise(function(resolve, reject) {
+        //TODO IMPLEMENTARE
+    });
+};
+
+
 /**
  * Get reviews of a book
  * Given a book Id, returns all the reviews

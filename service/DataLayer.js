@@ -68,15 +68,13 @@ la creazione della tabella ${tableName}`);
                         });
                 });
 
-                let viewsSql = fs.readFileSync('./other/views.sql').toString();
+                return p.then( () => {
+                    let viewsSql = fs.readFileSync('./other/views.sql').toString();
 
-                console.log(viewsSql);
-
-                sqlDb.raw(viewsSql)
-                    .then(res => resolve(res))
-                    .catch(err => reject(err));
-
-                resolve();
+                    return sqlDb.raw(viewsSql)
+                        .then(res => resolve(res))
+                        .catch(err => reject(err));
+                });
             })
             .catch((err) =>{
                 console.log(err);

@@ -2,7 +2,19 @@
 
 var utils = require('../utils/writer.js');
 var User = require('../service/UserService');
-var session = require('../utils/SessionManager.js');
+var session = require('../utils/SessionManager');
+var sanitizeHtml = require('sanitize-html');
+
+//questa funzione rimuove qualsiasi codice html da una stringa
+let removeHtml = function (dirty) {
+    return sanitizeHtml(dirty, {
+        allowedTags: [],
+        allowedAttributes: {}
+    });
+};
+
+
+var emailValidator = require('email-validator');
 
 module.exports.userDeletePOST = function userDeletePOST (req, res, next) {
 
@@ -26,12 +38,24 @@ module.exports.userDeletePOST = function userDeletePOST (req, res, next) {
 
 module.exports.userEmailAvailableGET = function userEmailAvailableGET (req, res, next) {
     var email = req.swagger.params['email'].value;
+
+    email = removeHtml(email);
+
+    if(!emailValidator.validate(email)){
+        utils.writeJson(res,
+                        {message: "Email is not valid!",
+                         statusCode: 400},
+                       400);
+        return;
+
+    }
+
     User.userEmailAvailableGET(email)
         .then(function (response) {
-            utils.writeJson(res, response);
+            utils.writeJson(res, {message:"Email is available!"});
         })
         .catch(function (response) {
-            utils.writeJson(res, response, response.errorCode);
+            utils.writeJson(res, response, response.errorCode || 500);
         });
 };
 
@@ -89,7 +113,7 @@ module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
             }
         })
         .catch(function (response) {
-            utils.writeJson(res, {message: response.message}, response.code);
+            utils.writeJson(res, {message: response.message}, response.code || 500);
         });
 };
 
@@ -102,7 +126,7 @@ module.exports.userLogoutPOST = function userLogoutPOST (req, res, next) {
     }
 
 
-    //non è necessario chiamare il db (o forse sì per loggare?)
+    //non è necessario chiamare il db (o forse sì per logger?)
     // User.userLogoutPOST()
     //     .then(function (response) {
     //         utils.writeJson(res, response);
@@ -120,10 +144,14 @@ module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
     }
 
     var username = req.swagger.params['username'].value;
+    username = removeHtml(username);
     var password = req.swagger.params['password'].value;
     var email = req.swagger.params['email'].value;
+    email = removeHtml(email);
     var firstName = req.swagger.params['firstName'].value;
+    firstName = removeHtml(firstName);
     var surname = req.swagger.params['surname'].value;
+    surname = removeHtml(surname);
     var birthDate = req.swagger.params['birthDate'].value;
 
     if(!(username ||
@@ -151,16 +179,30 @@ module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
 module.exports.userRegisterPOST = function userRegisterPOST (req, res, next) {
 
     var username = req.swagger.params['username'].value;
+    username = removeHtml(username);
     var password = req.swagger.params['password'].value;
     var email = req.swagger.params['email'].value;
+    email = removeHtml(email);
     var firstName = req.swagger.params['firstName'].value;
+    firstName = removeHtml(firstName);
     var surname = req.swagger.params['surname'].value;
+    surname = removeHtml(surname);
     var birthDate = req.swagger.params['birthDate'].value;
 
     if(session.userIdExists()){
         utils.writeJson(res, {message: "You must logout before registering!"}, 403);
         return;
     }
+
+
+    if(!emailValidator.validate(email)){
+        utils.writeJson(res,
+                        {message: "Email is not valid!",
+                         statusCode: 400});
+        return;
+
+    }
+
 
     User.userRegisterPOST(username, password, email, firstName, surname, birthDate)
         .then(function (response) {
@@ -181,6 +223,9 @@ module.exports.userRegisterPOST = function userRegisterPOST (req, res, next) {
 
 module.exports.userUsernameAvailableGET = function userUsernameAvailableGET (req, res, next) {
     var username = req.swagger.params['username'].value;
+
+    username = removeHtml(username);
+
     User.userUsernameAvailableGET(username)
         .then(function (response) {
             utils.writeJson(res, response);

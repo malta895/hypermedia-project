@@ -65,8 +65,14 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
         .then(() => {
             // Start the server
             http.createServer(app).listen(serverPort, function () {
+                console.log('\n');
+                console.log('---------------------------------------------------------------');
                 console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
                 console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
+                console.log('Homepage is available at http://localhost:%d/', serverPort);
+                console.log('Api specifications in YAML format are available at http://localhost:%d/backend/spec.yaml', serverPort);
+                console.log('---------------------------------------------------------------');
+                console.log('\n');
             });
         })
         .catch((err) => {

@@ -1027,6 +1027,44 @@ paths:
         404:
           description: "Review not found!"
 
+  /books/{bookId}/reviews/add:
+    post:
+      tags:
+      - "review"
+      - "user"
+      - "book"
+      summary: "Add a new review"
+      description: "Add a new review to the given book"
+      operationId: "bookAddReviewPOST"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        type: "integer"
+        format: "int64"
+        required: true
+      - name: "rating"
+        type: "integer"
+        in: "formData"
+        format: "int32"
+        required: true
+        minimum: 1
+        maximum: 5
+      - name: "title"
+        in: "formData"
+        type: "string"
+      - name: "text"
+        in: "formData"
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+        403:
+          description: "You must login to perform this operation!"
+        400:
+          description: "You provided invalid data!"
+
 definitions:
   User:
     type: "object"

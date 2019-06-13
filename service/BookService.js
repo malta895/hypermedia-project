@@ -133,12 +133,9 @@ exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price
             query.limit(limit);
 
         query.then( (rows) => {
-            if(rows)
                 resolve(rows);
-            else
-                reject(404);
         })
-            .catch((error) => reject(error));
+            .catch((err) => reject({error: err, statusCode: 500}));
 
     });
 
@@ -159,8 +156,6 @@ exports.getBookById = function (bookId) {
             .where('book.book_id', bookId);
 
         query.then(rows => {
-            if (rows.length > 0) {
-
                 // metto anche gli autori nel risultato
                 let query2 = sqlDb('author')
                     .join("author_book", "author_book.author", "author.author_id")
@@ -171,13 +166,8 @@ exports.getBookById = function (bookId) {
                     rows[0].authors = rows2;
                     resolve(rows);
                 });
-
-            } else {
-                rows.notFound = true;
-                reject(rows);
-            }
-
-        });
+            })
+            .catch( err => reject({error: err, statusCode: 500}));
     });
 };
 
@@ -212,12 +202,8 @@ exports.relatedBooksGET = function (bookId, offset, limit) {
             query.limit(limit);
 
         query.then(rows => {
-            if (rows.length > 0) {
                 resolve(rows);
-            } else {
-                rows.notFound = true;
-                reject(rows);
-            }
-        });
+        })
+            .catch(err => reject({error: err, statusCode: 500}));
     });
 };
