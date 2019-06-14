@@ -184,8 +184,6 @@ paths:
                 items:
                   type: "string"
                 description: "Array containing the themes of the book"
-        400:
-          description: "Invalid Request!"
         404:
           description: "Book not found"
 
@@ -225,6 +223,13 @@ paths:
               $ref: "#/definitions/Book"
         400:
           description: "Bad Input!"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+
+            
         404:
           description: "Unexpected error"
 
@@ -412,7 +417,7 @@ paths:
       responses:
         200:
           description: "The username is available"
-        404:
+        409:
           description: "The username is not available"
 
   /user/emailAvailable/{email}:
@@ -431,8 +436,10 @@ paths:
       responses:
         200:
           description: "The email is not already registered"
-        404:
+        409:
           description: "An user was previously registered with this email."
+        400:
+          description: "Not valid email string"
 
   /user/delete:
     delete:
@@ -491,7 +498,7 @@ paths:
         403:
           description: "Not authorized!"
         400:
-          description: "Invalid request!"
+          description: "Some parameters are missing or the given ones have bad syntax"
 
   /user/update/address:
     put:
@@ -531,7 +538,7 @@ paths:
         403:
           description: "Not authorized!"
         400:
-          description: "Invalid request!"
+          description: "Missing parameters or the given ones have bad syntax"
 
   /user/update:
     put:
@@ -573,7 +580,7 @@ paths:
         403:
           description: "Unathorized"
         400:
-          description: "Invalid request"
+          description: "Missing parameters or the given ones have bad syntax"
 
   /me:
     get:
@@ -591,8 +598,7 @@ paths:
             $ref: "#/definitions/User"
         403:
           description: "Not Authorized!"
-        400:
-          description: "Invalid request!"
+
 
   /user/{userId}/reviews:
     get:
@@ -763,8 +769,6 @@ paths:
             $ref: "#/definitions/Author"
         404:
           description: "Author not found!"
-        400:
-          description: "Invalid request!"
 
   /publishers:
     get:
@@ -858,8 +862,6 @@ paths:
               $ref: "#/definitions/Event"
         404:
           description: "No events found!"
-        400:
-          description: "Invalid request"
 
   /events/{eventId}:
     get:
@@ -909,8 +911,6 @@ paths:
           description: "Successful operation"
           schema:
             $ref: "#/definitions/Order"
-        400:
-          description: "Invalid request"
         403:
           description: "Not authorized!"
 
@@ -977,7 +977,7 @@ paths:
         403:
           description: "Unauthorized"
         400:
-          description: "Bad Request"
+          description: "Missing parameters or the given ones have bad syntax"
 
   /orders/{orderId}/address:
     get:
@@ -1063,7 +1063,9 @@ paths:
         403:
           description: "You must login to perform this operation!"
         400:
-          description: "You provided invalid data!"
+          description: "Bad input data"
+        409:
+          description: "A review from the current user already exists on the given book"
 
 definitions:
   User:

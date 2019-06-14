@@ -18,7 +18,7 @@ DROP VIEW IF EXISTS public.publisher_complete CASCADE;
 CREATE OR REPLACE VIEW public.publisher_complete AS
 SELECT publisher.publisher_id,
 publisher.name,
-row_to_json(ad.*) AS hq_address
+to_jsonb(ad.*) AS hq_address
 FROM publisher
 LEFT JOIN address ad ON ad.address_id = publisher.hq_location;
 
@@ -53,10 +53,10 @@ b.picture,
 b.abstract,
 b.interview,
 b.status,
-row_to_json(pu.*) AS publisher,
+to_jsonb(pu.*) AS publisher,
 array_agg(DISTINCT ge.name) AS genres,
 array_agg(DISTINCT th.name) AS themes,
-json_agg(DISTINCT to_jsonb(au.*)) AS authors,
+jsonb_agg(DISTINCT to_jsonb(au.*)) AS authors,
 b.average_rating
 FROM book b
 LEFT JOIN publisher_essential pu ON b.publisher = pu.publisher_id
@@ -78,8 +78,8 @@ DROP VIEW IF EXISTS public.order_essentials CASCADE;
 
 CREATE OR REPLACE VIEW public.order_essentials AS
 SELECT o.order_id,
-row_to_json(ad.*) AS shipment_address,
-json_agg(row_to_json(b.*)) AS books
+to_jsonb(ad.*) AS shipment_address,
+jsonb_agg(to_jsonb(b.*)) AS books
 FROM "order" o
 LEFT JOIN address ad ON ad.address_id = o.shipment_address
 LEFT JOIN cart ON o.cart = cart.cart_id

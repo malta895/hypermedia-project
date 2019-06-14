@@ -44,7 +44,7 @@ module.exports.orderDetailsGET = function orderDetailsGET (req, res, next) {
             utils.writeJson(res, response);
         })
         .catch(function (response) {
-            utils.writeJson(res, response, response.errorCode || 500);
+            utils.writeJson(res, response, response && response.errorCode || 500);
         });
 };
 

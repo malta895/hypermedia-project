@@ -1,7 +1,9 @@
 'use strict';
 
+var sqlDb
+
 exports.publisherDbSetup = function(database) {
-    var sqlDb = database;
+    sqlDb = database;
     var tableName = "publisher";
     console.log("Checking if %s table exists", tableName);
     if(process.env.HYP_DROP_ALL)
@@ -30,32 +32,16 @@ exports.publisherDbSetup = function(database) {
  **/
 exports.publisherIdGET = function (publisherId) {
     return new Promise(function (resolve, reject) {
-        let query = sqlDb(tableName).where('publisher_id', publisherId);
 
-        query.then(rows => {
-            if (rows.length > 0) {
-                resolve(rows);
-            } else {
-                rows.notFound = true;
-                reject(rows);
-            }
-        });
+        if (!sqlDb)
+            reject({ errorCode: 500, message: 'Database not found!' });
+
+        sqlDb('publisher').where('publisher_id', publisherId)
+            .then(rows => resolve(rows[0]))
+            .catch(err => reject({error: err, errorCode: 500}));
+
     });
 };
-
-
-
-/**
- * Get a publisher by Id
- *
- * publisherId Long 
- * returns Publisher
- **/
-exports.publisherIdGET = function(publisherId) {
-    return new Promise(function(resolve, reject) {
-        //TODO IMPLEMENTARE
-    });
-}
 
 /**
  * Get all publishers
@@ -68,25 +54,20 @@ exports.publishersGET = function (offset, limit) {
     return new Promise(function (resolve, reject) {
 
         if (!sqlDb)
-            reject({ status: 500, errorText: 'Database not found!' });
+            reject({ errorCode: 500, message: 'Database not found!' });
 
 
-        let query = sqlDb('publisher')
-            .select();
-        if (offset) {
+        let query = sqlDb('publisher');
+
+        if (offset)
             query.offset(offset);
-        }
-        if (limit) {
+
+        if (limit)
             query.limit(limit);
-        }
-        query.then(rows => {
-            if (rows.length > 0) {
-                resolve(rows);
-            } else {
-                rows.notFound = true;
-                reject(rows);
-            }
-        });
+
+        query.then(rows => resolve(rows))
+            .catch(err => reject({error: err, errorCode: 500}));
+
     });
 };
 

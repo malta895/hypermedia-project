@@ -5,10 +5,24 @@ var Review = require('../service/ReviewService');
 var sanitizeHtml = require('sanitize-html'),
     session = require('../utils/SessionManager');
 
+const removeHtml = function(dirty) {
+    return sanitizeHtml(dirty, {
+        allowedTags: [],
+        allowedAttributes: []
+    });
+};
+
+const allowMinimalHtml = function(dirty)  {
+    return sanitizeHtml(dirty, {
+        allowedTags: ['b', 'i', 'em', 'strong'],
+        allowedAttributes: []
+    });
+};
+
 module.exports.bookAddReviewPOST = function bookAddReviewPOST (req, res, next) {
     var bookId = req.swagger.params['bookId'].value;
     var rating = req.swagger.params['rating'].value;
-    var title = req.swagger.params['tistle'].value;
+    var title = req.swagger.params['title'].value;
     var text = req.swagger.params['text'].value;
 
     if(!session.userIdExists()){
@@ -17,6 +31,12 @@ module.exports.bookAddReviewPOST = function bookAddReviewPOST (req, res, next) {
     }
 
     let userId = session.getUserId();
+
+    if(title)
+        title = removeHtml(title);
+
+    if(text)
+        text = allowMinimalHtml(text);
 
     Review.bookAddReviewPOST(userId, bookId,rating,title,text)
         .then(function (response) {

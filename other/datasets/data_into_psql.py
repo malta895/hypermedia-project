@@ -49,9 +49,11 @@ def insert_themes(cur):
         i += 1
 
 
+HYP_DATABASE_URL = "postgres://gbafgxzzrptzkl:1701140e8503e989e9eaf6fed09240bd7ae5577b4552ac61bc628414778620a6@ec2-54-247-70-127.eu-west-1.compute.amazonaws.com:5432/dd82s2jphcruh9"
+
 def db_connect():
-    db_url = os.getenv('DATABASE_URL')
-    # db_url = HYP_DATABASE_URL
+#    db_url = os.getenv('DATABASE_URL')
+    db_url = HYP_DATABASE_URL
     result = urlparse(db_url)
     username = result.username
     password = result.password
@@ -137,6 +139,7 @@ def assign_theme(cur, book_id):
 print("INSERIMENTO...")
 for index, row in df.iterrows():
     if row['book_id'] % 100 == 0:
+        db_conn.commit() # committo ogni 100 così posso interrompere senza perdere tutto
         print("Progresso: " + str(row['book_id']))
 
     if row['book_id'] > 5000:

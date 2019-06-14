@@ -26,7 +26,7 @@ module.exports.userAddAddressPOST = function userAddAddressPOST (req, res, next)
             utils.writeJson(res, response);
         })
         .catch(function (response) {
-            utils.writeJson(res, response, response.errorCode);
+            utils.writeJson(res, response, response && response.errorCode || 500);
         });
 };
 
@@ -57,6 +57,6 @@ module.exports.userModifyAddressPUT = function userModifyAddressPUT (req, res, n
             utils.writeJson(res, response);
         })
         .catch(function (response) {
-            utils.writeJson(res, response, response.errorCode);
+            utils.writeJson(res, response, response && response.errorCode || 500);
         });
 };

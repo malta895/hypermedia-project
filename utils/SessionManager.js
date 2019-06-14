@@ -21,6 +21,11 @@ exports.createSession = function(req, res, next) {
     //infatti per essere secure bisogna essere in https, in localhost siamo http
     //ho settato la variabile HEROKU_ENV sulla piattaforma heroku
     let isSecure = process.env.HEROKU_ENV ? true : false;
+    if(isSecure)
+        console.log("Cookie served as HTTP-Only");
+    else
+        console.log("WARNING: Cookie will not be secure, we're serving on HTTP!");
+
 
     if(!tokenSecret)
         console.log("WARNING: tokenSecret is undefined! Ensure the env variable TOKEN_SECRET is set!");

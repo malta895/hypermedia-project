@@ -83,43 +83,31 @@ exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price
             return;
         }
 
-        let query = sqlDb('book')
+        let query = sqlDb('book_essentials');
 
-            .select('book_id', 'isbn', 'title', 'price', 'status',
-                    'book.picture as picture', 'abstract', 'interview',
-                    'theme.name as theme', 'publisher.name as publisher',
-                    sqlDb.raw("array_agg(distinct(genre.name)) as genres"),
-                    sqlDb.raw("array_agg(author.name) as authors"))
-
-        // sono tutte left join perche le tabelle a destra potrebbero
-        // non avere righe corrispondenti
-            .leftJoin('publisher', 'publisher.publisher_id', '=', 'book.publisher')
-            .leftJoin('book_genre', 'book.book_id', 'book_genre.book')
-            .leftJoin('genre', 'book_genre.genre', 'genre.genre_id')
-            .leftJoin('book_theme', 'book.book_id', 'book_theme.book')
-            .leftJoin('theme', 'theme.theme_id', '=', 'book_theme.theme')
-            .leftJoin("author_book", "author_book.book", "book.book_id")
-            .leftJoin("author", "author_book.author", "author.author_id")
-
-            .groupBy('book.book_id', 'theme.name', 'publisher.name');
-
-        if (title)
-            query.where('book.title', 'like', `%${title}%`);
+        if (title) //cerca nel titolo o nell'autore
+            query.where('title', 'like', `%${title}%`)
+            .orWhere('book_id', 'in' , function() {
+                this.select('book')
+                    .from('author_book')
+                    .join('author', 'author.author_id', 'author_book.author')
+                    .where('author.name', 'like', `%${title}%`);
+            });
 
         if (min_price)
-            query.where('book.price', '>=', min_price);
+            query.where('price', '>=', min_price);
 
         if (max_price)
-            query.where('book.price', '<=', max_price);
+            query.where('price', '<=', max_price);
 
         if(iSBN)
-            query.where('book.isbn', 'like', `%${iSBN}%`);
+            query.where('isbn', 'like', `%${iSBN}%`);
 
-        if(publishers)
-            query.where('book.publisher', 'in', publishers);
+        if(publishers) //cerco nel jsonb
+            query.where(sqlDb.raw("(publisher -> 'publisher_id')::integer"), 'in', publishers);
 
         if(authors)
-            query.where('author_book.author', 'in', authors);
+            query.where('author', 'in', authors);
 
         if(genre)
             query.where('book_genre.genre', 'in', genre);
@@ -136,7 +124,7 @@ exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price
         query.then( (rows) => {
                 resolve(rows);
         })
-            .catch((err) => reject({error: err, statusCode: 500}));
+            .catch((err) => reject({error: err, errorCode: 500}));
 
     });
 
@@ -158,7 +146,7 @@ exports.getBookById = function (bookId) {
             .then(rows => {
                 resolve(rows);
             })
-            .catch( err => reject({error: err, statusCode: 500}));
+            .catch( err => reject({error: err, errorCode: 500}));
     });
 };
 
@@ -195,6 +183,6 @@ exports.relatedBooksGET = function (bookId, offset, limit) {
         query.then(rows => {
                 resolve(rows);
         })
-            .catch(err => reject({error: err, statusCode: 500}));
+            .catch(err => reject({error: err, errorCode: 500}));
     });
 };

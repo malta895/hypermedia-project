@@ -55,7 +55,7 @@ module.exports.userEmailAvailableGET = function userEmailAvailableGET (req, res,
             utils.writeJson(res, {message:"Email is available!"});
         })
         .catch(function (response) {
-            utils.writeJson(res, response, response.errorCode || 500);
+            utils.writeJson(res, response, response && response.errorCode || 500);
         });
 };
 
@@ -75,9 +75,6 @@ module.exports.userGetDetailsGET = function userGetDetailsGET (req, res, next) {
 
     let userId = session.getUserId();
 
-
-
-
     User.userGetDetailsGET(userId)
         .then(function (response) {
             console.log("Dati utente da db");
@@ -85,7 +82,7 @@ module.exports.userGetDetailsGET = function userGetDetailsGET (req, res, next) {
             session.setSecureParameter('userData', response);
         })
         .catch(function (response) {
-            utils.writeJson(res, response);
+            utils.writeJson(res, response, response && response.errorCode || 500);
         });
 };
 
@@ -113,7 +110,7 @@ module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
             }
         })
         .catch(function (response) {
-            utils.writeJson(res, {message: response.message}, response.code || 500);
+            utils.writeJson(res, {message: response.message}, response && response.errorCode || 500);
         });
 };
 
@@ -171,8 +168,7 @@ module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
             utils.writeJson(res, response);
         })
         .catch(function (response) {
-            //TODO CONTROLLO SU USERNAME/EMAIL DUPLICATI
-            utils.writeJson(res, {message: response.message}, response.errorCode);
+            utils.writeJson(res, {message: response.message}, response && response.errorCode || 500);
         });
 };
 
@@ -194,15 +190,12 @@ module.exports.userRegisterPOST = function userRegisterPOST (req, res, next) {
         return;
     }
 
-
     if(!emailValidator.validate(email)){
         utils.writeJson(res,
                         {message: "Email is not valid!",
                          statusCode: 400});
         return;
-
     }
-
 
     User.userRegisterPOST(username, password, email, firstName, surname, birthDate)
         .then(function (response) {
@@ -217,7 +210,7 @@ module.exports.userRegisterPOST = function userRegisterPOST (req, res, next) {
                 else if(error.constraint.endsWith('email_unique'))
                     utils.writeJson(res, {message: "Email already existing"}, 409);
             } else
-                utils.writeJson(res, response, response.errorCode);
+                utils.writeJson(res, response, response && response.errorCode || 500);
         });
 };
 
@@ -231,6 +224,6 @@ module.exports.userUsernameAvailableGET = function userUsernameAvailableGET (req
             utils.writeJson(res, response);
         })
         .catch(function (response) {
-            utils.writeJson(res, response, response.errorCode);
+            utils.writeJson(res, response, response && response.errorCode || 500);
         });
 };

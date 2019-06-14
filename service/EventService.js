@@ -41,24 +41,18 @@ exports.eventGET = function (offset, limit) {
         if (!sqlDb)
             reject({ status: 500, errorText: 'Database not found!' });
 
-
         let query = sqlDb('event')
             .select();
-        if (offset) {
+
+        if (offset)
             query.offset(offset);
-        }
-        if (limit) {
+
+        if (limit)
             query.limit(limit);
-        }
-        query.then(rows => {
-            if (rows.length > 0) {
-                resolve(rows);
-            } else {
-                rows.notFound = true;
-                reject(rows);
-            }
-        })
+
+        query.then(rows => resolve(rows))
             .catch( err => reject({error: err, errorCode: 500}));
+
     });
 };
 
@@ -66,23 +60,17 @@ exports.eventGET = function (offset, limit) {
 /**
  * Get an event in wich a book is presented
  *
- * eventId Long 
+ * eventId Long
  * returns Event
  **/
 exports.eventIdGET = function (eventId) {
 
     return new Promise(function (resolve, reject) {
-        let query = sqlDb(tableName).where('event_id', eventId);
+        let query = sqlDb('event ').where('event_id', eventId);
 
-        query.then(rows => {
-            if (rows.length > 0) {
-                resolve(rows);
-            } else {
-                rows.notFound = true;
-                reject(rows);
-            }
-        })
+        query.then(rows => resolve(rows))
             .catch( err => reject({error: err, errorCode: 500}));
+
     });
 };
 
@@ -107,13 +95,8 @@ exports.bookEventsGET = function(bookId,offset,limit) {
         if(limit)
             query.limit(limit);
 
-        query.then(rows => {
-            if (rows) {
-                resolve(rows);
-            } else {
-                reject({errorCode: 404});
-            }
-        })
+        query.then(rows => resolve(rows))
             .catch( err => reject({error: err, errorCode: 500}));
+
     });
 };

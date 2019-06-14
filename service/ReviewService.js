@@ -135,14 +135,13 @@ exports.bookAddReviewPOST = function(userId, bookId,rating,title,text) {
             })
             .returning('review_id')
             .then(res => {
-                let reviewId = res[0];
-                resolve({reviewId: reviewId});
+                resolve(res);
             })
             .catch( err => {
                 if(err && err.constraint === 'user_book_unique')
-                    reject({message: "User already has a review on this book!", statusCode: 409});
+                    reject({message: "User already has a review on this book!", errorCode: 409});
                 else
-                    reject({error: err, message: "Server internal error, please contact a webmaster!", statusCode: 500});
+                    reject({error: err, message: "Server internal error, please contact a webmaster!", errorCode: 500});
             });
     });
 };
@@ -193,7 +192,7 @@ exports.bookReviewsGET = function(bookId,offset,limit) {
  **/
 exports.reviewIdGET = function (reviewId) {
     return new Promise(function (resolve, reject) {
-        let query = sqlDb('review')
+        sqlDb('review')
             .where('review_id', reviewId)
             .select('review_id',
                     'title',
@@ -202,11 +201,10 @@ exports.reviewIdGET = function (reviewId) {
                     'book',
                     'date_published',
                     sqlDb.raw("json_build_object(	'username', username,	'first_name', first_name,	'surname', surname) as user"))
-            .join('user', 'review.user', 'user.user_id');
-
-        query.then(rows => {
+            .join('user', 'review.user', 'user.user_id')
+            .then(rows => {
                 resolve(rows[0]);
-        })
+            })
             .catch(err => resolve(err));
 
 

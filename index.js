@@ -7,18 +7,13 @@ var fs = require('fs'),
 
 dotenv.config(); // salvo variabili d'ambiente nel file .env
 
-var app = require('connect')();
+var express = require('express');
+var app = express();
 var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
 var serverPort = process.env.PORT || 8080;
 
-
-// let cookieSession = require("cookie-session");
-// let cookieParser = require("cookie-parser");
-
 let { createSession } = require("./utils/SessionManager");
-
-let serveStatic = require("serve-static");
 
 let { setupDataLayer } = require("./service/DataLayer");
 
@@ -54,10 +49,10 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
     app.use(middleware.swaggerUi());
 
     //Serve the static web pages
-    app.use(serveStatic(path.join(__dirname, "./public")));
+    app.use(express.static(path.join(__dirname, "./public")));
 
     //Serve statically the api specs
-    app.use(serveStatic(path.join(__dirname, "backend/spec.yaml")));
+    app.use('/backend/spec.yaml', express.static(path.join(__dirname, "./other/backend/spec.yaml")));
 
 
 
@@ -66,12 +61,14 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
             // Start the server
             http.createServer(app).listen(serverPort, function () {
                 console.log('\n');
-                console.log('---------------------------------------------------------------');
+                console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+                console.log('\n');
                 console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
                 console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
                 console.log('Homepage is available at http://localhost:%d/', serverPort);
                 console.log('Api specifications in YAML format are available at http://localhost:%d/backend/spec.yaml', serverPort);
-                console.log('---------------------------------------------------------------');
+                console.log('\n');
+                console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
                 console.log('\n');
             });
         })
@@ -79,5 +76,4 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
             console.log(err);
             console.error("Impossibile connettersi al db. L'applicazione sarà chiusa");
         });
-
 });
