@@ -5,7 +5,7 @@ var fs = require('fs'),
     http = require('http'),
     dotenv = require('dotenv');
 
-dotenv.config(); // salvo variabili d'ambiente nel file .env
+dotenv.config(); // recupero le variabili d'ambiente
 
 var express = require('express');
 var app = express();
@@ -17,9 +17,11 @@ let { createSession } = require("./utils/SessionManager");
 
 let { setupDataLayer } = require("./service/DataLayer");
 
+let { downloadRepoZip } = require('./utils/zipDownloader');
+
 
 // swaggerRouter configuration
-var options = {
+const options = {
     swaggerUi: path.join(__dirname, '/swagger.json'),
     controllers: path.join(__dirname, './controllers'),
     useStubs: process.env.NODE_ENV === 'development' // Conditionally turn on stubs (mock mode)
@@ -28,6 +30,15 @@ var options = {
 // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
 var spec = fs.readFileSync(path.join(__dirname,'api/swagger.yaml'), 'utf8');
 var swaggerDoc = jsyaml.safeLoad(spec);
+
+//Salvo il file zip della repo e lo rendo disponibile staticamente
+downloadRepoZip()
+    .then(() =>{
+        console.info('Repo Zip saved! Serving it on /backend/app.zip');
+        app.use('/backend/app.zip', express.static('app.zip'));
+    })
+    .catch(err => console.error(err));
+
 
 //Session manager
 app.use(createSession());
@@ -55,7 +66,6 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
     app.use('/backend/spec.yaml', express.static(path.join(__dirname, "./other/backend/spec.yaml")));
 
 
-
     setupDataLayer(process.env.DATABASE_URL)
         .then(() => {
             // Start the server
@@ -63,10 +73,10 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
                 console.log('\n');
                 console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
                 console.log('\n');
-                console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
-                console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
-                console.log('Homepage is available at http://localhost:%d/', serverPort);
-                console.log('Api specifications in YAML format are available at http://localhost:%d/backend/spec.yaml', serverPort);
+                console.log(' # Your server is listening on port %d (%s:%d)\n', serverPort, process.env.BASE_URL, serverPort);
+                console.log(' # Swagger-ui is available at %s:%d/docs\n', process.env.BASE_URL, serverPort);
+                console.log(' # Homepage is available at %s:%d/\n', process.env.BASE_URL, serverPort);
+                console.log(' # Api specifications in YAML format are available at %s:%d/backend/spec.yaml', process.env.BASE_URL, serverPort);
                 console.log('\n');
                 console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
                 console.log('\n');

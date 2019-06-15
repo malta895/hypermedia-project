@@ -704,3 +704,6 @@ dmypy.json
 .pyre/
 
 # End of https://www.gitignore.io/api/python
+
+# Ignore the zip of the repo
+app.zip
