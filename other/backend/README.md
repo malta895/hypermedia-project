@@ -19,7 +19,7 @@ address](https://hypermedia-app-project.herokuapp.com/backend/spec.yaml).
 address](https://hypermedia-app-project.herokuapp.com/docs).
 - Deliverable D4: the source code of D0 is available as a zip file at
 [this
-address](https://example.com/backend/app.zip).
+address](https://hypermedia-app-project.herokuapp.com/backend/app.zip).
 - Deliverable D5: the address of the online source control repository is
 available [this
 address](https://github.com/malta895/hypermedia-project/).
