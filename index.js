@@ -32,15 +32,19 @@ var spec = fs.readFileSync(path.join(__dirname,'api/swagger.yaml'), 'utf8');
 var swaggerDoc = jsyaml.safeLoad(spec);
 
 //Salvo il file zip della repo e lo rendo disponibile staticamente
-downloadRepoZip()
-    .then(() =>{
-        console.info('Repo Zip saved! Serving it on /backend/app.zip');
-        app.use('/backend/app.zip', express.static('app.zip'));
-    })
-    .catch(err => console.error(err));
+if(!process.env.NOZIP){
+    downloadRepoZip()
+        .then(() =>{
+            console.info('Repo Zip saved! Serving it on /backend/app.zip');
+            app.use('/backend/app.zip', express.static('app.zip'));
+        })
+        .catch(err => console.error(err));
+} else {
+    console.log("The zip of the repo will not be downloaded");
+}
 
 
-//Session manager
+//Manage the session
 app.use(createSession());
 
 

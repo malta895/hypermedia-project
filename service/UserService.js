@@ -35,11 +35,10 @@ CREATE TRIGGER create_cart_trig
 
 
 exports.userDbSetup = function(database) {
-    sqlDb = database;
+    return new Promise(function(resolve, reject) {sqlDb = database;
     var tableName = "user";
     console.log("Checking if %s table exists", tableName);
-    if(process.env.HYP_DROP_ALL)
-        database.schema.dropTableIfExists(tableName);
+    
     return database.schema.hasTable(tableName).then(exists => {
         if (!exists) {
             console.log("It doesn't so we create it");
@@ -65,8 +64,9 @@ exports.userDbSetup = function(database) {
                     });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
-            return Promise.resolve();
+            resolve();
         }
+    });
     });
 };
 

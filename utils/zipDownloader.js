@@ -56,6 +56,3 @@ exports.downloadRepoZip = function dowloadRepoZip () {
         curl.perform();
     });
 };
-
-
-

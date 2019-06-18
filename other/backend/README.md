@@ -10,16 +10,16 @@
 ## Links to other deliverables
 - Deliverable D0: the web application is accessible at
 [this
-address](https://hypermedia-app-project.herokuapp.com/).
+address](https://bookhub-ctm.herokuapp.com/).
 - Deliverable D2: the YAML or JSON file containing the specification of the app
 API can be found at [this
-address](https://hypermedia-app-project.herokuapp.com/backend/spec.yaml).
+address](https://bookhub-ctm.herokuapp.com/backend/spec.yaml).
 - Deliverable D3: the SwaggerUI page of the same API is available at
 [this
-address](https://hypermedia-app-project.herokuapp.com/docs).
+address](https://bookhub-ctm.herokuapp.com/docs).
 - Deliverable D4: the source code of D0 is available as a zip file at
 [this
-address](https://hypermedia-app-project.herokuapp.com/backend/app.zip).
+address](https://bookhub-ctm.herokuapp.com/backend/app.zip).
 - Deliverable D5: the address of the online source control repository is
 available [this
 address](https://github.com/malta895/hypermedia-project/).

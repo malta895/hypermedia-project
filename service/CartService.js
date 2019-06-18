@@ -22,7 +22,7 @@ CREATE FUNCTION public.delete_cart_zero_quantity()
     RETURNS trigger
     LANGUAGE 'plpgsql'
     COST 100
-    VOLATILE NOT LEAKPROOF 
+    VOLATILE NOT LEAKPROOF
 AS $BODY$BEGIN
 DELETE FROM cart_book WHERE cart_book.id = old.id;
 RETURN NEW;
@@ -47,12 +47,10 @@ exports.cartDbSetup = function (database) {
                 table.increments("cart_id");
                 table.integer("user").unsigned().notNullable();
                 table.foreign("user").references("user.user_id");
+                table.boolean("ordered").defaultTo(false).notNullable();
             })
-                .then(() => database.raw(deleteOnZeroQuantityTriggerFunc)
-                      .then(res => console.log(res)))
-                .then(() => database.raw(deleteOnZeroQuantityTrigger)
-                      .then(res => console.log(res)));
-
+                .then(() => sqlDb.raw(deleteOnZeroQuantityTriggerFunc)
+                      .then(() => sqlDb.raw(deleteOnZeroQuantityTrigger)));
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
             return Promise.resolve();
@@ -95,14 +93,13 @@ exports.cartBooksDbSetup = function (database) {
 exports.cartGET = function(userId, limit, offset) {
     return new Promise(function(resolve, reject) {
 
-        let query = sqlDb('book')
-            .whereIn('book_id',
-                     sqlDb('cart')
-                     .join('user', 'user.user_id', 'cart.user')
-                     .join('cart_book', 'cart_book.cart', 'cart.cart_id')
-                     .join('cart_book', 'cart_book.book', 'cart_book.book')
-                     .where('user.user_id', userId)
-                     .select('cart_book.book'));
+        let query = sqlDb('book_essentials')
+            .select(sqlDb.raw('to_jsonb(book_essentials.*) as books'),'quantity')
+            .sum({total_amount: 'book_essentials.price'})
+            .join('cart_book', 'book_essentials.book_id', 'cart_book.book')
+            .join('cart', 'cart.cart_id', 'cart_book.cart')
+            .where('cart.user', userId)
+            .groupBy('book_essentials.*');
 
         if(limit)
             query.limit(limit);
@@ -126,30 +123,63 @@ exports.cartGET = function(userId, limit, offset) {
 exports.cartRemoveDELETE = function(userId, bookId, quantity) {
     return new Promise(function(resolve, reject) {
         // se la quantità va sotto zero, esiste un trigger che rimuove la tupla
-        let query = sqlDb('cart_book')
-            .decrement('quantity', quantity)
+        sqlDb('cart_book')
+            .decrement('quantity', quantity || 1)
             .whereIn('cart', function() {
                 this.from('cart')
                     .select('cart_id')
                     .where('cart.user', userId);
-            });
-
+            })
+            .then(() => resolve())
+            .catch(err => reject(err));
     });
 };
 
 
 /**
- * Add/remove elements to the cart
+ * Add elements to the cart
  *
- * bookId Long 
+ * bookId Long
  * quantity Integer Number of copies to add to the cart. Default is 1. (optional)
  * no response value expected for this operation
  **/
-exports.cartUpdatePUT = function (bookId, quantity) {
-    //TODO IMPLEMENTARE
+exports.cartUpdatePUT = function (userId, bookId, quantity) {
+
     return new Promise(function (resolve, reject) {
-        resolve();
+
+        //se esiste update, se non esiste insert
+
+        sqlDb('cart')
+            .leftJoin('cart_book', 'cart.cart_id', 'cart_book.cart')
+            .orWhere({
+                'cart.user': userId,
+                'cart_book.book': bookId
+            })
+            .orWhere({
+                'cart.user': userId,
+                'cart_book.id': null
+            })
+            .select('cart_book.id as cbid', 'cart_id')
+            .then(rows => {
+                if(rows[0] && rows[0]['cbid']){
+                    //esiste già, incremento il numero di copie
+                    let cartBookId = rows[0]['cbid'];
+
+                    sqlDb('cart_book')
+                        .increment('quantity', quantity || 1)
+                        .where('id', cartBookId)
+                        .then(() => resolve());
+                } else {
+                    //non esiste, insert
+                    sqlDb('cart_book')
+                        .insert({
+                            cart: rows[0]['cart_id'],
+                            book: bookId,
+                            quantity: quantity || 1
+                        })
+                        .then(() => resolve());
+                }
+            })
+            .catch(err => reject({error: err, errorCode: 500}));
     });
 };
-
-
