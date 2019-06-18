@@ -49,11 +49,11 @@ def insert_themes(cur):
         i += 1
 
 
-HYP_DATABASE_URL = "postgres://gbafgxzzrptzkl:1701140e8503e989e9eaf6fed09240bd7ae5577b4552ac61bc628414778620a6@ec2-54-247-70-127.eu-west-1.compute.amazonaws.com:5432/dd82s2jphcruh9"
+#HYP_DATABASE_URL = "postgres://gbafgxzzrptzkl:1701140e8503e989e9eaf6fed09240bd7ae5577b4552ac61bc628414778620a6@ec2-54-247-70-127.eu-west-1.compute.amazonaws.com:5432/dd82s2jphcruh9"
 
 def db_connect():
-#    db_url = os.getenv('DATABASE_URL')
-    db_url = HYP_DATABASE_URL
+    #db_url = os.getenv('DATABASE_URL')
+    db_url = 'postgres://postgres:root@localhost:5432/hypermedia'
     result = urlparse(db_url)
     username = result.username
     password = result.password

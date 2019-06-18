@@ -52,32 +52,18 @@ $(window).on("load",function () {
     $.getJSON('/api/books/' + id + '/reviews', function (data) { //get similar_books by book_id   
         console.log(data);
         for (i = 0; i < data.length; i++) {
-            var id = data[i].book_id;
+            var review = data[i];
+            var id = data[i].review_id;
             var title = data[i].title;
-            var authors = data[i].authors;
-            var price = data[i].price;
-            var picture = data[i].picture;
-            var genre = data[i].genre;
+            var book = data[i].book;
+            var user = data[i].user;
+            var rating = data[i].rating;
             var elem = '';
-            elem += '<div class="col-sm-3 col-xs-6" id="' + id + '">';
-            elem += '<article class="product-item">';
-            elem += '<div class="row">';
-            elem += '<div class="col-sm-3">';
-            elem += '<div class="product-overlay">';
-            elem += '<div class="product-mask"></div>';
-            elem += '<a href="pages/single-product.html?id=' + id + '" class="product-permalink"></a><img src="' + picture + '" width="262.5" height="350" class="img-responsive" alt="">';
-            elem += '<img src="' + picture + '" class="img-responsive product-image-2" alt="" width="262.5" height="350"></div></div>';
-            elem += '<div class="col-sm-9"><div class="product-body">';
-            elem += '<h3>' + title + '</h3>';
-            elem += '<div class="product-rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></div>';
-            elem += '<span class="price"><ins><span class="amount">' + currencies.EUR + price + '</span></ins></span>';
-            elem += '<div class="buttons"><a href="" class="btn btn-primary btn-sm add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a><a href="" class="btn btn-primary btn-sm"><i class="fa fa-heart"></i></a></div>';
-            elem += '</div>';
-            elem += '</div>';
-            elem += '</div>';
-            elem += '</article';
-            elem += '</div>';
-            $("#products").append(elem);
+            elem += '<div class="media"> <div class="media-left"> <img class="media-object" alt="" src="../assets/images/default-avatar.png">';
+            elem += '</div> <div class="media-body"> <h3 class="media-heading">'+user.username+'</h3>';
+            elem += '<div class="meta"> <span class="date">' + review.date + '</span> <a data-toggle="modal" data-target="#add-review">Reply</a> </div>';
+            elem += '<p>' + review.text + '</p> </div> </div>';
+            $("#comments").append(elem);
         }
 
 
