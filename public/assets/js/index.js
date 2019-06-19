@@ -20,7 +20,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
 
 $(document).ready(function () {
     $.getJSON('/api/books?limit=20&offset=40', function (data) {  // /api/books GET ALL BOOKS     
-        
+
         for (i = 0; i < data.length; i++) {
             var id = data[i].book_id;
             var title = data[i].title;
@@ -45,29 +45,28 @@ $(document).ready(function () {
             elem += '</div>';
             elem += '</div>';
             elem += '</div>';
-            elem += '</article';
+            elem += '</article>';
             elem += '</div>';
+
+
             $("#products").append(elem);
 
-            $('.addCart').click(function () {
-                console.log('remove');
-                id = $(this).attr('id');
-                $.ajax({
-                    url: '/api/cart/add/book/' + id,
-                    type: 'PUT',
-                    success: function (response) {
-                        //...
-                    }
-                });
-            });
-
-
         }
-        
-                        
-                            
-                            
-                                    
+
+        //add event listener to the buttons
+        $('.addCart').click(function () {
+            console.log('remove');
+            id = $(this).attr('id');
+            $.ajax({
+                url: '/api/cart/add/book/' + id,
+                type: 'PUT',
+                success: function (response) {
+                    //TODO IMPLEMENTARE
+                }
+            });
+        });
+
+
 
     });
 });

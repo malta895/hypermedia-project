@@ -98,8 +98,8 @@ exports.cartGET = function(userId, limit, offset) {
             .select({
                 user_id: 'cart.user',
             })
-            .sum('book_essentials.price as total_amount')
-            .select(sqlDb.raw("jsonb_agg(jsonb_build_object('quantity', quantity, 'book', to_json(book_essentials.*))) as books"))
+            .select(sqlDb.raw('sum(book_essentials.price * quantity) as total_amount'))
+            .select(sqlDb.raw("jsonb_agg(jsonb_build_object('quantity', quantity, 'book', to_jsonb(book_essentials.*))) as books"))
             .join('cart_book', 'cart.cart_id', 'cart_book.cart')
             .join('book_essentials', 'cart_book.book', 'book_essentials.book_id')
             .where('cart.ordered', false)
@@ -134,6 +134,7 @@ exports.cartRemoveDELETE = function(userId, bookId, quantity) {
                     .select('cart_id')
                     .where('cart.user', userId);
             })
+            .where('cart_book.book', bookId)
             .then(() => resolve())
             .catch(err => reject(err));
     });
@@ -179,7 +180,7 @@ exports.cartUpdatePUT = function (userId, bookId, quantity) {
                         .then(() => resolve());
                 } else {
                     //non esiste, insert
-                    console.log(rows[0]);
+
                     return sqlDb('cart_book')
                         .insert({
                             cart: rows[0]['cart_id'],
