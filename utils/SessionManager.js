@@ -1,9 +1,6 @@
 "use strict";
 
 let session = require('express-session');
-const dotenv = require('dotenv');
-
-dotenv.config();
 
 const tokenSecret = process.env.TOKEN_SECRET;
 

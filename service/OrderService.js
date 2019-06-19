@@ -57,18 +57,20 @@ exports.orderDbSetup = function(database) {
                 table.integer("shipment_address").unsigned().notNullable();
                 table.foreign("shipment_address").references("address.address_id")
                     .onDelete('RESTRICT').onUpdate('CASCADE');
+                table.enum('shipping_method', ['Personal Pickup', 'Delivery']);
+                table.enum('payment_method', ['Credit Card', 'PayPal', 'Bank Transfer', 'Cash on delivery']);
                 table.integer('cart').unsigned().notNullable();
                 table.foreign('cart').references('cart.cart_id')
                     .onDelete('CASCADE').onUpdate('CASCADE');
                 table.timestamp("order_date").notNullable();
             })
                 .then(() => {
-                    database.raw(updateCartOnOrderFunction)
+                    return database.raw(updateCartOnOrderFunction)
                         .then(res => console.log(res));
                 })
                 .then(
                     ()=> {
-                        database.raw(updateCartOnOrderTrigger)
+                        return database.raw(updateCartOnOrderTrigger)
                             .then(res => console.log(res));
                     })
                 .catch( err => reject(err));
@@ -79,29 +81,6 @@ exports.orderDbSetup = function(database) {
     });
 };
 
-// exports.orderToBookDbSetup = function(database) {
-//     var sqlDb = database;
-//     var tableName = "order_book";
-//     console.log("Checking if %s table exists", tableName);
-//     if(process.env.HYP_DROP_ALL)
-//         database.schema.dropTableIfExists(tableName);
-//     return database.schema.hasTable(tableName).then(exists => {
-//         if (!exists) {
-//             console.log("It doesn't so we create it");
-//             return database.schema.createTable(tableName, table => {
-//                 table.increments();
-//                 table.integer("book").unsigned().notNullable();
-//                 table.foreign("book").references("book.book_id")
-//                     .onDelete('CASCADE').onUpdate('CASCADE');
-//                 table.integer("order").unsigned().notNullable();
-//                 table.foreign("order").references("order.order_id")
-//                     .onDelete('CASCADE').onUpdate('CASCADE');
-//             });
-//         } else {
-//             console.log(`Table ${tableName} already exists, skipping...`);
-//         }
-//     });
-// };
 
 /**
  * Get shipment address of a order

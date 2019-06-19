@@ -72,7 +72,9 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
     app.use('/backend/spec.yaml', express.static(path.join(__dirname, "./other/backend/spec.yaml")));
 
 
-    //handle 404 errors
+
+    //==============================================
+    //Handle 404 errors. Leave this as last app.use()
     app.use(function(req, res, next) {
         console.log('404 error on ' + req.url);
         res.status(404);

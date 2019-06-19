@@ -316,7 +316,7 @@ paths:
       tags:
       - "user"
       summary: "Login"
-      description: "Login with a form"
+      description: "Login with a form. Username can also be the user's email."
       operationId: "userLoginPOST"
       consumes:
       - "application/x-www-form-urlencoded"
@@ -335,7 +335,7 @@ paths:
       responses:
         200:
           description: "Successful login"
-        403:
+        401:
           description: "Wrong username/password"
 
   /user/logout:

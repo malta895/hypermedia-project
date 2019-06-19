@@ -4,9 +4,12 @@ var utils = require('../utils/writer.js');
 var User = require('../service/UserService');
 var session = require('../utils/SessionManager');
 var sanitizeHtml = require('sanitize-html');
+const bcrypt = require('bcrypt');
 
 //questa funzione rimuove qualsiasi codice html da una stringa
 let removeHtml = function (dirty) {
+    if(dirty === undefined)
+        return undefined;
     return sanitizeHtml(dirty, {
         allowedTags: [],
         allowedAttributes: {}
@@ -45,7 +48,7 @@ module.exports.userEmailAvailableGET = function userEmailAvailableGET (req, res,
         utils.writeJson(res,
                         {message: "Email is not valid!",
                          statusCode: 400},
-                       400);
+                        400);
         return;
 
     }
@@ -101,16 +104,45 @@ module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
 
     User.userLoginPOST(username,password)
         .then(function (response) {
-            try{
-                session.setUserId(response.user_id);
-                utils.writeJson(res, response);
-            }catch(e){//non dovrebbe mai capitare
-                console.log("Si è verificato un errore: " + e);
-                utils.writeJson(res, e, 500);
+
+            if(response.length === 0){
+                console.error("Wrong email/username");
+                utils.writeJson(res,
+                                {message: "Wrong combination username/email/password!"},
+                                401);
+            } else {
+
+                let hashedPassword = response[0].password;
+
+                //verifico password
+                bcrypt.compare(password, hashedPassword)
+                    .then(isPasswordRight => {
+
+                        if(isPasswordRight){ //password corretta, procedo con il salvataggio dell'id in sessione
+                            let userId = response[0].user_id;
+
+                            session.setUserId(userId);
+                            utils.writeJson(res, {userId: userId});
+                        } else { //password errata
+                            console.log(`User ${username} tried login with wrong password`);
+                            utils.writeJson(res,
+                                            {message: "Wrong combination username/email/password!"},
+                                            401);
+                        }
+
+                    })
+                    .catch( err => {
+                        console.error(err);
+                        utils.writeJson(res,
+                                        {message: "Unknown error. Contact the developer."},
+                                        500);
+                    });
             }
         })
         .catch(function (response) {
-            utils.writeJson(res, {message: response.message}, response && response.errorCode || 500);
+            utils.writeJson(res,
+                            {message: response.message},
+                            response && response.errorCode || 500);
         });
 };
 
@@ -122,15 +154,6 @@ module.exports.userLogoutPOST = function userLogoutPOST (req, res, next) {
         utils.writeJson(res, {message: "You were not logged in!"}, 400);
     }
 
-
-    //non è necessario chiamare il db (o forse sì per logger?)
-    // User.userLogoutPOST()
-    //     .then(function (response) {
-    //         utils.writeJson(res, response);
-    //     })
-    //     .catch(function (response) {
-    //         utils.writeJson(res, response);
-    //     });
 };
 
 module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
@@ -163,13 +186,42 @@ module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
 
     let userId = session.getUserId();
 
-    User.userModifyPUT(userId,username, password, email, firstName, surname, birthDate)
-        .then(function (response) {
-            utils.writeJson(res, response);
-        })
-        .catch(function (response) {
-            utils.writeJson(res, {message: response.message}, response && response.errorCode || 500);
-        });
+
+
+    if(password) {
+        bcrypt.hash(password, 10)
+            .then( hashedPassword => {
+                User.userModifyPUT(userId,username, hashedPassword, email,
+                                   firstName, surname, birthDate)
+                    .then(function (response) {
+                        utils.writeJson(res, response);
+                    })
+                    .catch(function (response) {
+                        utils.writeJson(res,
+                                        {message: response.message},
+                                        response && response.errorCode || 500);
+                    });
+            })
+            .catch( err => {
+                console.error("Error while hashing the password!");
+                console.error(err);
+                utils.writeJson(res,
+                                {error: err, message: "Internal server error."},
+                                500);
+            });
+
+    } else {
+        User.userModifyPUT(userId,username, undefined, email,
+                           firstName, surname, birthDate)
+            .then(function (response) {
+                utils.writeJson(res, response);
+            })
+            .catch(function (response) {
+                utils.writeJson(res,
+                                {message: response.message},
+                                response && response.errorCode || 500);
+            });
+    }
 };
 
 module.exports.userRegisterPOST = function userRegisterPOST (req, res, next) {
@@ -197,20 +249,33 @@ module.exports.userRegisterPOST = function userRegisterPOST (req, res, next) {
         return;
     }
 
-    User.userRegisterPOST(username, password, email, firstName, surname, birthDate)
-        .then(function (response) {
-            utils.writeJson(res, response);
-        })
-        .catch(function (response) {
-            let error = response.error;
+    //encrypt the password
+    bcrypt.hash(password, 10)
+        .then(hashedPassword => {
 
-            if(error && error.constraint) {
-                if(error.constraint.endsWith('username_unique'))
-                    utils.writeJson(res, {message: "Username already existing"}, 409);
-                else if(error.constraint.endsWith('email_unique'))
-                    utils.writeJson(res, {message: "Email already existing"}, 409);
-            } else
-                utils.writeJson(res, response, response && response.errorCode || 500);
+            User.userRegisterPOST(username, hashedPassword, email, firstName, surname, birthDate)
+                .then(function (response) {
+                    utils.writeJson(res, response);
+                })
+                .catch(function (response) {
+                    let error = response.error;
+
+                    if(error && error.constraint) {
+                        if(error.constraint.endsWith('username_unique'))
+                            utils.writeJson(res, {message: "Username already existing"}, 409);
+                        else if(error.constraint.endsWith('email_unique'))
+                            utils.writeJson(res, {message: "Email already existing"}, 409);
+                    } else
+                        utils.writeJson(res, response, response && response.errorCode || 500);
+                });
+
+        })
+        .catch( err => {
+            console.error("Error while hashing the password!");
+            console.error(err);
+            utils.writeJson(res,
+                            {error: err, message: "Internal server error."},
+                            500);
         });
 };
 

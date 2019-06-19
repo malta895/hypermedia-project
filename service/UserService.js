@@ -38,7 +38,7 @@ exports.userDbSetup = function(database) {
     return new Promise(function(resolve, reject) {sqlDb = database;
     var tableName = "user";
     console.log("Checking if %s table exists", tableName);
-    
+
     return database.schema.hasTable(tableName).then(exists => {
         if (!exists) {
             console.log("It doesn't so we create it");
@@ -81,7 +81,7 @@ exports.userDeletePOST = function(userId) {
         let query = sqlDb('user')
             .where('user_id', userId)
             .del()
-            .then(() => resolve())
+            .then(() => resolve());
         // .catch(err => reject(err));
     });
 };
@@ -152,17 +152,12 @@ exports.userLoginPOST = function(username,password) {
             return;
         }
 
-        let query = sqlDb('user').where({
-            username: username,
-            password: password
-        })
-            .select('user_id')
+        sqlDb('user')
+            .where('username', username)
+            .orWhere('email', username)
+            .select('user_id', 'password')
             .then((rows) => {
-                if(rows.length === 1){
-                    resolve(rows[0]);
-                } else {
-                    reject({message: "Wrong username/password!", code: 401});
-                }
+                resolve(rows);
             })
             .catch((error) => {
                 reject(dbError);
@@ -205,23 +200,26 @@ exports.userModifyPUT = function(userId,username,password,email,firstName,surnam
         let query = sqlDb('user')
             .where('user_id', userId);
 
-        if(username)
+        if(username && username !== undefined)
             query.update('username', username);
 
-        if(email)
+        if(email && email !== undefined)
             query.update('email', email);
 
-        if(firstName)
+        if(firstName && firstName !== undefined)
             query.update('first_name', firstName);
 
-        if(surname)
+        if(surname && surname !== undefined)
             query.update('surname', surname);
 
-        if(birthDate)
+        if(birthDate && birthDate !== undefined)
             query.update('birth_date', birthDate);
 
+        if(password && password !== undefined)
+            query.update('password', password);
+
         query.then(() => resolve())
-        // .catch( err => reject({error: err, errorCode: 500}));
+        .catch( err => reject({error: err, errorCode: 500}));
 
     });
 };
