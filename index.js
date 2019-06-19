@@ -7,6 +7,8 @@ var fs = require('fs'),
 
 dotenv.config(); // recupero le variabili d'ambiente
 
+var utils = require('./utils/writer.js');
+
 var express = require('express');
 var app = express();
 var swaggerTools = require('swagger-tools');
@@ -69,6 +71,22 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
     //Serve statically the api specs
     app.use('/backend/spec.yaml', express.static(path.join(__dirname, "./other/backend/spec.yaml")));
 
+
+    //handle 404 errors
+    app.use(function(req, res, next) {
+        console.log('404 error on ' + req.url);
+        res.status(404);
+
+        if(req.url.startsWith('/api')){
+            utils.writeJson(res, {message: "API endpoint not found!"}, 404);
+        } else if(req.accepts('text/html')) {
+            req.url = '/pages/404.html';
+            app.handle(req, res);
+        } else {
+            res.send('404 Not Found');
+        }
+
+    });
 
     setupDataLayer(process.env.DATABASE_URL)
         .then(() => {
