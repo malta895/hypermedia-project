@@ -48,9 +48,8 @@ exports.cartDbSetup = function (database) {
                 table.integer("user").unsigned().notNullable();
                 table.foreign("user").references("user.user_id");
                 table.boolean("ordered").defaultTo(false).notNullable();
-            })
-                .then(() => sqlDb.raw(deleteOnZeroQuantityTriggerFunc)
-                      .then(() => sqlDb.raw(deleteOnZeroQuantityTrigger)));
+            });
+
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
             return Promise.resolve();
@@ -76,7 +75,9 @@ exports.cartBooksDbSetup = function (database) {
                 table.integer("quantity").unsigned().notNullable()
                     .defaultTo(1);
                 table.unique(['cart', 'book'], "cart_book_unique");
-            });
+            })
+                .then(() => sqlDb.raw(deleteOnZeroQuantityTriggerFunc)
+                      .then(() => sqlDb.raw(deleteOnZeroQuantityTrigger)));
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
             return Promise.resolve();
@@ -93,13 +94,16 @@ exports.cartBooksDbSetup = function (database) {
 exports.cartGET = function(userId, limit, offset) {
     return new Promise(function(resolve, reject) {
 
-        let query = sqlDb('book_essentials')
-            .select(sqlDb.raw('to_jsonb(book_essentials.*) as books'),'quantity')
-            .sum({total_amount: 'book_essentials.price'})
-            .join('cart_book', 'book_essentials.book_id', 'cart_book.book')
-            .join('cart', 'cart.cart_id', 'cart_book.cart')
-            .where('cart.user', userId)
-            .groupBy('book_essentials.*');
+        let query = sqlDb('cart')
+            .select({
+                user_id: 'cart.user',
+            })
+            .sum('book_essentials.price as total_amount')
+            .select(sqlDb.raw("jsonb_agg(jsonb_build_object('quantity', quantity, 'book', to_json(book_essentials.*))) as books"))
+            .join('cart_book', 'cart.cart_id', 'cart_book.cart')
+            .join('book_essentials', 'cart_book.book', 'book_essentials.book_id')
+            .where('cart.ordered', false)
+            .groupBy('cart.user');
 
         if(limit)
             query.limit(limit);
@@ -151,27 +155,32 @@ exports.cartUpdatePUT = function (userId, bookId, quantity) {
 
         sqlDb('cart')
             .leftJoin('cart_book', 'cart.cart_id', 'cart_book.cart')
-            .orWhere({
-                'cart.user': userId,
-                'cart_book.book': bookId
-            })
-            .orWhere({
-                'cart.user': userId,
-                'cart_book.id': null
+            .where({'ordered': false,
+                    'cart.user': userId,
+                    'cart_book.book': bookId
+                   })
+            .unionAll(function() {
+                this.from('cart')
+                    .select(sqlDb.raw('0 as cbid'), 'cart_id')
+                    .where({
+                        ordered: false,
+                        'cart.user': userId
+                    });
             })
             .select('cart_book.id as cbid', 'cart_id')
             .then(rows => {
-                if(rows[0] && rows[0]['cbid']){
+                if(rows[0]['cbid']){
                     //esiste già, incremento il numero di copie
                     let cartBookId = rows[0]['cbid'];
 
-                    sqlDb('cart_book')
+                    return sqlDb('cart_book')
                         .increment('quantity', quantity || 1)
                         .where('id', cartBookId)
                         .then(() => resolve());
                 } else {
                     //non esiste, insert
-                    sqlDb('cart_book')
+                    console.log(rows[0]);
+                    return sqlDb('cart_book')
                         .insert({
                             cart: rows[0]['cart_id'],
                             book: bookId,
