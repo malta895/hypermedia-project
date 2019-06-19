@@ -23,22 +23,42 @@ $(window).on("load",function () {
     $.getJSON('/api/books/'+id, function (data) {  // GET BOOK BY ID /api/book/{bookId}    
         console.log(data);
         for (i = 0; i < data.length; i++) {
-            var id = data[i].id;
+            var id = data[i].book_id;
             var title = data[i].title;
             var isbn = data[i].isbn;
 
             var authors = data[i].authors;
+            a=''
+            for (y = 0; y < authors.length; y++) {
+                a += authors[y].name
+            }
             var price = data[i].price;
             var picture = data[i].picture;
-            var genre = data[i].genre;
+            var genre = data[i].genres;
+            g=''
+            for (k = 0; k < genre.length; k++) {
+                g+=genre[k]
+            }
+            
             var elem = '';
             $("#title").html(title);
-            $("#author").html("<span>Author</span>"+authors);
-            $("#price").html(price);
+            $("#author").html("<span>Author</span>"+a);
+            $("#price").html(price +'\u20AC');
             $("#isbn").html("<span>ISBN</span>"+isbn);
             $("#genre").html("<span>Genre</span>" + genre);
             var img = '<div class="item"><img src="' + picture + '" id="img" class="img - responsive" alt=""></div>';
             $("#product-carousel").append(img);
+            $('.addCart').click(function () {
+                console.log('remove');
+                $.ajax({
+                    url: '/api/cart/add/book/' + id,
+                    type: 'PUT',
+                    success: function (response) {
+                        //...
+                    }
+                });
+            });
+
         }
         
 

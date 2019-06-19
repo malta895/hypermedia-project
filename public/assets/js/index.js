@@ -41,13 +41,26 @@ $(document).ready(function () {
             elem += '<h3>'+title+'</h3>';
             elem += '<div class="product-rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></div>';
             elem += '<span class="price"><ins><span class="amount">'+currencies.EUR+price+'</span></ins></span>';
-            elem += '<div class="buttons"><a href="" class="btn btn-primary btn-sm add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a><a href="" class="btn btn-primary btn-sm"><i class="fa fa-heart"></i></a></div>';
+            elem += '<div class="buttons"><button class="btn btn-primary btn-sm add-to-cart addCart" id="' + id +'"><i class="fa fa-shopping-cart"></i>Add to cart</a><a href="" class="btn btn-primary btn-sm"><i class="fa fa-heart"></i></a></div>';
             elem += '</div>';
             elem += '</div>';
             elem += '</div>';
             elem += '</article';
             elem += '</div>';
             $("#products").append(elem);
+
+            $('.addCart').click(function () {
+                console.log('remove');
+                id = $(this).attr('id');
+                $.ajax({
+                    url: '/api/cart/add/book/' + id,
+                    type: 'PUT',
+                    success: function (response) {
+                        //...
+                    }
+                });
+            });
+
 
         }
         
