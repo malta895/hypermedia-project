@@ -9,17 +9,39 @@ $(document).ready(function () {
 
         let formData = $(this).serialize();
         $.post('/api/user/login', formData, function (res) {
-            console.log(res)
-            location.href = "index.html";
+            console.log(res);
+
+            if(res.status === 200){
+                console.log("Succesful Login! Redirecting to Home page...");
+                console.log(res.responseText);
+                location.href = '/index.html'
+            } else if(res.status === 401) {
+                console.log("Login Failed!");
+                //TODO mostrare errore da qualche parte
+            } else if(res.status === 400) {
+                console.log("Already logged in!");
+            } else {
+                console.log("Unknown error!");
+            }
         }, 'application/x-www-form-urlencoded')
-            .success(res=>{
-                console.log('success!')
-            })
                     .fail(res => {
-                        //TODO gestire errore
+
                         console.log(res);
+
+                        if(res.status === 200){
+                            console.log("Succesful Login! Redirecting to Home page...");
+                            console.log(res.responseText);
+                            location.href = '/index.html'
+                        } else if(res.status === 401) {
+                            console.log("Login Failed!");
+                            //TODO mostrare errore da qualche parte
+                        }  else if(res.status === 400) {
+                            console.log("Already logged in!");
+                        } else {
+                            console.log("Unknown error!");
+                        }
                     });
-          
+
 
 
 
@@ -27,6 +49,7 @@ $(document).ready(function () {
     });
     $('.logout').click(function () {
         $.post('/api/user/logout', function (res) {
+            console.log("Logout succesful!")
         })
             .fail(res => {
                 //TODO gestire errore
