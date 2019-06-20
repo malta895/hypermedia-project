@@ -103,6 +103,7 @@ exports.cartGET = function(userId, limit, offset) {
             .join('cart_book', 'cart.cart_id', 'cart_book.cart')
             .join('book_essentials', 'cart_book.book', 'book_essentials.book_id')
             .where('cart.ordered', false)
+            .where('cart.user', userId)
             .groupBy('cart.user');
 
         if(limit)
@@ -166,6 +167,10 @@ exports.cartUpdatePUT = function (userId, bookId, quantity) {
                     .where({
                         ordered: false,
                         'cart.user': userId
+                    })
+                    .whereNotExists(function(){
+                        this.from('cart_book')
+                            .where('book', bookId);
                     });
             })
             .select('cart_book.id as cbid', 'cart_id')
@@ -177,7 +182,7 @@ exports.cartUpdatePUT = function (userId, bookId, quantity) {
                     return sqlDb('cart_book')
                         .increment('quantity', quantity || 1)
                         .where('id', cartBookId)
-                        .then(() => resolve());
+                        .then(() => resolve());10640250
                 } else {
                     //non esiste, insert
 

@@ -16,10 +16,11 @@ var getUrlParameter = function getUrlParameter(sParam) {
             return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
         }
     }
+    return undefined;
 };
 
 $(document).ready(function () {
-    $.getJSON('/api/books?limit=20&offset=40', function (data) {  // /api/books GET ALL BOOKS     
+    $.getJSON('/api/books?limit=20&offset=40', function (data) {  // /api/books GET ALL BOOKS
 
         for (i = 0; i < data.length; i++) {
             var id = data[i].book_id;
