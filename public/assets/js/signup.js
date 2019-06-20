@@ -17,51 +17,34 @@ $(document).ready(function () {
         // esistenza/validità email (get su /user/emailAvailable/{email})
         // esistenza username (get se /user/email/usernameAvailable/{username})
         // password?
-
-
-        let formData = $(this).serialize();
-        console.log(formData);
-
-        $.post('/api/user/register', formData, function(res) {
-            console.log(res);
-        }, 'application/x-www-form-urlencoded')
+        let formData = $(this).serialize(); 
+        $.get('/api/user/emailAvailable/' + email, function (res) {
+            $.get('/api/user/usernameAvailable/'+username, function (res1) {
+                               
+                $.post('/api/user/register', formData, function (res2) {
+                    console.log('reg')
+                    location.href = "signin.html";
+                }, 'application/x-www-form-urlencoded')
+                    .fail(res => {
+                        //TODO gestire errore
+                        console.log(res);
+                    });
+            })
+                .fail(res => {
+                    //TODO gestire errore
+                    console.log(res);
+                });
+        })
             .fail(res => {
                 //TODO gestire errore
                 console.log(res);
             });
+        
+
+        
 
     });
 
 
 
-    // $("#register").click(function (e) {
-    //     e.preventDefault();
-
-    //     var name = $("#name").val();
-    //     var lastName = $("#lastName").val();
-    //     var email = $("#email").val();
-    //     var bday = $("#bday").val();
-    //     var username = $("#username").val();
-    //     var password = $("#password").val();
-
-    //     if (name === '' || lastName === '' || bday === '' || email === '' || username === '' || password === '') {
-    //         alert("Please fill all fields...!!!!!!");
-    //     } else if ((password.length) < 8) {
-    //         alert("Password should at least 8 character in length...!!!!!!");
-    //     } else {
-    //         $.post("/api/user/register", {
-    //             username: username,
-    //             firstName: name,
-    //             surname: lastName,
-    //             email: email,
-    //             birthDate:bday,
-    //             password: password
-    //         }, function (data) {
-    //                 if (data.message === 'User registered correctly') {
-    //                     location.href = "signin.html"
-    //                 }
-    //             //cos
-    //         });
-    //     }
-    // });
 });

@@ -122,9 +122,10 @@ module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
                             let userId = response[0].user_id;
 
                             session.setUserId(userId);
-                            utils.writeJson(res, {userId: userId});
+                            utils.writeJson(res, {userId: userId}, 200);
                         } else { //password errata
                             console.log(`User ${username} tried login with wrong password`);
+                            console.log(`User ${password} and ${hashedPassword} tried login with wrong password`);
                             utils.writeJson(res,
                                             {message: "Wrong combination username/email/password!"},
                                             401);
@@ -286,7 +287,7 @@ module.exports.userUsernameAvailableGET = function userUsernameAvailableGET (req
 
     User.userUsernameAvailableGET(username)
         .then(function (response) {
-            utils.writeJson(res, response);
+            utils.writeJson(res, { message: "Username is available!" });
         })
         .catch(function (response) {
             utils.writeJson(res, response, response && response.errorCode || 500);
