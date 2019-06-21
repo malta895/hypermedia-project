@@ -9,38 +9,34 @@ $(document).ready(function () {
 
         let formData = $(this).serialize();
         $.post('/api/user/login', formData, function (res) {
+
+            console.log('SUCCESS');
+
             console.log(res);
 
-            if(res.status === 200){
+            if(res.userId){
                 console.log("Succesful Login! Redirecting to Home page...");
                 console.log(res.responseText);
-                location.href = '/index.html'
-            } else if(res.status === 401) {
-                console.log("Login Failed!");
-                //TODO mostrare errore da qualche parte
-            } else if(res.status === 400) {
-                console.log("Already logged in!");
-            } else {
-                console.log("Unknown error!");
+                location.href = '/index.html';
             }
-        }, 'application/x-www-form-urlencoded')
-                    .fail(res => {
 
-                        console.log(res);
 
-                        if(res.status === 200){
-                            console.log("Succesful Login! Redirecting to Home page...");
-                            console.log(res.responseText);
-                            location.href = '/index.html'
-                        } else if(res.status === 401) {
-                            console.log("Login Failed!");
-                            //TODO mostrare errore da qualche parte
-                        }  else if(res.status === 400) {
-                            console.log("Already logged in!");
-                        } else {
-                            console.log("Unknown error!");
-                        }
-                    });
+        }, 'json')
+            .fail(res => {
+
+                console.log('FAIL!');
+
+                if(res.status === 401) {
+                    console.log("Login Failed!");
+                    //TODO mostrare errore da qualche parte
+                } else if(res.status === 400) {
+                    console.log("Already logged in!");
+                } else {
+                    console.log("Unknown error!");
+                }
+
+                //TODO GESTIRE ERRORE
+            });
 
 
 

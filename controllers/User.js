@@ -118,11 +118,13 @@ module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
                 bcrypt.compare(password, hashedPassword)
                     .then(isPasswordRight => {
 
-                        if(isPasswordRight){ //password corretta, procedo con il salvataggio dell'id in sessione
+                        if(isPasswordRight){ //password corretta, procedo con il salvataggio Dell's in sessione
                             let userId = response[0].user_id;
 
+
                             session.setUserId(userId);
-                            utils.writeJson(res, {userId: userId}, 200);
+
+                            utils.writeJson(res, {userId: userId});
                         } else { //password errata
                             console.log(`User ${username} tried login with wrong password`);
                             console.log(`User ${password} and ${hashedPassword} tried login with wrong password`);
