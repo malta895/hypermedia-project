@@ -21,7 +21,8 @@ module.exports.cartGET = function cartGET (req, res, next) {
             utils.writeJson(res, response);
         })
         .catch(function (response) {
-            utils.writeJson(res, response, response.errorCode || 500);
+            console.error(response);
+            utils.writeJson(res, {message: "Internal Server Error"}, response.errorCode || 500);
         });
 
 };

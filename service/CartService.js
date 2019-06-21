@@ -112,7 +112,9 @@ exports.cartGET = function(userId, limit, offset) {
         if(offset)
             query.offset(offset);
 
-        query.then( rows => resolve(rows));
+        query.then( rows => resolve(rows))
+            .catch(err => reject(err));
+
 
     });
 };
@@ -182,7 +184,7 @@ exports.cartUpdatePUT = function (userId, bookId, quantity) {
                     return sqlDb('cart_book')
                         .increment('quantity', quantity || 1)
                         .where('id', cartBookId)
-                        .then(() => resolve());10640250
+                        .then(() => resolve());
                 } else {
                     //non esiste, insert
 
