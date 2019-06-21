@@ -1,5 +1,6 @@
 $(document).ready(function () {
     $.getJSON('/api/cart', function (data) {  // /api/cart GET CART
+        console.log(data)
         /*
         for (i = 0; i < data.length; i++) {
             var id = data[i].user_id;
