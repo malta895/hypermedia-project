@@ -172,7 +172,8 @@ exports.cartUpdatePUT = function (userId, bookId, quantity) {
                     })
                     .whereNotExists(function(){
                         this.from('cart_book')
-                            .where('book', bookId);
+                            .where('book', bookId)
+                            .whereRaw('cart_book.cart = cart_id');
                     });
             })
             .select('cart_book.id as cbid', 'cart_id')
