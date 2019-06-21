@@ -1,5 +1,15 @@
 $(document).ready(function () {
-    $.getJSON('/api/me', function (data) {  // /api/books GET ALL BOOKS
+    $.getJSON('/api/me', function (data) {
+        // /api/books GET ALL BOOKS
+        $('#first_name').html(data.first_name);
+        $('#name').html(data.first_name+' '+data.surname);
+        $('#surname').html(data.surname);
+        $('#username').html(data.username);
+        $('#email').html(data.email);
+        $('#birth_data').html(data.birth_date);
+        $('#birth_data').html(data.birth_date);
+        //TODO address
+
         /*
         for (i = 0; i < data.length; i++) {
             var id = data[i].book_id;

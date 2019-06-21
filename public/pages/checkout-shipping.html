@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <!-- ==========================
@@ -54,8 +54,8 @@
     <div id="page-wrapper">
         <!-- PAGE - START -->
         <!-- ==========================
-        HEADER - START
-    =========================== -->
+            HEADER - START
+        =========================== -->
         <div class="top-header hidden-xs">
             <div class="container">
                 <div class="row">
@@ -64,7 +64,7 @@
                     <div class="col-sm-7 text-right">
                         <ul class="list-inline links">
                             <li><a href="my-account.html">My account</a></li>
-                            <li><a href="signin.html">Logout</a></li>
+                            <li><a href="signin.html" class="logout">Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -169,108 +169,108 @@
             </div>
         </header>
         <!-- ==========================
-    HEADER - END
-    =========================== -->
-            <!-- ==========================
-    	MY ACCOUNT - START 
-    =========================== -->
-    <section class="content account">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <article class="account-content checkout-steps">
-                        
-                        <div class="row row-no-padding">
-                        	<div class="col-xs-6 col-sm-3">
-                            	<div class="checkout-step active">
-                                	<div class="number">1</div>
-                                    <div class="title">Billing & Shipping Address</div>
+        HEADER - END
+        =========================== -->
+        <!-- ==========================
+            MY ACCOUNT - START
+        =========================== -->
+        <section class="content account">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <article class="account-content checkout-steps">
+
+                            <div class="row row-no-padding">
+                                <div class="col-xs-6 col-sm-3">
+                                    <div class="checkout-step active">
+                                        <div class="number">1</div>
+                                        <div class="title">Billing & Shipping Address</div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-3">
+                                    <div class="checkout-step active">
+                                        <div class="number">2</div>
+                                        <div class="title">Shipping Method</div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-3">
+                                    <div class="checkout-step">
+                                        <div class="number">3</div>
+                                        <div class="title">Payment Method</div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-3">
+                                    <div class="checkout-step">
+                                        <div class="number">4</div>
+                                        <div class="title">Review</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xs-6 col-sm-3">
-                                <div class="checkout-step active">
-                                	<div class="number">2</div>
-                                    <div class="title">Shipping Method</div>
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-3">
-                                <div class="checkout-step">
-                                	<div class="number">3</div>
-                                    <div class="title">Payment Method</div>
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-3">
-                                <div class="checkout-step">
-                                	<div class="number">4</div>
-                                    <div class="title">Review</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="progress checkout-progress hidden-xs"><div class="progress-bar" role="progressbar" aria-valuenow="33.3" aria-valuemin="0" aria-valuemax="100" style="width:33.3%;"></div></div>
-                        
-                        <form>
-                            <h3>Shipping Method</h3>
-                            <div class="products-order checkout shipping-method">
-                            	<div class="row">
-                                    <div class="col-sm-6">
-                                        <div id="shipping-methods" role="tablist" aria-multiselectable="true">
-                                            <div class="panel radio">
-                                                <input type="radio" name="optionsRadios" id="radio-shipping-1" checked>
-                                                <label for="radio-shipping-1" data-toggle="collapse" data-target="#parent-1" data-parent="#shipping-methods" aria-controls="parent-1">Personal Pickup</label>
-                                            </div>
-                                            <div class="panel radio">
-                                                <input type="radio" name="optionsRadios" id="radio-shipping-2">
-                                                <label for="radio-shipping-2" class="collapsed" data-toggle="collapse" data-target="#parent-2" data-parent="#shipping-methods" aria-controls="parent-2">Delivery to your address</label>
+
+                            <div class="progress checkout-progress hidden-xs"><div class="progress-bar" role="progressbar" aria-valuenow="33.3" aria-valuemin="0" aria-valuemax="100" style="width:33.3%;"></div></div>
+
+                            <form>
+                                <h3>Shipping Method</h3>
+                                <div class="products-order checkout shipping-method">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div id="shipping-methods" role="tablist" aria-multiselectable="true">
+                                                <div class="panel radio">
+                                                    <input type="radio" name="optionsRadios" id="radio-shipping-1" checked>
+                                                    <label for="radio-shipping-1" data-toggle="collapse" data-target="#parent-1" data-parent="#shipping-methods" aria-controls="parent-1">Personal Pickup</label>
+                                                </div>
+                                                <div class="panel radio">
+                                                    <input type="radio" name="optionsRadios" id="radio-shipping-2">
+                                                    <label for="radio-shipping-2" class="collapsed" data-toggle="collapse" data-target="#parent-2" data-parent="#shipping-methods" aria-controls="parent-2">Delivery to your address</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="clearfix">
-                                <a href="checkout-payment.html" class="btn btn-primary btn-lg pull-right ">Continue</a>
-                            </div>
-                        </form>
-                        
-                    </article>
+                                <div class="clearfix">
+                                    <a href="checkout-payment.html" class="btn btn-primary btn-lg pull-right ">Continue</a>
+                                </div>
+                            </form>
+
+                        </article>
+                    </div>
                 </div>
-            </div> 
-        </div>
-    </section>
-    <!-- ==========================
-    	MY ACCOUNT - END 
-    =========================== -->
+            </div>
+        </section>
+        <!-- ==========================
+            MY ACCOUNT - END
+        =========================== -->
         <!-- ==========================
             FOOTER - START
         =========================== -->
         <footer class="navbar navbar-default">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-6 col-xs-6">
-                            <div class="footer-widget footer-widget-contacts">
-                                <h4>Contacts</h4>
-                                <ul class="list-unstyled">
-                                    <li><i class="fa fa-envelope"></i> Maltus@gay.com </li>
-                                    <li><i class="fa fa-phone"></i> 754 213 456 </li>
-                                    <li><i class="fa fa-map-marker"></i> Como </li>
-                                </ul>
-                            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-xs-6">
+                        <div class="footer-widget footer-widget-contacts">
+                            <h4>Contacts</h4>
+                            <ul class="list-unstyled">
+                                <li><i class="fa fa-envelope"></i> Maltus@gay.com </li>
+                                <li><i class="fa fa-phone"></i> 754 213 456 </li>
+                                <li><i class="fa fa-map-marker"></i> Como </li>
+                            </ul>
                         </div>
-                        <div class="col-sm-6 col-xs-6">
-                            <div class="footer-widget footer-widget-links">
-                                <h4>Information</h4>
-                                <ul class="list-unstyled">
-                                    <li><a href="faq.html">FAQ</a></li>
-                                    <li><a href="my-account.html">My account</a></li>
-                                </ul>
-                            </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-6">
+                        <div class="footer-widget footer-widget-links">
+                            <h4>Information</h4>
+                            <ul class="list-unstyled">
+                                <li><a href="faq.html">FAQ</a></li>
+                                <li><a href="my-account.html">My account</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-            </footer>
-            <!-- ==========================
-                FOOTER - END
-            =========================== -->
+            </div>
+        </footer>
+        <!-- ==========================
+            FOOTER - END
+        =========================== -->
 
     </div> <!-- PAGE - END -->
     <!-- ==========================
@@ -289,5 +289,7 @@
     <script src="../assets/js/color-switcher.js"></script>
     <script src="../assets/js/custom.js"></script>
     <script src="../assets/js/single-product.js"></script>
+    <script src="../assets/js/logout.js"></script>
+
 </body>
 </html>
