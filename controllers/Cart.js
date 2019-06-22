@@ -4,6 +4,26 @@ var utils = require('../utils/writer.js');
 var Cart = require('../service/CartService');
 var session = require('../utils/SessionManager');
 
+module.exports.cartEmptyDELETE = function cartEmptyDELETE (req, res, next) {
+
+    if(!session.userIdExists()){
+        utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
+        return;
+    }
+
+    let userId = session.getUserId();
+
+    Cart.cartEmptyDELETE(userId)
+        .then(function (response) {
+            utils.writeJson(res, response);
+        })
+        .catch(function (response) {
+            console.error(response);
+            utils.writeJson(res,
+                            {message: "Internal Server Error!"},
+                            500);
+        });
+};
 
 module.exports.cartGET = function cartGET (req, res, next) {
     var limit = req.swagger.params['limit'].value;

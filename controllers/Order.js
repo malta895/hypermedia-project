@@ -55,7 +55,8 @@ module.exports.orderPlacePOST = function orderPlacePOST (req, res, next) {
     var province = req.swagger.params['province'].value;
     var country = req.swagger.params['country'].value;
     var addressStreetLine2 = req.swagger.params['addressStreetLine2'].value;
-
+    var firstName = req.swagger.params['firstName'].value;
+    var lastName = req.swagger.params['lastName'].value;
 
     if(!session.userIdExists()){
         utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
@@ -64,7 +65,7 @@ module.exports.orderPlacePOST = function orderPlacePOST (req, res, next) {
 
     let userId = session.getUserId();
 
-    Order.orderPlacePOST(userId, addressStreetLine1,city,zip_code,province,country,addressStreetLine2)
+    Order.orderPlacePOST(userId,addressStreetLine1,city,zip_code,province,country,firstName,lastName,addressStreetLine2)
         .then(function (response) {
             utils.writeJson(res, response);
         })

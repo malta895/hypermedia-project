@@ -2,8 +2,8 @@
 
 var sqlDb;
 
-exports.addressDbSetup = function(database) {
-    return new Promise((resolve, reject) =>{
+exports.addressDbSetup = function (database) {
+    return new Promise(function (resolve, reject) {
         sqlDb = database;
         var tableName = "address";
         console.log("Checking if %s table exists", tableName);
@@ -13,9 +13,11 @@ exports.addressDbSetup = function(database) {
                     console.log("It doesn't so we create it");
                     database.schema.createTable(tableName, table => {
                         table.increments("address_id");
+                        table.string('first_name');
+                        table.string('last_name');
                         table.text("street_line1").notNullable();
                         table.text("street_line2");
-                        table.string("city").notNullable();
+                        table.string("city").notNunnllable();
                         table.string("zip_code").notNullable();
                         table.string("province").notNullable();
                         table.string("country").notNullable();
@@ -42,7 +44,8 @@ exports.addressDbSetup = function(database) {
  * addressStreetLine2 String  (optional)
  * no response value expected for this operation
  **/
-exports.userAddAddressPOST = function(userId, addressStreetLine1,city,zip_code,province,country,addressStreetLine2) {
+
+exports.userAddAddressPOST = function(userId,addressStreetLine1,city,zip_code,province,country,firstName,lastName,addressStreetLine2) {
     return new Promise(function(resolve, reject) {
         //siccome devo fare 2 query, meglio fare una transaction,
         // così posso fare rollback nel caso in cui la seconda fallisca
@@ -50,6 +53,8 @@ exports.userAddAddressPOST = function(userId, addressStreetLine1,city,zip_code,p
             sqlDb('address')
                 .transacting(trx)
                 .insert({
+                    first_name: firstName,
+                    last_name: lastName,
                     street_line1: addressStreetLine1,
                     street_line2: addressStreetLine2,
                     city: city,
@@ -57,18 +62,18 @@ exports.userAddAddressPOST = function(userId, addressStreetLine1,city,zip_code,p
                     province: province,
                     country: country
                 })
-                .returning('address_id')
-                .then ((address_id) => {
+                .returning('*')
+                .then ((rows) => {
 
                     return new Promise(function(resolve, reject) {
                         sqlDb('user')
                             .transacting(trx)
-                            .update('address', address_id[0])
+                            .update('address', rows[0]['address_id'])
                             .where('user_id', userId)
                             .whereNull('address')
                             .then( (updatedRows) => {
                                 if (updatedRows){
-                                    resolve();
+                                    resolve(rows[0]);
                                 } else {
                                     reject({
                                         message: "User already has an address. \
@@ -79,16 +84,21 @@ exports.userAddAddressPOST = function(userId, addressStreetLine1,city,zip_code,p
                             });
                     });
                 })
-                .then(trx.commit)
+                .then(response => {
+                    return trx.commit();
+                    resolve(response);
+                })
                 .catch((err) => {
-                    console.log("Roll backing transaction...");
+                    console.error(err);
+                    console.log("Rolling back transaction...");
                     trx.rollback();
                     reject(err);
                 });
         })
-            .then((res) => {
-                console.log("Added new address");
-                resolve(res);
+            .then(response => {
+                console.log("Added new address: ");
+                console.log(response);
+                resolve(response);
             })
             .catch((err) => {
                 reject(err);
@@ -109,10 +119,28 @@ exports.userAddAddressPOST = function(userId, addressStreetLine1,city,zip_code,p
  * country String  (optional)
  * no response value expected for this operation
  **/
-exports.userModifyAddressPUT = function(userId, addressStreetLine1,addressStreetLine2,city,zip_code,province,country) {
+exports.userModifyAddressPUT = function(userId,firstName,lastName,addressStreetLine1,addressStreetLine2,city,zip_code,province,country) {
     return new Promise(function(resolve, reject) {
         let query = sqlDb('address');
 
+        if(firstName && lastName){
+            query.update({
+                first_name: firstName,
+                last_name: lastName
+            });
+        } else {
+            query.update('first_name', function() {
+                this.from('user')
+                    .select('first_name')
+                    .where('user_id', userId);
+            });
+
+            query.update('last_name', function() {
+                this.from('user')
+                    .select('surname')
+                    .where('user_id', userId);
+            });
+        }
 
         if(addressStreetLine1)
             query.update('street_line1', addressStreetLine1);
@@ -140,7 +168,10 @@ exports.userModifyAddressPUT = function(userId, addressStreetLine1,addressStreet
                       });
 
         query
-            .then( () => resolve())
+            .returning('*')
+            .then( rows => {
+                resolve(rows);
+            })
             .catch( (err) => reject({error: err, errorCode: 500}));
 
     });

@@ -327,7 +327,7 @@ paths:
       tags:
       - "user"
       summary: "Login"
-      description: "Login with a form"
+      description: "Login with a form. Username can also be the user's email."
       operationId: "userLoginPOST"
       consumes:
       - "application/x-www-form-urlencoded"
@@ -336,6 +336,7 @@ paths:
       parameters:
       - name: "username"
         in: "formData"
+        description: "Username of the user. Can also be the email."
         required: true
         type: "string"
       - name: "password"
@@ -346,7 +347,7 @@ paths:
       responses:
         200:
           description: "Successful login"
-        403:
+        401:
           description: "Wrong username/password"
       x-swagger-router-controller: "User"
   /user/logout:
@@ -480,6 +481,14 @@ paths:
       produces:
       - "application/json"
       parameters:
+      - name: "firstName"
+        in: "formData"
+        required: false
+        type: "string"
+      - name: "lastName"
+        in: "formData"
+        required: false
+        type: "string"
       - name: "addressStreetLine1"
         in: "formData"
         required: true
@@ -526,6 +535,14 @@ paths:
       produces:
       - "application/json"
       parameters:
+      - name: "firstName"
+        in: "formData"
+        required: false
+        type: "string"
+      - name: "lastName"
+        in: "formData"
+        required: false
+        type: "string"
       - name: "addressStreetLine1"
         in: "formData"
         required: false
@@ -558,6 +575,43 @@ paths:
         403:
           description: "Not authorized!"
       x-swagger-router-controller: "Address"
+  /user/update/password:
+    put:
+      tags:
+      - "user"
+      summary: "Update user's password"
+      description: "Put request to modify user's password"
+      operationId: "userModifyPasswordPUT"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "old_password"
+        in: "formData"
+        required: true
+        type: "string"
+        format: "password"
+      - name: "new_password"
+        in: "formData"
+        required: true
+        type: "string"
+        format: "password"
+      - name: "confirm_new_password"
+        in: "formData"
+        required: true
+        type: "string"
+        format: "password"
+      responses:
+        200:
+          description: "Successful operation"
+        400:
+          description: "Passwords do not coincide!"
+        401:
+          description: "Old password is wrong!"
+        403:
+          description: "You must login to perform this operation"
+      x-swagger-router-controller: "User"
   /user/update:
     put:
       tags:
@@ -576,11 +630,6 @@ paths:
         in: "formData"
         required: false
         type: "string"
-      - name: "password"
-        in: "formData"
-        required: false
-        type: "string"
-        format: "password"
       - name: "email"
         in: "formData"
         required: false
@@ -747,6 +796,22 @@ paths:
           description: "Bad request"
         404:
           description: "Book not in the cart"
+      x-swagger-router-controller: "Cart"
+  /cart/empty:
+    delete:
+      tags:
+      - "cart"
+      summary: "Empty the cart"
+      description: "Empty the cart completely"
+      operationId: "cartEmptyDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Successful operation"
+        403:
+          description: "You must login to perform this operation"
+        404:
+          description: "Cart was already empty"
       x-swagger-router-controller: "Cart"
   /authors:
     get:
@@ -981,6 +1046,14 @@ paths:
       produces:
       - "application/json"
       parameters:
+      - name: "firstName"
+        in: "formData"
+        required: false
+        type: "string"
+      - name: "lastName"
+        in: "formData"
+        required: false
+        type: "string"
       - name: "addressStreetLine1"
         in: "formData"
         required: true
@@ -1145,12 +1218,14 @@ definitions:
         country: "Italy"
         province: "CO"
         city: "Como"
-        latitude: 6.027456183070403
+        latitude: 6.02745618307040320615897144307382404804229736328125
         address_id: 1
+        last_name: "last_name"
         street_line2: "11"
         street_line1: "Via Valleggio"
+        first_name: "first_name"
         zip_code: "22100"
-        longitude: 1.4658129805029452
+        longitude: 1.46581298050294517310021547018550336360931396484375
       user_id: 1
       surname: "Rossi"
       birth_date: "2000-01-23"
@@ -1194,15 +1269,17 @@ definitions:
               country: "Italy"
               province: "CO"
               city: "Como"
-              latitude: 6.027456183070403
+              latitude: 6.02745618307040320615897144307382404804229736328125
               address_id: 1
+              last_name: "last_name"
               street_line2: "11"
               street_line1: "Via Valleggio"
+              first_name: "first_name"
               zip_code: "22100"
-              longitude: 1.4658129805029452
+              longitude: 1.46581298050294517310021547018550336360931396484375
             name: "Zanichelli"
             description: "description"
-          average_rating: 5.962133916683182
+          average_rating: 5.962133916683182377482808078639209270477294921875
           theme:
             name: "name"
             description: "description"
@@ -1237,15 +1314,17 @@ definitions:
               country: "Italy"
               province: "CO"
               city: "Como"
-              latitude: 6.027456183070403
+              latitude: 6.02745618307040320615897144307382404804229736328125
               address_id: 1
+              last_name: "last_name"
               street_line2: "11"
               street_line1: "Via Valleggio"
+              first_name: "first_name"
               zip_code: "22100"
-              longitude: 1.4658129805029452
+              longitude: 1.46581298050294517310021547018550336360931396484375
             name: "Zanichelli"
             description: "description"
-          average_rating: 5.962133916683182
+          average_rating: 5.962133916683182377482808078639209270477294921875
           theme:
             name: "name"
             description: "description"
@@ -1330,15 +1409,17 @@ definitions:
           country: "Italy"
           province: "CO"
           city: "Como"
-          latitude: 6.027456183070403
+          latitude: 6.02745618307040320615897144307382404804229736328125
           address_id: 1
+          last_name: "last_name"
           street_line2: "11"
           street_line1: "Via Valleggio"
+          first_name: "first_name"
           zip_code: "22100"
-          longitude: 1.4658129805029452
+          longitude: 1.46581298050294517310021547018550336360931396484375
         name: "Zanichelli"
         description: "description"
-      average_rating: 5.962133916683182
+      average_rating: 5.962133916683182377482808078639209270477294921875
       theme:
         name: "name"
         description: "description"
@@ -1422,6 +1503,12 @@ definitions:
         type: "integer"
         format: "int64"
         example: 1
+      first_name:
+        type: "string"
+        description: "First name on the address"
+      last_name:
+        type: "string"
+        description: "Last name on the address"
       street_line1:
         type: "string"
         example: "Via Valleggio"
@@ -1453,12 +1540,14 @@ definitions:
       country: "Italy"
       province: "CO"
       city: "Como"
-      latitude: 6.027456183070403
+      latitude: 6.02745618307040320615897144307382404804229736328125
       address_id: 1
+      last_name: "last_name"
       street_line2: "11"
       street_line1: "Via Valleggio"
+      first_name: "first_name"
       zip_code: "22100"
-      longitude: 1.4658129805029452
+      longitude: 1.46581298050294517310021547018550336360931396484375
   Event:
     type: "object"
     required:
@@ -1492,12 +1581,14 @@ definitions:
         country: "Italy"
         province: "CO"
         city: "Como"
-        latitude: 6.027456183070403
+        latitude: 6.02745618307040320615897144307382404804229736328125
         address_id: 1
+        last_name: "last_name"
         street_line2: "11"
         street_line1: "Via Valleggio"
+        first_name: "first_name"
         zip_code: "22100"
-        longitude: 1.4658129805029452
+        longitude: 1.46581298050294517310021547018550336360931396484375
       presented_book:
         picture_path: "pic1.jpg"
         price:
@@ -1514,15 +1605,17 @@ definitions:
             country: "Italy"
             province: "CO"
             city: "Como"
-            latitude: 6.027456183070403
+            latitude: 6.02745618307040320615897144307382404804229736328125
             address_id: 1
+            last_name: "last_name"
             street_line2: "11"
             street_line1: "Via Valleggio"
+            first_name: "first_name"
             zip_code: "22100"
-            longitude: 1.4658129805029452
+            longitude: 1.46581298050294517310021547018550336360931396484375
           name: "Zanichelli"
           description: "description"
-        average_rating: 5.962133916683182
+        average_rating: 5.962133916683182377482808078639209270477294921875
         theme:
           name: "name"
           description: "description"
@@ -1567,12 +1660,14 @@ definitions:
         country: "Italy"
         province: "CO"
         city: "Como"
-        latitude: 6.027456183070403
+        latitude: 6.02745618307040320615897144307382404804229736328125
         address_id: 1
+        last_name: "last_name"
         street_line2: "11"
         street_line1: "Via Valleggio"
+        first_name: "first_name"
         zip_code: "22100"
-        longitude: 1.4658129805029452
+        longitude: 1.46581298050294517310021547018550336360931396484375
       name: "Zanichelli"
       description: "description"
   Genre:
@@ -1689,12 +1784,14 @@ definitions:
         country: "Italy"
         province: "CO"
         city: "Como"
-        latitude: 6.027456183070403
+        latitude: 6.02745618307040320615897144307382404804229736328125
         address_id: 1
+        last_name: "last_name"
         street_line2: "11"
         street_line1: "Via Valleggio"
+        first_name: "first_name"
         zip_code: "22100"
-        longitude: 1.4658129805029452
+        longitude: 1.46581298050294517310021547018550336360931396484375
       order_id: 0
       items:
       - picture_path: "pic1.jpg"
@@ -1712,15 +1809,17 @@ definitions:
             country: "Italy"
             province: "CO"
             city: "Como"
-            latitude: 6.027456183070403
+            latitude: 6.02745618307040320615897144307382404804229736328125
             address_id: 1
+            last_name: "last_name"
             street_line2: "11"
             street_line1: "Via Valleggio"
+            first_name: "first_name"
             zip_code: "22100"
-            longitude: 1.4658129805029452
+            longitude: 1.46581298050294517310021547018550336360931396484375
           name: "Zanichelli"
           description: "description"
-        average_rating: 5.962133916683182
+        average_rating: 5.962133916683182377482808078639209270477294921875
         theme:
           name: "name"
           description: "description"
@@ -1753,15 +1852,17 @@ definitions:
             country: "Italy"
             province: "CO"
             city: "Como"
-            latitude: 6.027456183070403
+            latitude: 6.02745618307040320615897144307382404804229736328125
             address_id: 1
+            last_name: "last_name"
             street_line2: "11"
             street_line1: "Via Valleggio"
+            first_name: "first_name"
             zip_code: "22100"
-            longitude: 1.4658129805029452
+            longitude: 1.46581298050294517310021547018550336360931396484375
           name: "Zanichelli"
           description: "description"
-        average_rating: 5.962133916683182
+        average_rating: 5.962133916683182377482808078639209270477294921875
         theme:
           name: "name"
           description: "description"
@@ -1824,7 +1925,7 @@ definitions:
           type: "string"
     example:
       isbn: "isbn"
-      average_rating: 1.4658129805029452
+      average_rating: 1.46581298050294517310021547018550336360931396484375
       book_id: 0
       abstract: "abstract"
       title: "title"
@@ -1832,7 +1933,7 @@ definitions:
       themes:
       - "themes"
       - "themes"
-      price: 6.027456183070403
+      price: 6.02745618307040320615897144307382404804229736328125
       genres:
       - "genres"
       - "genres"
@@ -1873,15 +1974,17 @@ definitions:
             country: "Italy"
             province: "CO"
             city: "Como"
-            latitude: 6.027456183070403
+            latitude: 6.02745618307040320615897144307382404804229736328125
             address_id: 1
+            last_name: "last_name"
             street_line2: "11"
             street_line1: "Via Valleggio"
+            first_name: "first_name"
             zip_code: "22100"
-            longitude: 1.4658129805029452
+            longitude: 1.46581298050294517310021547018550336360931396484375
           name: "Zanichelli"
           description: "description"
-        average_rating: 5.962133916683182
+        average_rating: 5.962133916683182377482808078639209270477294921875
         theme:
           name: "name"
           description: "description"

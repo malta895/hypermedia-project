@@ -132,11 +132,12 @@ exports.orderDetailsGET = function(orderId) {
  * zip_code String 
  * province String 
  * country String 
+ * firstName String  (optional)
+ * lastName String  (optional)
  * addressStreetLine2 String  (optional)
  * no response value expected for this operation
  **/
-exports.orderPlacePOST = function(userId,addressStreetLine1,city,zip_code,province,country
-                                  ,addressStreetLine2) {
+exports.orderPlacePOST = function(userId,addressStreetLine1,city,zip_code,province,country,firstName,lastName,addressStreetLine2) {
     return new Promise(function(resolve, reject) {
         //verifico che esistano libri nel carrello
         let query = sqlDb('cart')
@@ -161,6 +162,8 @@ exports.orderPlacePOST = function(userId,addressStreetLine1,city,zip_code,provin
                         sqlDb('address')
                             .transacting(trx)
                             .insert({
+                                first_name: firstName,
+                                last_name: lastName,
                                 street_line1: addressStreetLine1,
                                 street_line2: addressStreetLine2,
                                 city: city,

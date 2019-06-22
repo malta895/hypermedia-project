@@ -1,8 +1,8 @@
 'use strict';
 
-var utils = require('../utils/writer.js');
-var Address = require('../service/AddressService');
-var session = require('../utils/SessionManager');
+const utils = require('../utils/writer.js'),
+      Address = require('../service/AddressService'),
+      session = require('../utils/SessionManager');
 
 module.exports.userAddAddressPOST = function userAddAddressPOST (req, res, next) {
 
@@ -21,11 +21,23 @@ module.exports.userAddAddressPOST = function userAddAddressPOST (req, res, next)
 
     var userId = session.getUserId();
 
-    Address.userAddAddressPOST(userId, addressStreetLine1,city,zip_code,province,country,addressStreetLine2)
+    //se nome e cognome sono in sessione li aggiungo, onde evitare inutili subquery
+    let firstName, lastName;
+    let userData = session.getSecureParameter('userData');
+    if(userData){
+        firstName = userData.first_name;
+        lastName = userData.surname;
+    }
+
+    Address.userAddAddressPOST(userId,addressStreetLine1,city,zip_code,province,country,firstName,lastName,addressStreetLine2)
         .then(function (response) {
+            let userData = session.getSecureParameter('userData');
+            userData.address = response;
+            session.setSecureParameter('userData', userData);
             utils.writeJson(res, response);
         })
         .catch(function (response) {
+            console.error(response);
             utils.writeJson(res, response, response && response.errorCode || 500);
         });
 };
@@ -52,9 +64,27 @@ module.exports.userModifyAddressPUT = function userModifyAddressPUT (req, res, n
 
     let userId = session.getUserId();
 
-    Address.userModifyAddressPUT(userId, addressStreetLine1,addressStreetLine2,city,zip_code,province,country)
+    //se nome e cognome sono in sessione li aggiungo, onde evitare inutili subquery
+    let firstName, lastName;
+    let userData = session.getSecureParameter('userData');
+    if(userData){
+        firstName = userData.first_name;
+        lastName = userData.surname;
+    }
+
+    Address.userModifyAddressPUT(userId, firstName,lastName,addressStreetLine1,addressStreetLine2,city,zip_code,province,country)
         .then(function (response) {
-            utils.writeJson(res, response);
+            if(response.length === 0){
+                console.log("Update on non existing address.");
+                utils.writeJson(res,
+                                {message:"User has not an address, use /user/add/address to add one"},
+                                400);
+                return;
+            }
+            let userData = session.getSecureParameter('userData');
+            userData.address = response[0];
+            session.setSecureParameter('userData', userData);
+            utils.writeJson(res, response[0]);
         })
         .catch(function (response) {
             utils.writeJson(res, response, response && response.errorCode || 500);

@@ -52,7 +52,7 @@ exports.userDbSetup = function(database) {
                 table.date("birth_date").notNullable();
                 table.integer("address").unsigned();
                 table.foreign("address").references("address.address_id")
-                    .onUpdate("CASCADE").onDelete("CASCADE");
+                    .onUpdate("CASCADE").onDelete("SET NULL");
                 table.timestamp("time_registered");
             })
                 .then(database.raw(createCartFunction)
@@ -96,13 +96,11 @@ exports.userDeletePOST = function(userId) {
 exports.userEmailAvailableGET = function(email) {
     return new Promise(function(resolve, reject) {
         let query = sqlDb('user')
+            .select(1)
             .where('email', email);
 
         query.then( rows => {
-            if(rows.length)
-                reject({message: "Email already exists", errorCode: 409 });
-            else
-                resolve();
+            resolve(rows);
         })
             .catch( err => reject({error: err, errorCode: 500}));
     });
@@ -120,9 +118,9 @@ exports.userGetDetailsGET = function(userId) {
         let query = sqlDb('user')
             .leftJoin('address', 'address.address_id', 'user.address')
             .where('user_id', userId)
-            .select('user_id', 'username', 'first_name', 'surname', 'email',
-                    'email', 'birth_date',
-                    sqlDb.raw("json_build_object('address_id', address_id, 'street_line1', street_line1, 'street_line2', street_line2, 'city', city, 'zip_code', zip_code, 'province', province, 'country', country) as address"))
+            .select('user_id', 'username', 'user.first_name as first_name',
+                    'surname', 'email', 'email', 'birth_date',
+                    sqlDb.raw('to_jsonb(address.*) as address'))
             .then( rows => {
                 if(rows.length > 0){
                     resolve(rows[0]);
@@ -194,7 +192,7 @@ exports.userLoginPOST = function(username,password) {
  * birthDate date  (optional)
  * no response value expected for this operation
  **/
-exports.userModifyPUT = function(userId,username,password,email,firstName,surname,birthDate) {
+exports.userModifyPUT = function(userId,username,email,firstName,surname,birthDate) {
 
     return new Promise(function(resolve, reject) {
         let query = sqlDb('user')
@@ -215,14 +213,33 @@ exports.userModifyPUT = function(userId,username,password,email,firstName,surnam
         if(birthDate && birthDate !== undefined)
             query.update('birth_date', birthDate);
 
-        if(password && password !== undefined)
-            query.update('password', password);
-
-        query.then(() => resolve())
-        .catch( err => reject({error: err, errorCode: 500}));
+          query.returning(['username', 'first_name', 'surname', 'email',
+                        'birth_date', 'user_id']);
+        query.then(rows => resolve(rows))
+        .catch( err => reject(err));
 
     });
 };
+
+/**
+ * Update user's password
+ * Put request to modify user's password
+ *
+ * old_password String 
+ * new_password String 
+ * confirm_new_password String 
+ * no response value expected for this operation
+ **/
+exports.userModifyPasswordPUT = function(userId,new_password) {
+    return new Promise(function(resolve, reject) {
+       sqlDb('user')
+            .update('password', new_password)
+            .where('user_id', userId)
+            .then(() => resolve())
+            .catch(() => reject());
+    });
+};
+
 
 /**
  * Register
@@ -269,13 +286,11 @@ exports.userRegisterPOST = function(username,password,email,firstName,surname,bi
 exports.userUsernameAvailableGET = function(username) {
     return new Promise(function(resolve, reject) {
         let query = sqlDb('user')
+            .select(1)
             .where('username', username);
 
         query.then( rows => {
-            if(rows.length)
-                reject({message: "Username already exists", errorCode: 409 });
-            else
-                resolve();
+            resolve(rows);
         })
             .catch( err => reject({error: err, errorCode: 500}));
     });

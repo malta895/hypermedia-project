@@ -1,8 +1,5 @@
 'use strict';
 
-var sqlDb = require('knex');
-
-
 const deleteOnZeroQuantityTrigger = `
 DROP TRIGGER IF EXISTS delete_on_zero_quantity ON public.cart_book;
 
@@ -199,5 +196,30 @@ exports.cartUpdatePUT = function (userId, bookId, quantity) {
                 }
             })
             .catch(err => reject({error: err, errorCode: 500}));
+    });
+};
+
+var sqlDb = require('knex');
+
+/**
+ * Empty the cart
+ * Empty the cart completely
+ *
+ * no response value expected for this operation
+ **/
+exports.cartEmptyDELETE = function(userId) {
+    return new Promise(function(resolve, reject) {
+        sqlDb('cart_book')
+            .del()
+            .where('cart', 'in', function() {
+                this.from('cart')
+                    .select('cart_id')
+                    .where({
+                        user: userId,
+                        ordered: false
+                    });
+            })
+            .then(() => resolve())
+            .catch(err => reject(err));
     });
 };

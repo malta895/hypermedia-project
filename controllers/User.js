@@ -1,9 +1,9 @@
 'use strict';
 
-var utils = require('../utils/writer.js');
-var User = require('../service/UserService');
-var session = require('../utils/SessionManager');
-var sanitizeHtml = require('sanitize-html');
+const utils = require('../utils/writer.js');
+const User = require('../service/UserService');
+const session = require('../utils/SessionManager');
+const sanitizeHtml = require('sanitize-html');
 const bcrypt = require('bcrypt');
 
 //questa funzione rimuove qualsiasi codice html da una stringa
@@ -17,7 +17,7 @@ let removeHtml = function (dirty) {
 };
 
 
-var emailValidator = require('email-validator');
+const emailValidator = require('email-validator');
 
 module.exports.userDeletePOST = function userDeletePOST (req, res, next) {
 
@@ -55,7 +55,12 @@ module.exports.userEmailAvailableGET = function userEmailAvailableGET (req, res,
 
     User.userEmailAvailableGET(email)
         .then(function (response) {
-            utils.writeJson(res, {message:"Email is available!"});
+            if(response.length === 0)
+                utils.writeJson(res, {message:"Email is available!"});
+            else
+                utils.writeJson(res,
+                                {message: "An user already registered with this email!"},
+                                409);
         })
         .catch(function (response) {
             utils.writeJson(res, response, response && response.errorCode || 500);
@@ -104,7 +109,6 @@ module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
 
     User.userLoginPOST(username,password)
         .then(function (response) {
-
             if(response.length === 0){
                 console.error("Wrong email/username");
                 utils.writeJson(res,
@@ -118,16 +122,24 @@ module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
                 bcrypt.compare(password, hashedPassword)
                     .then(isPasswordRight => {
 
-                        if(isPasswordRight){ //password corretta, procedo con il salvataggio Dell's in sessione
+                        if(isPasswordRight){ //password corretta, procedo con il salvataggio dell'userId in sessione
                             let userId = response[0].user_id;
-
 
                             session.setUserId(userId);
 
-                            utils.writeJson(res, {userId: userId});
+                            // recupero i dati dell'utente e li metto in sessione;
+                            User.userGetDetailsGET(userId)
+                                .then(response => {
+                                    session.setSecureParameter('userData', response);
+                                })
+                                .catch(err => {
+                                    console.log("Salvataggio dati utente in sessione fallito.");
+                                    console.error(err);
+                                });
+
+                            utils.writeJson(res, {userId: userId}); // restituisco userId al client
                         } else { //password errata
                             console.log(`User ${username} tried login with wrong password`);
-                            console.log(`User ${password} and ${hashedPassword} tried login with wrong password`);
                             utils.writeJson(res,
                                             {message: "Wrong combination username/email/password!"},
                                             401);
@@ -168,7 +180,6 @@ module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
 
     var username = req.swagger.params['username'].value;
     username = removeHtml(username);
-    var password = req.swagger.params['password'].value;
     var email = req.swagger.params['email'].value;
     email = removeHtml(email);
     var firstName = req.swagger.params['firstName'].value;
@@ -178,7 +189,6 @@ module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
     var birthDate = req.swagger.params['birthDate'].value;
 
     if(!(username ||
-         password ||
          email ||
          firstName ||
          surname ||
@@ -189,43 +199,103 @@ module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
 
     let userId = session.getUserId();
 
-
-
-    if(password) {
-        bcrypt.hash(password, 10)
-            .then( hashedPassword => {
-                User.userModifyPUT(userId,username, hashedPassword, email,
-                                   firstName, surname, birthDate)
-                    .then(function (response) {
-                        utils.writeJson(res, response);
-                    })
-                    .catch(function (response) {
-                        utils.writeJson(res,
-                                        {message: response.message},
-                                        response && response.errorCode || 500);
-                    });
-            })
-            .catch( err => {
-                console.error("Error while hashing the password!");
-                console.error(err);
-                utils.writeJson(res,
-                                {error: err, message: "Internal server error."},
-                                500);
-            });
-
-    } else {
-        User.userModifyPUT(userId,username, undefined, email,
+    User.userModifyPUT(userId,username, email,
                            firstName, surname, birthDate)
             .then(function (response) {
+                let userData = session.getSecureParameter('userData');
+                let currAddress = userData.address;
+                let updatedUserData = {};
+                updatedUserData = response[0];
+                updatedUserData.address = currAddress;
+                session.setSecureParameter('userData', updatedUserData);
                 utils.writeJson(res, response);
             })
-            .catch(function (response) {
-                utils.writeJson(res,
-                                {message: response.message},
-                                response && response.errorCode || 500);
-            });
-    }
+        .catch(function (response) {
+            console.log(response);
+            utils.writeJson(res,
+                            {message: "Internal server Error!"},
+                            response && response.errorCode || 500);
+        });
+
 };
+
+module.exports.userModifyPasswordPUT = function userModifyPasswordPUT (req, res, next) {
+    var old_password = req.swagger.params['old_password'].value;
+    var new_password = req.swagger.params['new_password'].value;
+    var confirm_new_password = req.swagger.params['confirm_new_password'].value;
+
+    if(!session.userIdExists()){
+        utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
+        return;
+    }
+
+    //controllo che le due password fornite siano uguali
+    if(new_password !== confirm_new_password){
+        utils.writeJson(res,
+                        {message: "The passwords do not match!"},
+                        400);
+        return;
+    }
+
+    //controllo che la password vecchia sia corretta
+    let username = session.getSecureParameter('userData').username;
+    let userId = session.getUserId();
+    User.userLoginPOST(username, old_password)
+        .then(response => {
+            let hashedPassword = response[0].password;
+
+            //verifico password
+            bcrypt.compare(old_password, hashedPassword)
+                .then(isPasswordRight => {
+
+                    if(isPasswordRight){ //password corretta, procedo con il salvataggio dell'userId in sessione
+
+                        bcrypt.hash(new_password, 10)
+                            .then( hashedNewPassword => {
+
+                                //modifico la password sul db
+                                User.userModifyPasswordPUT(userId,hashedNewPassword)
+                                    .then(function (response) {
+                                        console.log("Password modificata con successo.");
+                                        //SUCCESSO
+                                        utils.writeJson(res, response);
+                                    })
+                                    .catch( err => {
+                                        console.error("Error while updating password");
+                                        console.error(err);
+                                        utils.writeJson(res,
+                                                        {message: "Internal Server Error!"},
+                                                        500);
+                                    });
+                            })
+                            .catch( err => {
+                                console.error("Error while hashing the password!");
+                                console.error(err);
+                                utils.writeJson(res,
+                                                {error: err, message: "Internal server error."},
+                                                500);
+                            });
+                    } else {
+                        //vecchia password errata
+                        utils.writeJson(res,
+                                        {message:"Old password is wrong!"},
+                                        401);
+                    }
+                })
+                .catch( err => {
+                    utils.writeJson(res,
+                                    {message: "Internal Server Error"},
+                                    500);
+                });
+        })
+        .catch(err => {
+            console.log(err);
+            utils.writeJson(res,
+                            {message: "Internal Server Error"},
+                            500);
+        });
+};
+
 
 module.exports.userRegisterPOST = function userRegisterPOST (req, res, next) {
 
@@ -289,7 +359,12 @@ module.exports.userUsernameAvailableGET = function userUsernameAvailableGET (req
 
     User.userUsernameAvailableGET(username)
         .then(function (response) {
-            utils.writeJson(res, { message: "Username is available!" });
+            if(response.length === 0)
+                utils.writeJson(res, { message: "Username is available!" });
+            else
+                utils.writeJson(res,
+                                {message: "Username is not available!"},
+                                409);
         })
         .catch(function (response) {
             utils.writeJson(res, response, response && response.errorCode || 500);
