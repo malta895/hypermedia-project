@@ -15,7 +15,8 @@ $(document).ready(function () {
             console.log(res);
 
             if(res.userId){
-                console.log("Succesful Login! Redirecting to Home page...");
+                console.log("Succesful Login! Redirecting to Home page..."); +
+                
                 console.log(res.responseText);
                 location.href = '/index.html';
             }
