@@ -134,8 +134,9 @@ exports.cartRemoveDELETE = function(userId, bookId, quantity) {
                     .select('cart_id')
                     .where('cart.user', userId);
             })
+            .returning('*')
             .where('cart_book.book', bookId)
-            .then(() => resolve())
+            .then(response => resolve(response))
             .catch(err => reject(err));
     });
 };
@@ -195,7 +196,16 @@ exports.cartUpdatePUT = function (userId, bookId, quantity) {
                         .then(() => resolve());
                 }
             })
-            .catch(err => reject({error: err, errorCode: 500}));
+            .catch(err => {
+                if(err
+                   && err.code === "23503"
+                   && err.constraint === "cart_book_book_foreign")
+                    reject({message: "Book not found!", errorCode: 404});
+                else{
+                    console.error(err);
+                    reject({message: "Internal Server Error!", errorCode: 500});
+                }
+            });
     });
 };
 

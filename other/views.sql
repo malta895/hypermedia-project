@@ -74,18 +74,23 @@ OWNER TO CURRENT_USER;
 
 -- View: public.order_essentials
 
-DROP VIEW IF EXISTS public.order_essentials CASCADE;
+DROP VIEW IF EXISTS public.order_essentials;
 
 CREATE OR REPLACE VIEW public.order_essentials AS
 SELECT o.order_id,
+"user".user_id,
+o.payment_method,
+o.shipping_method,
 to_jsonb(ad.*) AS shipment_address,
+sum(b.price * cb.quantity::double precision) AS total_amount,
 jsonb_agg(to_jsonb(b.*)) AS books
 FROM "order" o
 LEFT JOIN address ad ON ad.address_id = o.shipment_address
 LEFT JOIN cart ON o.cart = cart.cart_id
 LEFT JOIN cart_book cb ON cb.cart = cart.cart_id
 LEFT JOIN book_essentials b ON b.book_id = cb.book
-GROUP BY o.order_id, ad.*;
+LEFT JOIN "user" ON cart."user" = "user".user_id
+GROUP BY "user".user_id, o.order_id, ad.*;
 
 ALTER TABLE public.order_essentials
 OWNER TO CURRENT_USER;

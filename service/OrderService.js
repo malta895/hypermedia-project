@@ -83,47 +83,6 @@ exports.orderDbSetup = function(database) {
 
 
 /**
- * Get shipment address of a order
- * Given an order id, returns the shipment address set to that order, if user is authorized to see it
- *
- * orderId Long The id of the order. Must be associated to the current logged in user
- * returns Address
- **/
-exports.orderAddressGET = function(orderId) {
-    return new Promise(function(resolve, reject) {
-        let query = sqlDb('order')
-            .join('address', 'address.address_id', 'order.shipment_address')
-            .where('order_id', orderId)
-            .then( rows => {
-                if(rows.length > 0)
-                    resolve(rows);
-                else
-                    reject({message: "Not found!", errorCode: 404});
-            });
-    });
-};
-
-/**
- * Get an order by id
- *
- * orderId Long 
- * returns Order
- **/
-exports.orderDetailsGET = function(orderId) {
-    return new Promise(function(resolve, reject) {
-        //sfrutto la sola view
-        let query = sqlDb('order_essentials')
-            .where('order_id', orderId)
-            .then( rows => {
-                if(rows.length > 0)
-                    resolve(rows[0]);
-                else
-                    reject({message: "Not found!", errorCode: 404});
-            });
-    });
-};
-
-/**
  * Place a new order
  * Place a new order from the cart
  *
@@ -132,75 +91,73 @@ exports.orderDetailsGET = function(orderId) {
  * zip_code String 
  * province String 
  * country String 
+ * shipping_method String 
+ * payment_method String 
  * firstName String  (optional)
  * lastName String  (optional)
  * addressStreetLine2 String  (optional)
  * no response value expected for this operation
  **/
-exports.orderPlacePOST = function(userId,addressStreetLine1,city,zip_code,province,country,firstName,lastName,addressStreetLine2) {
+exports.orderPlacePOST = function(userId, addressStreetLine1,city,zip_code,province,country,shipping_method,payment_method,firstName,lastName,addressStreetLine2) {
     return new Promise(function(resolve, reject) {
-        //verifico che esistano libri nel carrello
-        let query = sqlDb('cart')
+        //verificare che esista roba nel carrello
+        sqlDb('cart')
+            .join('cart_book', 'cart.cart_id', 'cart_book.cart')
             .where({
-                ordered: false,
-                user: userId
+                user: userId,
+                ordered: false
             })
-            .join('cart_book', 'cart_book.cart', 'cart.cart_id')
-            .catch(err => reject(err))
             .select('cart_id')
-            .then( rows => {
-                if (rows.length === 0){
-                    reject({message: "No items in the cart!",
-                            errorCode: 400
-                           });
-                } else {
-
-                    var cartId = rows[0].cart_id;
-
-                    //ricevo l'indirizzo, setto il carrello
-                    sqlDb.transaction(function(trx) {
-                        sqlDb('address')
-                            .transacting(trx)
-                            .insert({
-                                first_name: firstName,
-                                last_name: lastName,
-                                street_line1: addressStreetLine1,
-                                street_line2: addressStreetLine2,
-                                city: city,
-                                zip_code: zip_code,
-                                province: province,
-                                country: country
-                            })
-                            .returning('address_id')
-                            .then ( address_id => {
-                                return new Promise(function(resolve, reject){
-                                    sqlDb('order')
-                                        .transacting(trx)
-                                        .insert({
-                                            user_id: userId,
-                                            shipment_address: address_id[0], //viene ritornata una tupla, prendo il primo (e unico) elemento
-                                            order_date: new Date(),
-                                            cart: cartId
-                                        })
-                                    //TODO controllare che il carrello contenga robe
-                                        .then( res => {
-                                            resolve(res);
-                                        })
-                                        .catch( err => reject(err));
-                                });
-                            })
-                            .then(() => {
-                                return trx.commit()
-                                    .then(() => resolve());
-                            })
-                            .catch( err => {
-                                console.log("Error performing queries, rolling back transaction...");
-                                console.log(err);
-                                return trx.rollback()
-                                    .then(err => reject(err));
-                            });
-                    });
+            .groupBy('cart_id')
+            .then(response => {
+                console.log(response);
+                // inserire l'indirizzo
+                if(response.length < 1){
+                    console.log('no cart');
+                    return reject({message: "Cart is Empty!", errorCode: 404});
                 }
+                let cartId = response[0]['cart_id'];
+                return sqlDb('address')
+                    .insert({
+                        street_line1: addressStreetLine1,
+                        street_line2: addressStreetLine2,
+                        city: city,
+                        zip_code: zip_code,
+                        province: province,
+                        country: country,
+                        first_name: firstName,
+                        last_name: lastName
+                    })
+                    .returning('address_id')
+                    .then(response => {
+                        if(response.length !== 1){
+                            console.log('no address');
+                            return reject({});
+                        }
+                        console.log(response);
+                        let addressId = response[0];
+
+                        // inserire info sull'ordine
+                        return sqlDb('order')
+                            .insert({
+                                user_id: userId,
+                                shipment_address: addressId,
+                                shipping_method: shipping_method,
+                                payment_method: payment_method,
+                                cart: cartId,
+                                order_date: new Date()
+                            })
+                            .returning('order_id')
+                            .then(response => {
+                                resolve(response);
+                            })
+                        .catch(err => reject(err));
+
+                    })
+                    .catch(err => reject(err));
+            })
+            .catch(err => {
+                reject(err);
             });
 
 
@@ -215,7 +172,7 @@ exports.orderPlacePOST = function(userId,addressStreetLine1,city,zip_code,provin
  * limit Integer Maximum number of items per page. Default is 20 and cannot exceed 500. (optional)
  * returns Order
  **/
-exports.ordersGET = function(offset,limit) {
+exports.ordersGET = function(userId, offset,limit) {
     return new Promise(function(resolve, reject) {
         let query = sqlDb('order_essentials');
 
@@ -224,6 +181,8 @@ exports.ordersGET = function(offset,limit) {
 
         if(limit)
             query.limit(limit);
+
+        query.where('user_id', userId);
 
         query.then( rows => {
             resolve(rows);

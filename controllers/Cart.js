@@ -1,8 +1,8 @@
 'use strict';
 
-var utils = require('../utils/writer.js');
-var Cart = require('../service/CartService');
-var session = require('../utils/SessionManager');
+const utils = require('../utils/writer.js'),
+      Cart = require('../service/CartService'),
+      session = require('../utils/SessionManager');
 
 module.exports.cartEmptyDELETE = function cartEmptyDELETE (req, res, next) {
 
@@ -60,7 +60,13 @@ module.exports.cartRemoveDELETE = function cartRemoveDELETE (req, res, next) {
 
     Cart.cartRemoveDELETE(userId, bookId,quantity)
         .then(function (response) {
-            utils.writeJson(res, response);
+            console.log(response);
+            if(response.length === 0)
+                utils.writeJson(res,
+                                {message: "Given book wasn't in the cart!"},
+                                404);
+            else
+                utils.writeJson(res,{message: "Books removed!"});
         })
         .catch(function (response) {
             utils.writeJson(res, response, response.errorCode || 500);
