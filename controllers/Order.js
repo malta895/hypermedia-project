@@ -31,8 +31,11 @@ module.exports.orderPlacePOST = function orderPlacePOST (req, res, next) {
         })
         .catch(function (response) {
             console.error(response);
-            utils.writeJson(res,
-                            {message: response.message || "Internal Server Error!"},
+            if(response.errorCode === 404)
+                utils.writeJson(res, {message: "Cart is empty!"}, 404);
+            else
+                utils.writeJson(res,
+                            {message: "Internal Server Error!"},
                             response.errorCode || 500);
         });
 };

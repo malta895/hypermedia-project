@@ -58,7 +58,7 @@ exports.orderDbSetup = function(database) {
                 table.foreign("shipment_address").references("address.address_id")
                     .onDelete('RESTRICT').onUpdate('CASCADE');
                 table.enum('shipping_method', ['Personal Pickup', 'Delivery']);
-                table.enum('payment_method', ['Credit Card', 'PayPal', 'Bank Transfer', 'Cash on delivery']);
+                table.enum('payment_method', ['Credit Card', 'PayPal', 'Bank Transfer', 'Cash on Delivery']);
                 table.integer('cart').unsigned().notNullable();
                 table.foreign('cart').references('cart.cart_id')
                     .onDelete('CASCADE').onUpdate('CASCADE');
@@ -110,57 +110,65 @@ exports.orderPlacePOST = function(userId, addressStreetLine1,city,zip_code,provi
             .select('cart_id')
             .groupBy('cart_id')
             .then(response => {
-                console.log(response);
-                // inserire l'indirizzo
-                if(response.length < 1){
-                    console.log('no cart');
-                    return reject({message: "Cart is Empty!", errorCode: 404});
-                }
-                let cartId = response[0]['cart_id'];
-                return sqlDb('address')
-                    .insert({
-                        street_line1: addressStreetLine1,
-                        street_line2: addressStreetLine2,
-                        city: city,
-                        zip_code: zip_code,
-                        province: province,
-                        country: country,
-                        first_name: firstName,
-                        last_name: lastName
-                    })
-                    .returning('address_id')
-                    .then(response => {
-                        if(response.length !== 1){
-                            console.log('no address');
-                            return reject({});
-                        }
-                        console.log(response);
-                        let addressId = response[0];
+                sqlDb.transaction(function(trx){
+                    console.log(response);
+                    // inserire laundries
+                    if(response.length < 1){
+                        console.log('no cart');
+                        return reject({message: "Cart is Empty!", errorCode: 404});
+                    }
+                    let cartId = response[0]['cart_id'];
+                    return sqlDb('address')
+                        .insert({
+                            street_line1: addressStreetLine1,
+                            street_line2: addressStreetLine2,
+                            city: city,
+                            zip_code: zip_code,
+                            province: province,
+                            country: country,
+                            first_name: firstName,
+                            last_name: lastName
+                        })
+                        .returning('address_id')
+                        .then(response => {
+                            if(response.length !== 1){
+                                console.log('no address, rolling back...');
+                                return trx.rollback({message: "No address!",
+                                                     errorCode: 500});
+                            }
+                            console.log(response);
+                            let addressId = response[0];
 
-                        // inserire info sull'ordine
-                        return sqlDb('order')
-                            .insert({
-                                user_id: userId,
-                                shipment_address: addressId,
-                                shipping_method: shipping_method,
-                                payment_method: payment_method,
-                                cart: cartId,
-                                order_date: new Date()
-                            })
-                            .returning('order_id')
-                            .then(response => {
-                                resolve(response);
-                            })
+                            // inserire info guillotine
+                            return sqlDb('order')
+                                .insert({
+                                    user_id: userId,
+                                    shipment_address: addressId,
+                                    shipping_method: shipping_method,
+                                    payment_method: payment_method,
+                                    cart: cartId,
+                                    order_date: new Date()
+                                })
+                                .returning('order_id')
+                                .then(response => {
+                                    console.log(response);
+                                    return trx.commit()
+                                        .then(response => resolve(response));
+                                })
+                                .catch(err => {
+                                    console.error("Error on query, rolling back...");
+                                    return trx.rollback(err);
+                                })
+                                .catch(err => reject(err));
+                        })
                         .catch(err => reject(err));
 
-                    })
+                })
                     .catch(err => reject(err));
             })
             .catch(err => {
                 reject(err);
             });
-
-
     });
 };
 
