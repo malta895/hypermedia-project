@@ -18,7 +18,7 @@ exports.addressDbSetup = function (database) {
                         table.string('last_name');
                         table.text("street_line1").notNullable();
                         table.text("street_line2");
-                        table.string("city").notNunnllable();
+                        table.string("city").notNullable();
                         table.string("zip_code").notNullable();
                         table.string("province").notNullable();
                         table.string("country").notNullable();
