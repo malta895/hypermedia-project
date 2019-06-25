@@ -1,19 +1,35 @@
 'use strict';
+const dotenv = require('dotenv');
 
-var fs = require('fs'),
-    path = require('path'),
-    http = require('http'),
-    dotenv = require('dotenv');
+if(!process.env.HEROKU_ENV)
+    dotenv.config(); // in locale uso un file .env, recupero eventuali variabili d'ambiente in quel file
 
-dotenv.config(); // recupero le variabili d'ambiente
+//verifica environment
+if(!process.env.PORT){
+    console.error("\n\nERROR: No port specified! Verify that environment variable PORT exists!\n\n");
+    process.exit(1);
+}
 
-var utils = require('./utils/writer.js');
+if(!process.env.DATABASE_URL){
+    console.error("\n\nERROR: Can't find DATABASE_URL environment variable!\n\n");
+    process.exit(1);
+}
 
-var express = require('express');
-var app = express();
-var swaggerTools = require('swagger-tools');
-var jsyaml = require('js-yaml');
-var serverPort = process.env.PORT || 8080;
+if(!process.env.TOKEN_SECRET){
+    console.error("\n\nERROR: Can't find TOKEN_SECRET environment variable! Application would be insecure!\n\n");
+    process.exit(1);
+}
+
+const fs = require('fs'),
+      path = require('path'),
+      http = require('http'),
+      utils = require('./utils/writer.js');
+
+const express = require('express'),
+      app = express(),
+      swaggerTools = require('swagger-tools'),
+      jsyaml = require('js-yaml'),
+      serverPort = process.env.PORT;
 
 let { createSession } = require("./utils/SessionManager");
 
@@ -34,7 +50,7 @@ var spec = fs.readFileSync(path.join(__dirname,'api/swagger.yaml'), 'utf8');
 var swaggerDoc = jsyaml.safeLoad(spec);
 
 //Salvo il file zip della repo e lo rendo disponibile staticamente
-if(!process.env.NOZIP){
+if(process.env.SERVEZIP && process.env.GITHUB_TOKEN && process.env.GITHUB_URL){
     downloadRepoZip()
         .then(() =>{
             console.info('Repo Zip saved! Serving it on /backend/app.zip');
@@ -107,7 +123,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
             });
         })
         .catch((err) => {
-            console.log(err);
+            console.error(err);
             console.error("Impossibile connettersi al db. L'applicazione sarà chiusa");
         });
 });

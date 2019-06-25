@@ -1,11 +1,12 @@
 'use strict';
 
+const Promise = require("bluebird");
 var sqlDb;
 
 exports.addressDbSetup = function (database) {
     return new Promise(function (resolve, reject) {
         sqlDb = database;
-        var tableName = "address";
+        const tableName = "address";
         console.log("Checking if %s table exists", tableName);
         database.schema.hasTable(tableName)
             .then(exists => {

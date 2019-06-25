@@ -14,15 +14,13 @@ let { reviewDbSetup } = require("./ReviewService");
 let { cartDbSetup, cartBooksDbSetup } = require("./CartService");
 
 
-
-
 exports.setupDataLayer = function (dbUrl) {
     return new Promise((resolve, reject) => {
         console.log("Setting up data layer...");
         console.log("Database url: " +  dbUrl);
 
         if(!dbUrl){
-            reject("La variabile di sistema DATABASE_URL non esiste!");
+            reject("No database url specified!");
             return;
         }
 
@@ -30,7 +28,7 @@ exports.setupDataLayer = function (dbUrl) {
             client: "pg",
             connection: dbUrl,
             ssl: true,
-            debug: true //TODO cambiare in false a progetto finito
+            debug: process.env.NODE_ENV === "development"
         });
 
         sqlDb.select(1) // query di test
@@ -77,8 +75,8 @@ la creazione della tabella ${tableName}`);
                 });
             })
             .catch((err) =>{
-                console.log(err);
-                reject("Errore connessione al DB. Query di prova non riuscita.");
+                console.error(err);
+                reject("Test query execution has failed. Please check database connectivity.");
             });
     });
 };

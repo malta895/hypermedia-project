@@ -1,38 +1,42 @@
 'use strict';
 
+const Promise = require('bluebird');
+
 var sqlDb;
-var tableName = "book";
+const tableName = "book";
 
 exports.bookDbSetup = function(database) {
-    sqlDb = database;
-    console.log("Checking if %s table exists", tableName);
-    if(process.env.HYP_DROP_ALL)
-        database.schema.dropTableIfExists(tableName);
-    return database.schema.hasTable(tableName).then(exists => {
-        if (!exists) {
-            console.log("It doesn't so we create it");
-            return database.schema.createTable(tableName, table => {
-                table.increments("book_id");
-                table.string("isbn", 15).notNullable().unique();
-                table.text("title").notNullable();
-                table.double("price").notNullable();
-                table.string("price_currency", 5);
-                table.text("picture").notNullable();
-                table.text("abstract").notNullable()
-                    .defaultTo("Lorem ipsum");// TODO mettere qualcosa di sensato
-                table.text("interview").notNullable()
-                    .defaultTo("Lorem ipsum");// TODO mettere qualcosa di sensato
-                table.enum("status", ["Available", "Out of stock"])
-                    .defaultTo("Available");
-                table.integer("publisher").unsigned();
-                table.float("average_rating").nullable();
-                table.foreign("publisher").references("publisher.publisher_id");
-            });
-        } else {
-            console.log(`Table ${tableName} already exists, skipping...`);
-            return Promise.resolve();
-        }
+    return new Promise(function(resolve, reject){
+        sqlDb = database;
+        console.log("Checking if %s table exists", tableName);
+        if(process.env.HYP_DROP_ALL)
+            database.schema.dropTableIfExists(tableName);
+        return database.schema.hasTable(tableName).then(exists => {
+            if (!exists) {
+                console.log("It doesn't so we create it");
+                return database.schema.createTable(tableName, table => {
+                    table.increments("book_id");
+                    table.string("isbn", 15).notNullable().unique();
+                    table.text("title").notNullable();
+                    table.double("price").notNullable();
+                    table.string("price_currency", 5);
+                    table.text("picture").notNullable();
+                    table.text("abstract").notNullable()
+                        .defaultTo("Lorem ipsum");// TODO mettere qualcosa di sensato
+                    table.text("interview");
+                    table.enum("status", ["Available", "Out of stock"])
+                        .defaultTo("Available");
+                    table.integer("publisher").unsigned();
+                    table.float("average_rating").nullable();
+                    table.foreign("publisher").references("publisher.publisher_id");
+                });
+            } else {
+                console.log(`Table ${tableName} already exists, skipping...`);
+                return resolve();
+            }
+        });
     });
+
 };
 
 exports.similarBooksDbSetup = function(database) {

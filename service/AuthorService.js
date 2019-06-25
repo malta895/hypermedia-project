@@ -1,5 +1,7 @@
 'use strict';
 
+const Promise = require('bluebird');
+
 var sqlDb;
 
 exports.authorDbSetup = function(database) {

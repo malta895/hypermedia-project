@@ -289,7 +289,7 @@ module.exports.userModifyPasswordPUT = function userModifyPasswordPUT (req, res,
                 });
         })
         .catch(err => {
-            console.log(err);
+            console.error(err);
             utils.writeJson(res,
                             {message: "Internal Server Error"},
                             500);
