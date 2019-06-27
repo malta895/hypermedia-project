@@ -31,25 +31,7 @@ exports.bookDbSetup = function(database) {
                     table.float("average_rating").nullable();
                     table.foreign("publisher").references("publisher.publisher_id");
                 })
-                    .then(() => {
-                        //BATCH INSERT
-                        let rows = JSON.parse(fs.readFileSync("./other/db_dumps/" + tableName + ".json").toString());
-                        return sqlDb.batchInsert(tableName, rows)
-                            .returning('*')
-                            .then( rows => {
-                                console.log("Inserted " + rows.length + " rows into " + tableName);
-                            })
-                            .then(() => {
-                                tableName = "theme_book";
-                                //BATCH INSERT
-                                let rows = JSON.parse(fs.readFileSync("./other/db_dumps/" + tableName + ".json").toString());
-                                return sqlDb.batchInsert(tableName, rows)
-                                    .returning('*')
-                                    .then( rows => {
-                                        console.log("Inserted " + rows.length + " rows into " + tableName);
-                                    });
-                            });
-                    });
+                    
             } else {
                 console.log(`Table ${tableName} already exists, skipping...`);
                 return resolve();

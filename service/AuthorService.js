@@ -19,15 +19,7 @@ exports.authorDbSetup = function(database) {
                     table.text('biography');
                     table.string('picture');
                 })
-                    .then(() => {
-                        //BATCH INSERT
-                        let rows = JSON.parse(fs.readFileSync("./other/db_dumps/" + tableName + ".json").toString());
-                        return sqlDb.batchInsert(tableName, rows)
-                            .returning('*')
-                            .then( rows => {
-                                console.log("Inserted " + rows.length + " rows into " + tableName);
-                            });
-                    })
+
                     .then(res => resolve(res))
                     .catch(err => reject(err));
             } else {
@@ -58,15 +50,7 @@ exports.authorBookDbSetup = function(database) {
                         .onUpdate("CASCADE").onDelete("CASCADE");
                     table.unique(['book', 'author'], 'book_author_unique');
                 })
-                    .then(() => {
-                        //BATCH INSERT
-                        let rows = JSON.parse(fs.readFileSync("./other/db_dumps/" + tableName + ".json").toString());
-                        return sqlDb.batchInsert(tableName, rows)
-                            .returning('*')
-                            .then( rows => {
-                                console.log("Inserted " + rows.length + " rows into " + tableName);
-                            });
-                    })
+
                     .then(res => resolve(res))
                     .catch(err => reject(err));
             } else {

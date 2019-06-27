@@ -18,15 +18,7 @@ exports.publisherDbSetup = function(database) {
                 table.foreign("hq_location").references("address.address_id");
                 table.string("name").notNullable();
             })
-                .then(() => {
-                    //BATCH INSERT
-                    let rows = JSON.parse(fs.readFileSync("./other/db_dumps/" + tableName + ".json").toString());
-                    return sqlDb.batchInsert(tableName, rows)
-                        .returning('*')
-                        .then( rows => {
-                            console.log("Inserted " + rows.length + " rows into " + tableName);
-                        });
-                });
+
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
             return Promise.resolve();

@@ -19,18 +19,7 @@ exports.themeDbSetup = function(database) {
                 table.string("name").notNullable();
                 table.text("description");
             })
-                .then(() => {
-                    //BATCH INSERT
-                    console.log("reading file...");
-                    let rows = JSON.parse(fs.readFileSync("./other/db_dumps/" + tableName + ".json").toString());
-                    console.log(rows);
-                    console.log("inserting table...");
-                    return sqlDb.batchInsert(tableName, rows)
-                        .returning('*')
-                        .then( rows => {
-                            console.log("Inserted " + rows.length + " rows into " + tableName);
-                        });
-                });
+
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
             return Promise.resolve();
