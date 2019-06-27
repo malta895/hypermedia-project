@@ -96,20 +96,20 @@ $(document).ready(function () {
         //add event listener to the buttons
         
 
-
-
-    });
-    $('.addCart').click(function () {
-        console.log('remove');
-        id = $(this).attr('id');
-        $.ajax({
-            url: '/api/cart/add/book/' + id,
-            type: 'PUT',
-            success: function (response) {
-                //TODO IMPLEMENTARE
-            }
+        $('.addCart').click(function () {
+            console.log('remove');
+            id = $(this).attr('id');
+            $.ajax({
+                url: '/api/cart/add/book/' + id,
+                type: 'PUT',
+                success: function (response) {
+                    //TODO IMPLEMENTARE
+                }
+            });
         });
+
     });
+    
     
 });
 

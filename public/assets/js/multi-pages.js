@@ -18,7 +18,16 @@ $(document).ready(function () {
         $('.logout').html('Logout')
         $('.signin').hide()
         $('.myaccount').html(data.first_name + ' ' + data.surname);
-        
+        $.getJSON('/api/cart', function (data) {  // /api/cart GET CART
+            console.log(data)
+            
+
+
+
+
+
+
+        });
 
     }).fail(function (res) {
         $('.logout').hide()
@@ -26,7 +35,9 @@ $(document).ready(function () {
         $('.signin').html('Sign in')
 
     }
-        );
+    );
+
+ 
         
         
 
