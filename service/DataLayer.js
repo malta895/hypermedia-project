@@ -61,8 +61,9 @@ exports.setupDataLayer = function (dbUrl) {
                     p = p
                         .then(() => table(sqlDb)) // creo la tabella
                         .catch((tableName) => {
-                            console.error(`Errore durante
-la creazione della tabella ${tableName}`);
+                            console.error(`Errore durante la creazione della tabella ${tableName}`);
+                            console.error("Cannot create some views, exiting...");
+                            process.exit(1);
                         });
                 });
 
@@ -71,7 +72,11 @@ la creazione della tabella ${tableName}`);
 
                     return sqlDb.raw(viewsSql)
                         .then(res => resolve(res))
-                        .catch(err => reject(err));
+                        .catch(err => {
+                            console.error(err);
+                            console.error("Cannot create some views, exiting...");
+                            process.exit(1);
+                        });
                 });
             })
             .catch((err) =>{

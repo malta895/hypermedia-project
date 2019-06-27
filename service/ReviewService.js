@@ -1,5 +1,7 @@
 'use strict';
 
+const fs = require('fs');
+
 var sqlDb = require('knex');
 
 let upd_avg_trig_func_new =

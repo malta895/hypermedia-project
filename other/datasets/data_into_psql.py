@@ -48,11 +48,13 @@ def insert_themes(cur):
         THEMES[i] = (theme_id, theme_name)
         i += 1
 
-
-#HYP_DATABASE_URL = "postgres://gbafgxzzrptzkl:1701140e8503e989e9eaf6fed09240bd7ae5577b4552ac61bc628414778620a6@ec2-54-247-70-127.eu-west-1.compute.amazonaws.com:5432/dd82s2jphcruh9"
+#HYP_DATABASE_URL = 'postgres://gbafgxzzrptzkl:1701140e8503e989e9eaf6fed09240bd7ae5577b4552ac61bc628414778620a6@ec2-54-247-70-127.eu-west-1.compute.amazonaws.com:5432/dd82s2jphcruh9'
 
 def db_connect():
-    db_url = os.getenv('DATABASE_URL')
+    db_url = None
+    db_url = os.getenv('DATABASE_URL');
+
+#    db_url = os.getenv('DATABASE_URL')
     # db_url = 'postgres://postgres:root@localhost:5432/hypermedia'
     result = urlparse(db_url)
     username = result.username
@@ -69,16 +71,17 @@ def db_connect():
 
 
 def insert_author(cur, name, book_id):
-    query = "SELECT * FROM author WHERE name = %s"
+    query = "SELECT author_id FROM author WHERE name = %s"
     data = (name, )
     cur.execute(query, data)
-    if len(cur.fetchall()) == 0:
+    author_id = cur.fetchone()
+    if author_id == None:
         query = "INSERT INTO author(name) VALUES(%s) RETURNING author_id"
         cur.execute(query, data)
-        author_id = cur.fetchall()[0]
-        query = "INSERT INTO author_book(book, author) VALUES(%s, %s) ON CONFLICT DO NOTHING"
-        data = (book_id, author_id)
-        cur.execute(query, data)
+        author_id = cur.fetchone()
+    query = "INSERT INTO author_book(book, author) VALUES(%s, %s) ON CONFLICT DO NOTHING"
+    data = (book_id, author_id)
+    cur.execute(query, data)
 
 
 
@@ -145,6 +148,7 @@ for index, row in df.iterrows():
     if row['book_id'] > 5000:
         break
 
+
     if row['original_title'] == 'NaN':
         continue
 
@@ -155,6 +159,7 @@ for index, row in df.iterrows():
 
     publisher_n = randint(0, len(PUBLISHERS) - 1)
     publisher_id = PUBLISHERS[publisher_n][0]
+
     res = insert_book (
         cur,
         row['book_id'],
@@ -167,10 +172,12 @@ for index, row in df.iterrows():
     if len(res) == 0: # la riga non è stata inserita
         continue
 
-    authors_names = row['authors'].split(',')
 
     assign_genre(cur, row['book_id'])
     assign_theme(cur, row['book_id'])
+
+
+    authors_names = row['authors'].split(',')
 
     for author_name in authors_names:
         insert_author(

@@ -1,5 +1,6 @@
 'use strict';
 
+const fs = require('fs');
 var sqlDb;
 
 exports.genreDbSetup = function(database) {
@@ -15,7 +16,18 @@ exports.genreDbSetup = function(database) {
                 table.increments("genre_id");
                 table.string("name").notNullable();
                 table.text("description");
-            });
+            })
+                .then(() => {
+                    //BATCH INSERT
+                    console.log("Inserting rows...");
+                    let rows = JSON.parse(fs.readFileSync("./other/db_dumps/" + tableName + ".json").toString());
+                    console.log(rows);
+                    return sqlDb.batchInsert(tableName, rows)
+                        .returning('*')
+                        .then( rows => {
+                            console.log("Inserted " + rows.length + " rows into " + tableName);
+                        });
+                });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
             return Promise.resolve();
@@ -41,10 +53,45 @@ exports.genreBookDbSetup = function(database) {
                 table.foreign("genre").references("genre.genre_id")
                     .onUpdate("CASCADE").onDelete("CASCADE");
                 table.unique(['book', 'genre'], "book_genre_unique");
-            });
+            })
+                .then(() => {
+                    //BATCH INSERT
+                    let rows = JSON.parse(fs.readFileSync("./other/db_dumps/" + tableName + ".json").toString());
+                    return sqlDb.batchInsert(tableName, rows)
+                        .returning('*')
+                        .then( rows => {
+                            console.log("Inserted " + rows.length + " rows into " + tableName);
+                        });
+                });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
             return Promise.resolve();
         }
     });
 };
+
+
+/**
+ * Get the list of genres
+ *
+ * offset Integer Pagination offset. Default is 0. (optional)
+ * limit Integer Maximum number of items per page. Default is 20 and cannot exceed 500. (optional)
+ * returns List
+ **/
+exports.genresGET = function(offset,limit) {
+    return new Promise(function(resolve, reject) {
+        let query = sqlDb('genre');
+
+        if(offset)
+            query.offset(offset);
+
+        if(limit)
+            query.limit(limit);
+
+        query.then(rows => {
+            resolve(rows);
+        })
+            .catch(err => reject(err));
+    });
+};
+

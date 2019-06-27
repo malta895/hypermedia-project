@@ -1,5 +1,7 @@
 'use strict';
 
+const fs = require('fs');
+
 const deleteOnZeroQuantityTrigger = `
 DROP TRIGGER IF EXISTS delete_on_zero_quantity ON public.cart_book;
 

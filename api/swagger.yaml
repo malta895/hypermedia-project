@@ -1145,6 +1145,66 @@ paths:
           description: "A review from the current user already exists on the given\
             \ book"
       x-swagger-router-controller: "Review"
+  /themes:
+    get:
+      tags:
+      - "theme"
+      summary: "Get the list of themes"
+      operationId: "themesGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "offset"
+        in: "query"
+        description: "Pagination offset. Default is 0."
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Maximum number of items per page. Default is 20 and cannot exceed\
+          \ 500."
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Theme"
+        404:
+          description: "No themes found!"
+      x-swagger-router-controller: "Theme"
+  /genres:
+    get:
+      tags:
+      - "genre"
+      summary: "Get the list of genres"
+      operationId: "genresGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "offset"
+        in: "query"
+        description: "Pagination offset. Default is 0."
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Maximum number of items per page. Default is 20 and cannot exceed\
+          \ 500."
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Genre"
+        404:
+          description: "No genres found!"
+      x-swagger-router-controller: "Genre"
 definitions:
   User:
     type: "object"

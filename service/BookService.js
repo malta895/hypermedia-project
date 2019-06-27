@@ -1,9 +1,10 @@
 'use strict';
 
 const Promise = require('bluebird');
+const fs = require('fs');
 
 var sqlDb;
-const tableName = "book";
+var tableName = "book";
 
 exports.bookDbSetup = function(database) {
     return new Promise(function(resolve, reject){
@@ -29,7 +30,26 @@ exports.bookDbSetup = function(database) {
                     table.integer("publisher").unsigned();
                     table.float("average_rating").nullable();
                     table.foreign("publisher").references("publisher.publisher_id");
-                });
+                })
+                    .then(() => {
+                        //BATCH INSERT
+                        let rows = JSON.parse(fs.readFileSync("./other/db_dumps/" + tableName + ".json").toString());
+                        return sqlDb.batchInsert(tableName, rows)
+                            .returning('*')
+                            .then( rows => {
+                                console.log("Inserted " + rows.length + " rows into " + tableName);
+                            })
+                            .then(() => {
+                                tableName = "theme_book";
+                                //BATCH INSERT
+                                let rows = JSON.parse(fs.readFileSync("./other/db_dumps/" + tableName + ".json").toString());
+                                return sqlDb.batchInsert(tableName, rows)
+                                    .returning('*')
+                                    .then( rows => {
+                                        console.log("Inserted " + rows.length + " rows into " + tableName);
+                                    });
+                            });
+                    });
             } else {
                 console.log(`Table ${tableName} already exists, skipping...`);
                 return resolve();
@@ -53,7 +73,16 @@ exports.similarBooksDbSetup = function(database) {
                 table.integer("book2").unsigned().notNullable();
                 table.foreign("book2").references("book.book_id");
                 table.unique(['book1', 'book2'], "book1_book2_unique");
-            });
+            })
+                // .then(() => {
+                //     //BATCH INSERT
+                //     let rows = fs.readFileSync("./other/db_dumps/" + tableName + ".json").toString();
+                //     return sqlDb.batchInsert(tableName, rows)
+                //         .returning('*')
+                //         .then( rows => {
+                //             console.log("Inserted " + rows.length + " rows into " + tableName);
+                //         });
+                // });
         } else {
             console.log(`Table ${tableName} already exists, skipping...`);
             return Promise.resolve();
@@ -107,17 +136,39 @@ exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price
         if(iSBN)
             query.where('isbn', 'like', `%${iSBN}%`);
 
-        if(publishers) //cerco nel jsonb
+        if(publishers) //ceca nel snob
             query.where(sqlDb.raw("(publisher -> 'publisher_id')::integer"), 'in', publishers);
 
-        if(authors)
-            query.where('author', 'in', authors);
+        if(authors){
+            authors.forEach(function (el){
+                query.where(el, 'in', function(){
+                    this.select('author')
+                        .from('author_book')
+                        .whereRaw('book = book_id')
+                        .catch(err => reject(err));
+                });
+            });
+        }
 
-        if(genre)
-            query.where('book_genre.genre', 'in', genre);
+        if(genre){
+            genre.forEach(function (el){
+                query.where(el, 'in', function(){
+                    this.select('genre')
+                        .from('book_genre')
+                        .whereRaw('book_genre.book = book_id');
+                });
+            });
+        }
 
-        if(themes)
-            query.where('book_theme.theme', 'in', themes);
+        if(themes){
+            themes.forEach(function (el){
+                query.where(el, 'in', function(){
+                    this.select('theme')
+                        .from('book_theme')
+                        .whereRaw('book_theme.book = book_id');
+                });
+            });
+        }
 
         if (offset)
             query.offset(offset);
