@@ -17,48 +17,11 @@ var getUrlParameter = function getUrlParameter(sParam) {
         }
     }
     return undefined;
-};
+}
+var routeFilter='/api/books?';
 
 $(document).ready(function () {
-    $.getJSON('/api/books?limit=20&offset=40', function (data) {  // /api/books GET ALL BOOKS
 
-        for (i = 0; i < data.length; i++) {
-            var id = data[i].book_id;
-            var title = data[i].title;
-            var authors = data[i].authors;
-            var price = data[i].price;
-            var picture = data[i].picture;
-            var genre = data[i].genre;
-            var elem = '';
-            elem += '<div class="col-sm-4 col-xs-6" id="'+id+'">';
-            elem += '<article class="product-item">';
-            elem += '<div class="row">';
-            elem += '<div class="col-sm-3">';
-            elem += '<div class="product-overlay">';
-            elem += '<div class="product-mask"></div>';
-            elem += '<a href="pages/single-product.html?id='+id+'" class="product-permalink"></a><img src="'+picture+'" width="262.5" height="350" class="img-responsive" alt="">';
-            elem += '<img src="' + picture +'" class="img-responsive product-image-2" alt="" width="262.5" height="350"></div></div>';
-            elem += '<div class="col-sm-9"><div class="product-body">';
-            elem += '<h3>'+title+'</h3>';
-            elem += '<div class="product-rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></div>';
-            elem += '<span class="price"><ins><span class="amount">'+currencies.EUR+price+'</span></ins></span>';
-            elem += '<div class="buttons"><button class="btn btn-primary btn-sm add-to-cart addCart" id="' + id +'"><i class="fa fa-shopping-cart"></i>Add to cart</a><a href="" class="btn btn-primary btn-sm"><i class="fa fa-heart"></i></a></div>';
-            elem += '</div>';
-            elem += '</div>';
-            elem += '</div>';
-            elem += '</article>';
-            elem += '</div>';
-
-
-            $("#products").append(elem);
-
-        }
-
-        
-
-
-
-    });
     $.getJSON('/api/books?limit=20&offset=40', function (data) {  // /api/books GET ALL BOOKS
 
         for (i = 0; i < data.length; i++) {
@@ -100,14 +63,102 @@ $(document).ready(function () {
             console.log('remove');
             id = $(this).attr('id');
             $.ajax({
-                url: '/api/cart/add/book/' + id,
+                url: '/api/books?limit=20&offset=40',
                 type: 'PUT',
                 success: function (response) {
                     //TODO IMPLEMENTARE
                 }
             });
         });
+        $('.widget-genre input:checkbox').on('change',function () {
+            value = $(this).val();
+            console.log(value);
+            if ($(this).is(':checked')) {
+                console.log('vero')
 
+                routeFilter += 'genre=' + value + '&';
+
+            } else if (!$(this).is(':checked')) {
+                console.log('false')
+                
+                
+                routeFilter=routeFilter.replace('genre=' + value + '&', '');
+            }
+            
+            $.ajax({
+                url: routeFilter,
+                type: 'GET',
+                success: function (response) {
+                    //TODO IMPLEMENTARE
+                }
+            });
+        });
+        /*$('.widget-best input:checkbox').click(function () {
+            value = $(this).val();
+            console.log(value);
+            $.ajax({
+                url: '/api/cart/add/book/' + id,
+                type: 'GET',
+                success: function (response) {
+                    //TODO IMPLEMENTARE
+                }
+            });
+        });*/
+        $('.widget-themes input:checkbox').on('change', function () {
+            value = $(this).val();
+            console.log(value);
+            if ($(this).is(':checked')) {
+
+                routeFilter += 'themes=' + value + '&';
+
+            } else if (!$(this).is(':checked')) {
+
+
+                routeFilter =routeFilter.replace('themes=' + value + '&', '');
+                console.log(routeFilter)
+            }
+            $.ajax({
+                url: routeFilter,
+                type: 'GET',
+                success: function (response) {
+                    //TODO IMPLEMENTARE
+                }
+            });
+        });
+
+
+
+    });
+    $.getJSON('/api/themes', function (data) {
+
+        for (i = 0; i < data.length; i++) {
+            var id = data[i].theme_id;
+            var name = data[i].name;
+            var elem = '';   
+            let index = i + 1;
+            elem += '<div class="checkbox">';
+            elem += '<input id="themes'+index+'" type="checkbox" value="'+id+'">';
+            elem += '<label for="themes' + index +'">' + name +'</label></div>';
+
+
+            $("#theme").append(elem);
+
+        }
+    });
+    $.getJSON('/api/genres', function (data) {
+        for (i = 0; i < data.length; i++) {
+            var id = data[i].genre_id;
+            var name = data[i].name;
+            var elem = '';
+            let index=i+1
+            elem += '<div class="checkbox">';
+            elem += '<input id="genre' + index +'" type="checkbox" value="' + id + '">';
+            elem += '<label for="genre' + index +'">' + name + '</label></div>';
+
+
+            $("#genre").append(elem);
+
+        }
     });
     
     
