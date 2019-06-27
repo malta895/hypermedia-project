@@ -82,8 +82,9 @@
                     </div>
                     <div class="col-sm-7 text-right">
                         <ul class="list-inline links">
-                            <li><a href="my-account.html">My account</a></li>
-                            <li><a href="signin.html">Logout</a></li>
+                            <li><a href="my-account.html" class="myaccount"></a></li>
+                            <li><a href="signin.html" class="logout"></a></li>
+                            <li><a href="signin.html" class="signin"></a></li>
                         </ul>
                     </div>
                 </div>
@@ -270,38 +271,8 @@
                         <div role="tabpanel" class="tab-pane active in" id="reviews">
 
                             <div class="comments">
-
                                 <!-- REVIEW - START -->
-                                <div class="media">
-                                    <div class="media-body">
-                                        <h4 class="media-heading">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            Meraviglioso
-                                        </h4>
-                                        <span class="date">20 July 2015</span> - <span class="name">Alessandro</span>
-                                        <p>Bello da dioBello da dioBello da dioBello da dioBello da dioBello da dioBello da dioBello da dioBello da dioBello da dio</p>
-                                    </div>
-                                </div>
-                                <!-- REVIEW - END -->
-                                <!-- REVIEW - START -->
-                                <div class="media">
-                                    <div class="media-body">
-                                        <h4 class="media-heading">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            Meraviglioso
-                                        </h4>
-                                        <span class="date">20 July 2015</span> - <span class="name">Alessandro</span>
-                                        <p>Bello da dioBello da dioBello da dioBello da dioBello da dioBello da dioBello da dioBello da dioBello da dioBello da dio</p>
-                                    </div>
-                                </div>
+                                y
                                 <!-- REVIEW - END -->
 
                             </div>
@@ -473,31 +444,31 @@
                             <div class="row">
                                 <div class="form-group comment-form-author col-sm-6">
                                     <label for="author">Title</label>
-                                    <input class="form-control" id="author" name="author" type="text" required value="" placeholder="Enter review title">
+                                    <input class="form-control" id="author" name="title" type="text" required value="" placeholder="Enter review title">
                                 </div>
                                 <div class="form-group comment-form-email col-sm-6">
                                     <label for="email">Rating<span class="required">*</span></label>
                                     <br />
                                     <label>
-                                        <input type="radio" name="test" value="1" checked>
+                                        <input type="radio" name="rating" value="1" checked>
                                         <i class="fa fa-star-o"></i>
                                     </label>
 
                                     <label>
-                                        <input type="radio" name="test" value="2">
+                                        <input type="radio" name="rating" value="2">
                                         <i class="fa fa-star-o"></i>
                                     </label>
                                     <label>
-                                        <input type="radio" name="test" value="3">
+                                        <input type="radio" name="rating" value="3">
                                         <i class="fa fa-star-o"></i>
                                     </label>
 
                                     <label>
-                                        <input type="radio" name="test" value="4">
+                                        <input type="radio" name="rating" value="4">
                                         <i class="fa fa-star-o"></i>
                                     </label>
                                     <label>
-                                        <input type="radio" name="test" value="5">
+                                        <input type="radio" name="rating" value="5">
                                         <i class="fa fa-star-o"></i>
                                     </label>
 
@@ -505,7 +476,7 @@
                             </div>
                             <div class="form-group comment-form-comment">
                                 <label for="comment">Comment</label>
-                                <textarea class="form-control" id="comment" name="comment" required placeholder="Enter your comment"></textarea>
+                                <textarea class="form-control" id="comment" name="text" required placeholder="Enter your comment"></textarea>
                             </div>
                             <button class="btn btn-primary" type="submit"><i class="fa fa-check"></i>Submit</button>
                         </form>

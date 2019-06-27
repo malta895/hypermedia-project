@@ -79,11 +79,20 @@ $(window).on("load",function () {
             var user = data[i].user;
             var rating = data[i].rating;
             var elem = '';
-            elem += '<div class="media"> <div class="media-left"> <img class="media-object" alt="" src="../assets/images/default-avatar.png">';
-            elem += '</div> <div class="media-body"> <h3 class="media-heading">'+user.username+'</h3>';
-            elem += '<div class="meta"> <span class="date">' + review.date + '</span> <a data-toggle="modal" data-target="#add-review">Reply</a> </div>';
+            var d = '';                
+            for (i = 1; i <=5; i++) {
+                if (i <= rating) {
+                    d += '<i class="fa fa-star"></i>'
+                } else {
+                    d +='<i class="fa fa-star-o"></i>'
+                }
+
+            }
+            elem += '<div class="media">';
+            elem += '<div class="media-body"> <h3 class="media-heading">'+d+' '+title+'</h3>';
+            elem += '<div class="meta"> <span class="date">' + review.date_published + '</span></div>';
             elem += '<p>' + review.text + '</p> </div> </div>';
-            $("#comments").append(elem);
+            $(".comments").append(elem);
         }
 
 
@@ -131,4 +140,42 @@ $(window).on("load",function () {
 
 
     });
+
+    $('.modal-body > form').on('submit', function (e) {
+        e.preventDefault();
+
+
+        let formData = $(this).serialize();
+        $.post('/api/books/'+id+'/reviews/add', formData, function (res) {
+
+            console.log('SUCCESS');
+
+            console.log(res);
+
+            
+
+
+        }, 'json')
+            .fail(res => {
+
+                console.log('FAIL!');
+
+                if (res.status === 401) {
+                    console.log("Login Failed!");
+                    //TODO mostrare errore da qualche parte
+                } else if (res.status === 400) {
+                    console.log("Already logged in!");
+                } else {
+                    console.log("Unknown error!");
+                }
+
+                //TODO GESTIRE ERRORE
+            });
+
+
+
+
+
+    });
+
 });

@@ -25,7 +25,7 @@ $(window).on("load", function () {
             var picture = data[i].picture;
             var bio = data[i].biography;
             var elem = '';
-            $("#name").html(name + surname);   
+            $("#name").html(name);   
             $("#bio").html(bio);               
             var img = '<div class="item"><img src="' + picture + '" id="img" class="img - responsive" alt=""></div>';
             $("#pic").append(img);
