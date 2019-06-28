@@ -96,10 +96,6 @@ paths:
         items:
           type: "integer"
           format: "int64"
-      - name: "best_seller"
-        in: "query"
-        description: "If true returns bestsellers only"
-        type: "boolean"
       - name: "offset"
         in: "query"
         description: "Pagination offset. Default is 0."
@@ -186,6 +182,46 @@ paths:
                 description: "Array containing the themes of the book"
         404:
           description: "Book not found"
+
+  /books/monthBestseller:
+    get:
+      tags:
+      - "book"
+      summary: "Get bestsellers of a month"
+      description: "Get a list of bestsellers of a given month"
+      operationId: "bestsellerGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "month_date"
+        in: "query"
+        type: "string"
+        format: "date"
+        required: false
+        description: "Bestseller in the month of the specified date.\
+        Defaults to current month"
+      - name: "offset"
+        in: "query"
+        description: "Pagination offset. Default is 0."
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Maximum number of items per page. Default is 20 and cannot exceed\
+          \ 500."
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "A collection of books"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Book"
+        404:
+          description: "No book sold this mont!"
+
+
 
   /books/{bookId}/related:
     get:
