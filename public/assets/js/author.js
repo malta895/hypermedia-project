@@ -23,5 +23,17 @@ $(document).ready(function () {
 
 
     });
+
+    $('.update-cart').click(function () {
+        console.log('remove');
+        id = $(this).attr('id');
+        $.ajax({
+            url: '/api/cart/add/book/' + id,
+            type: 'PUT',
+            success: function (response) {
+
+            }
+        });
+    });
 });
 

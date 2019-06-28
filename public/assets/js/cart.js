@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $.getJSON('/api/cart', function (data) {  // /api/cart GET CART
              
-
+        total=0
         for (i = 0; i < data[0].books.length; i++) {
             book = data[0].books[i].book;
             var id = book.book_id;
@@ -20,9 +20,12 @@ $(document).ready(function () {
             elem += '</div></td> <td class="col-xs-2 text-center"><span><b>&euro;'+singleTot+'</b></span></td>';
             elem += '<td class="col-xs-1 text-center"><a href="" class="btn btn-primary">';
             elem += '<i class="fa fa-times"></i></a></td></tr>';
+            total+=singleTot
             $("#cart").append(elem);
 
         }
+
+        $(".total").html('&euro;'+total);
         
 
 
