@@ -11,15 +11,23 @@ function getFormData($form) {
 
 $(document).ready(function () {
 
-
+    var order = {}
     $('.checkout-steps form').on('submit', function (e) {
         e.preventDefault()
         /*$('.checkout-steps form input').each(function (index) {
 
             console.log($(this).val())
         });*/
-        let formData = JSON.stringify($(this).serializeArray());
-        console.log(formData)
+        order.first_name = $(this).find('input[name=first_name]').val();
+        order.last_name = $(this).find('input[name=last_name]').val();
+        order.addressStreetLine1 = $(this).find('input[name=address]').val();
+        order.zip_code = $(this).find('input[name=zip_code]').val();
+        order.country = $(this).find('select[name=country]').val();
+        order.state = $(this).find('select[name=state]').val();
+        order.city = $(this).find('select[name=city]').val();
+        json = JSON.stringify(order)
+        sessionStorage.setItem('order', json)
+        window.location.href= 'checkout-shipping.html'
 
 
 
