@@ -74,17 +74,18 @@ module.exports.userGetDetailsGET = function userGetDetailsGET (req, res, next) {
         return;
     }
 
-    let userData = session.getSecureParameter('userData');
-    if(userData) { //se i dati dell'utente sono già in sessione li recupero
-        console.log("Dati utente da sessione");
-        utils.writeJson(res, userData);
-        return;
-    }
+    // let userData = session.getSecureParameter('userData');
+    // if(userData) { //se i dati dell'utente sono già in sessione li recupero
+    //     console.log("Dati utente da sessione");
+    //     utils.writeJson(res, userData);
+    //     return;
+    // }
 
     let userId = session.getUserId();
 
     User.userGetDetailsGET(userId)
         .then(function (response) {
+            console.log(response);
             console.log("Dati utente da db");
             utils.writeJson(res, response);
             session.setSecureParameter('userData', response);
@@ -183,15 +184,15 @@ module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
     username = removeHtml(username);
     var email = req.swagger.params['email'].value;
     email = removeHtml(email);
-    var firstName = req.swagger.params['firstName'].value;
-    firstName = removeHtml(firstName);
+    var first_name = req.swagger.params['first_name'].value;
+    first_name = removeHtml(first_name);
     var surname = req.swagger.params['surname'].value;
     surname = removeHtml(surname);
     var birthDate = req.swagger.params['birthDate'].value;
 
     if(!(username ||
          email ||
-         firstName ||
+         first_name ||
          surname ||
          birthDate)){
         utils.writeJson(res, {message: "No parameter set!"}, 400);
@@ -201,7 +202,7 @@ module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
     let userId = session.getUserId();
 
     User.userModifyPUT(userId,username, email,
-                           firstName, surname, birthDate)
+                           first_name, surname, birthDate)
             .then(function (response) {
                 let userData = session.getSecureParameter('userData');
                 let currAddress = userData.address;
@@ -305,8 +306,8 @@ module.exports.userRegisterPOST = function userRegisterPOST (req, res, next) {
     var password = req.swagger.params['password'].value;
     var email = req.swagger.params['email'].value;
     email = removeHtml(email);
-    var firstName = req.swagger.params['firstName'].value;
-    firstName = removeHtml(firstName);
+    var first_name = req.swagger.params['first_name'].value;
+    first_name = removeHtml(first_name);
     var surname = req.swagger.params['surname'].value;
     surname = removeHtml(surname);
     var birthDate = req.swagger.params['birthDate'].value;
@@ -327,7 +328,7 @@ module.exports.userRegisterPOST = function userRegisterPOST (req, res, next) {
     bcrypt.hash(password, 10)
         .then(hashedPassword => {
 
-            User.userRegisterPOST(username, hashedPassword, email, firstName, surname, birthDate)
+            User.userRegisterPOST(username, hashedPassword, email, first_name, surname, birthDate)
                 .then(function (response) {
                     utils.writeJson(res, response);
                 })

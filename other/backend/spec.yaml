@@ -418,7 +418,7 @@ paths:
           in: "formData"
           type: "string"
           required: true
-        - name: "firstName"
+        - name: "first_name"
           in: "formData"
           type: "string"
           required: true
@@ -506,10 +506,10 @@ paths:
       produces:
       - "application/json"
       parameters:
-        - name: "firstName"
+        - name: "first_name"
           type: "string"
           in: "formData"
-        - name: "lastName"
+        - name: "last_name"
           type: "string"
           in: "formData"
         - name: "addressStreetLine1"
@@ -557,10 +557,10 @@ paths:
       produces:
       - "application/json"
       parameters:
-        - name: "firstName"
+        - name: "first_name"
           type: "string"
           in: "formData"
-        - name: "lastName"
+        - name: "last_name"
           type: "string"
           in: "formData"
         - name: "addressStreetLine1"
@@ -648,7 +648,7 @@ paths:
         - name: "email"
           in: "formData"
           type: "string"
-        - name: "firstName"
+        - name: "first_name"
           in: "formData"
           type: "string"
         - name: "surname"
@@ -1027,10 +1027,10 @@ paths:
       produces:
       - "application/json"
       parameters:
-        - name: "firstName"
+        - name: "first_name"
           in: "formData"
           type: "string"
-        - name: "lastName"
+        - name: "last_name"
           in: "formData"
           type: "string"
         - name: "addressStreetLine1"

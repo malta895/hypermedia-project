@@ -12,8 +12,8 @@ module.exports.orderPlacePOST = function orderPlacePOST (req, res, next) {
     var country = req.swagger.params['country'].value;
     var shipping_method = req.swagger.params['shipping_method'].value;
     var payment_method = req.swagger.params['payment_method'].value;
-    var firstName = req.swagger.params['firstName'].value;
-    var lastName = req.swagger.params['lastName'].value;
+    var first_name = req.swagger.params['first_name'].value;
+    var last_name = req.swagger.params['last_name'].value;
     var addressStreetLine2 = req.swagger.params['addressStreetLine2'].value;
 
     if(!session.userIdExists()){
@@ -23,7 +23,7 @@ module.exports.orderPlacePOST = function orderPlacePOST (req, res, next) {
 
     let userId = session.getUserId();
 
-    Order.orderPlacePOST(userId,addressStreetLine1,city,zip_code,province,country,shipping_method,payment_method,firstName,lastName,addressStreetLine2)
+    Order.orderPlacePOST(userId,addressStreetLine1,city,zip_code,province,country,shipping_method,payment_method,first_name,last_name,addressStreetLine2)
         .then(function (response) {
             console.log(response);
             utils.writeJson(res,

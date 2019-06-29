@@ -93,12 +93,12 @@ exports.orderDbSetup = function(database) {
  * country String 
  * shipping_method String 
  * payment_method String 
- * firstName String  (optional)
- * lastName String  (optional)
+ * first_name String  (optional)
+ * last_name String  (optional)
  * addressStreetLine2 String  (optional)
  * no response value expected for this operation
  **/
-exports.orderPlacePOST = function(userId, addressStreetLine1,city,zip_code,province,country,shipping_method,payment_method,firstName,lastName,addressStreetLine2) {
+exports.orderPlacePOST = function(userId, addressStreetLine1,city,zip_code,province,country,shipping_method,payment_method,first_name,last_name,addressStreetLine2) {
     return new Promise(function(resolve, reject) {
         //verificare che esista roba nel carrello
         sqlDb('cart')
@@ -126,8 +126,8 @@ exports.orderPlacePOST = function(userId, addressStreetLine1,city,zip_code,provi
                             zip_code: zip_code,
                             province: province,
                             country: country,
-                            first_name: firstName,
-                            last_name: lastName
+                            first_name: first_name,
+                            last_name: last_name
                         })
                         .returning('address_id')
                         .then(response => {

@@ -187,12 +187,12 @@ exports.userLoginPOST = function(username,password) {
  * username String  (optional)
  * password String  (optional)
  * email String  (optional)
- * firstName String  (optional)
+ * first_name String  (optional)
  * surname String  (optional)
  * birthDate date  (optional)
  * no response value expected for this operation
  **/
-exports.userModifyPUT = function(userId,username,email,firstName,surname,birthDate) {
+exports.userModifyPUT = function(userId,username,email,first_name,surname,birthDate) {
 
     return new Promise(function(resolve, reject) {
         let query = sqlDb('user')
@@ -204,8 +204,8 @@ exports.userModifyPUT = function(userId,username,email,firstName,surname,birthDa
         if(email && email !== undefined)
             query.update('email', email);
 
-        if(firstName && firstName !== undefined)
-            query.update('first_name', firstName);
+        if(first_name && first_name !== undefined)
+            query.update('first_name', first_name);
 
         if(surname && surname !== undefined)
             query.update('surname', surname);
@@ -248,19 +248,19 @@ exports.userModifyPasswordPUT = function(userId,new_password) {
  * username String
  * password String
  * email String
- * firstName String
+ * first_name String
  * surname String
  * birthDate date
  * no response value expected for this operation
  **/
-exports.userRegisterPOST = function(username,password,email,firstName,surname,birthDate) {
+exports.userRegisterPOST = function(username,password,email,first_name,surname,birthDate) {
     return new Promise(function(resolve, reject) {
         let query = sqlDb('user')
             .insert({
                 username: username,
                 password: password,
                 email: email,
-                first_name: firstName,
+                first_name: first_name,
                 surname: surname,
                 birth_date: birthDate
             })

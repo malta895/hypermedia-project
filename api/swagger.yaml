@@ -429,7 +429,7 @@ paths:
         in: "formData"
         required: true
         type: "string"
-      - name: "firstName"
+      - name: "first_name"
         in: "formData"
         required: true
         type: "string"
@@ -519,11 +519,11 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "firstName"
+      - name: "first_name"
         in: "formData"
         required: false
         type: "string"
-      - name: "lastName"
+      - name: "last_name"
         in: "formData"
         required: false
         type: "string"
@@ -573,11 +573,11 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "firstName"
+      - name: "first_name"
         in: "formData"
         required: false
         type: "string"
-      - name: "lastName"
+      - name: "last_name"
         in: "formData"
         required: false
         type: "string"
@@ -672,7 +672,7 @@ paths:
         in: "formData"
         required: false
         type: "string"
-      - name: "firstName"
+      - name: "first_name"
         in: "formData"
         required: false
         type: "string"
@@ -1062,11 +1062,11 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "firstName"
+      - name: "first_name"
         in: "formData"
         required: false
         type: "string"
-      - name: "lastName"
+      - name: "last_name"
         in: "formData"
         required: false
         type: "string"

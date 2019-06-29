@@ -47,7 +47,7 @@ exports.addressDbSetup = function (database) {
  * no response value expected for this operation
  **/
 
-exports.userAddAddressPOST = function(userId,addressStreetLine1,city,zip_code,province,country,firstName,lastName,addressStreetLine2) {
+exports.userAddAddressPOST = function(userId,addressStreetLine1,city,zip_code,province,country,first_name,last_name,addressStreetLine2) {
     return new Promise(function(resolve, reject) {
         //siccome devo fare 2 query, meglio fare una transaction,
         // così posso fare rollback nel caso in cui la seconda fallisca
@@ -55,8 +55,8 @@ exports.userAddAddressPOST = function(userId,addressStreetLine1,city,zip_code,pr
             sqlDb('address')
                 .transacting(trx)
                 .insert({
-                    first_name: firstName,
-                    last_name: lastName,
+                    first_name: first_name,
+                    last_name: last_name,
                     street_line1: addressStreetLine1,
                     street_line2: addressStreetLine2,
                     city: city,
@@ -121,14 +121,14 @@ exports.userAddAddressPOST = function(userId,addressStreetLine1,city,zip_code,pr
  * country String  (optional)
  * no response value expected for this operation
  **/
-exports.userModifyAddressPUT = function(userId,firstName,lastName,addressStreetLine1,addressStreetLine2,city,zip_code,province,country) {
+exports.userModifyAddressPUT = function(userId,first_name,last_name,addressStreetLine1,addressStreetLine2,city,zip_code,province,country) {
     return new Promise(function(resolve, reject) {
         let query = sqlDb('address');
 
-        if(firstName && lastName){
+        if(first_name && last_name){
             query.update({
-                first_name: firstName,
-                last_name: lastName
+                first_name: first_name,
+                last_name: last_name
             });
         } else {
             query.update('first_name', function() {
