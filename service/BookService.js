@@ -83,13 +83,16 @@ exports.similarBooksDbSetup = function(database) {
  **/
 exports.bestsellerGET = function(month_date,offset,limit) {
     return new Promise(function(resolve, reject) {
-        sqlDb('book_essentials')
+        let query = sqlDb('book_essentials')
             .join('cart_book', 'book_id', 'book')
             .join('cart', 'cart_book.cart', 'cart_id')
             .join('order', 'order.cart', 'cart_id')
-            .where('ordered', true)
-            .whereRaw("date_part('month', \"order\".order_date) = date_part('month', CURRENT_DATE)")
-            .orderByRaw("quantity DESC")
+            .where('ordered', true);
+        if(month_date)
+            query.whereRaw("date_part('month', \"order\".order_date) = date_part('month', ?\:\:date)", [month_date]);
+        else
+            query.whereRaw("date_part('month', \"order\".order_date) = date_part('month', CURRENT_DATE)");
+            query.orderByRaw("quantity DESC")
             .limit(limit ? limit : 3) //se non viene specificato mostra i 3 più venduti
             .then(rows => {
                 resolve(rows);
@@ -119,7 +122,7 @@ exports.bestsellerGET = function(month_date,offset,limit) {
  **/
 exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price,max_price,genre,themes,bestseller,offset,limit) {
     return new Promise(function(resolve, reject){
-
+p
         if(!sqlDb){
             reject({status: 500, message: 'Database not found!'});
             return;
