@@ -228,11 +228,11 @@
                                         <div class="col-sm-6">
                                             <div id="shipping-methods" role="tablist" aria-multiselectable="true">
                                                 <div class="panel radio">
-                                                    <input type="radio" name="optionsRadios" id="radio-shipping-1" checked>
+                                                    <input type="radio" name="shipping" id="radio-shipping-1" value="Personal Pickup" checked>
                                                     <label for="radio-shipping-1" data-toggle="collapse" data-target="#parent-1" data-parent="#shipping-methods" aria-controls="parent-1">Personal Pickup</label>
                                                 </div>
                                                 <div class="panel radio">
-                                                    <input type="radio" name="optionsRadios" id="radio-shipping-2">
+                                                    <input type="radio" name="shipping" id="radio-shipping-2" value="Delivery to your address">
                                                     <label for="radio-shipping-2" class="collapsed" data-toggle="collapse" data-target="#parent-2" data-parent="#shipping-methods" aria-controls="parent-2">Delivery to your address</label>
                                                 </div>
                                             </div>
@@ -240,7 +240,7 @@
                                     </div>
                                 </div>
                                 <div class="clearfix">
-                                    <a href="checkout-payment.html" class="btn btn-primary btn-lg pull-right ">Continue</a>
+                                    <input type="submit" class="btn btn-primary btn-lg pull-right " value="Continue">
                                 </div>
                             </form>
 
@@ -316,9 +316,9 @@
     <script src="../assets/js/twitterFetcher_min.js"></script>
     <script src="../assets/js/color-switcher.js"></script>
     <script src="../assets/js/custom.js"></script>
-    <script src="../assets/js/single-product.js"></script>
     <script src="../assets/js/logout.js"></script>
     <script src="../assets/js/multi-pages.js"></script>
+    <script src="../assets/js/checkout-shipping.js"></script>
 </body>
 
 </html>
