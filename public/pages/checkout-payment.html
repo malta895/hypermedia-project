@@ -228,22 +228,22 @@
                                         <div class="col-lg-6 col-md-8 col-sm-10">
                                             <div id="payment-methods" role="tablist" aria-multiselectable="true">
                                                 <div class="panel radio">
-                                                    <input type="radio" name="optionsRadios" id="radio-payment-1" checked>
+                                                    <input type="radio" name="payment" id="radio-payment-1" value="Cash" checked>
                                                     <label for="radio-payment-1" data-toggle="collapse" data-target="#parent-1" data-parent="#payment-methods" aria-controls="parent-1">Cash On Delivery</label>
                                                     <div id="parent-1" class="panel-collapse collapse in" role="tabpanel"></div>
                                                 </div>
                                                 <div class="panel radio">
-                                                    <input type="radio" name="optionsRadios" id="radio-payment-2">
+                                                    <input type="radio" name="payment" id="radio-payment-2" value="Transfer">
                                                     <label for="radio-payment-2" class="collapsed" data-toggle="collapse" data-target="#parent-2" data-parent="#payment-methods" aria-controls="parent-2">Payment by Bank Transfer<span>IBAN: CZ00 0000 0000 0000 0000 0000</span></label>
                                                     <div id="parent-2" class="panel-collapse collapse" role="tabpanel"></div>
                                                 </div>
                                                 <div class="panel radio">
-                                                    <input type="radio" name="optionsRadios" id="radio-payment-3">
+                                                    <input type="radio" name="payment" id="radio-payment-3" value="Paypal">
                                                     <label for="radio-payment-3" class="collapsed" data-toggle="collapse" data-target="#parent-3" data-parent="#payment-methods" aria-controls="parent-3">PayPal</label>
                                                     <div id="parent-3" class="panel-collapse collapse" role="tabpanel"></div>
                                                 </div>
                                                 <div class="panel radio">
-                                                    <input type="radio" name="optionsRadios" id="radio-payment-4">
+                                                    <input type="radio" name="payment" id="radio-payment-4" value="Card">
                                                     <label for="radio-payment-4" class="collapsed" data-toggle="collapse" data-target="#parent-4" data-parent="#payment-methods" aria-controls="parent-4">Pay via Credit Card</label>
                                                     <div id="parent-4" class="panel-collapse collapse" role="tabpanel">
                                                         <div class="credit-card-form">
@@ -308,7 +308,7 @@
                                     </div>
                                 </div>
                                 <div class="clearfix">
-                                    <a href="checkout-review.html" class="btn btn-primary btn-lg pull-right">Continue</a>
+                                    <input type="submit" class="btn btn-primary btn-lg pull-right " value="Continue">
                                 </div>
                             </form>
                         </article>
@@ -383,9 +383,9 @@
     <script src="../assets/js/twitterFetcher_min.js"></script>
     <script src="../assets/js/color-switcher.js"></script>
     <script src="../assets/js/custom.js"></script>
-    <script src="../assets/js/single-product.js"></script>
     <script src="../assets/js/logout.js"></script>
     <script src="../assets/js/multi-pages.js"></script>
+    <script src="../assets/js/checkout-payment.js"></script>
 </body>
 
 </html>
