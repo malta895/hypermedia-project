@@ -15,7 +15,6 @@
   "dependencies": {
     "bcrypt": "^3.0.6",
     "bluebird": "^3.5.5",
-    "connect": "^3.2.0",
     "dotenv": "^8.0.0",
     "email-validator": "^2.0.4",
     "express": "^4.17.1",
