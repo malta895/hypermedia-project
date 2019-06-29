@@ -29,12 +29,11 @@ $(document).ready(function () {
 
                 if(res.status === 401) {
                     console.log("Login Failed!");
-                    $('.feedback').html('Login Failed:Wrong combination of username/password')
+                    //TODO mostrare errore da qualche parte
                 } else if(res.status === 400) {
-                    $('.feedback').html('You aready logged in')
+                    console.log("Already logged in!");
                 } else {
                     console.log("Unknown error!");
-                    $('.feedback').html('Something went wrong')
                 }
 
                 //TODO GESTIRE ERRORE
