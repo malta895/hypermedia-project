@@ -60,7 +60,8 @@ $(document).ready(function () {
         $('.logout').hide()
         $('.myaccount').hide()
         $('.signin').html('Sign in')
-
+        $('.review').hide()
+        
     }
     );
 
