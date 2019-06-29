@@ -35,7 +35,7 @@ $(document).ready(function () {
                 elem += '<li><div class="row"><div class="col-sm-3">';
                 elem += '<img src="'+picture+'" class="img-responsive" alt="">';
                 elem += '</div><div class="col-sm-9">';
-                elem += '<h4><a href="single-product.html?id='+id+'">Fusce Aliquam</a></h4>';
+                elem += '<h4><a href="single-product.html?id='+id+'">'+title+'</a></h4>';
                 elem += '<p>' + quantity +'x - &euro;'+price+'</p>';
                 elem += '<a href="#" class="remove"><i class="fa fa-times-circle"></i></a>';
                 elem += '</div></div></li>';                
