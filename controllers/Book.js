@@ -3,6 +3,23 @@
 var utils = require('../utils/writer.js');
 var Book = require('../service/BookService');
 
+module.exports.bestsellerGET = function bestsellerGET (req, res, next) {
+    var month_date = req.swagger.params['month_date'].value;
+    var offset = req.swagger.params['offset'].value;
+    var limit = req.swagger.params['limit'].value;
+    Book.bestsellerGET(month_date,offset,limit)
+        .then(function (response) {
+            utils.writeJson(res, response, response.length ? 200 : 404);
+        })
+        .catch(function (response) {
+            console.error(response);
+            utils.writeJson(res,
+                            {message: "Internal Server Error!"},
+                            response.statusCode || 500);
+        });
+
+};
+
 module.exports.bookEventsGET = function bookEventsGET (req, res, next) {
     var bookId = req.swagger.params['bookId'].value;
     var offset = req.swagger.params['offset'].value;
@@ -12,7 +29,10 @@ module.exports.bookEventsGET = function bookEventsGET (req, res, next) {
             utils.writeJson(res, response, response.length ? 200 : 404);
         })
         .catch(function (response) {
-            utils.writeJson(res, response);
+            console.error(response);
+            utils.writeJson(res,
+                            {message: "Internal Server Error!"},
+                            response.statusCode || 500);
         });
 };
 
@@ -39,13 +59,12 @@ module.exports.booksGET = function booksGET (req, res, next) {
     var max_price = req.swagger.params['max_price'].value;
     var genre = req.swagger.params['genre'].value;
     var themes = req.swagger.params['themes'].value;
-    var best_seller = req.swagger.params['best_seller'].value;
     var offset = req.swagger.params['offset'].value;
     var limit = req.swagger.params['limit'].value;
 
 
     Book.booksGET(title,not_in_stock,publishers,authors,iSBN,
-                  min_price,max_price,genre,themes,best_seller,
+                  min_price,max_price,genre,themes,
                   offset,limit)
         .then(function (response) {
             utils.writeJson(res, response, response.length ? 200 : 404);

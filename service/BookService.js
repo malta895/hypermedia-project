@@ -76,6 +76,34 @@ exports.similarBooksDbSetup = function(database) {
  * Books filter
  * Filter books by specified criteria
  *
+ * month_date date Bestseller in the month of the specified date.Defaults to current month (optional)
+ * offset Integer Pagination offset. Default is 0. (optional)
+ * limit Integer Maximum number of items per page. Default is 20 and cannot exceed 500. (optional)
+ * returns List
+ **/
+exports.bestsellerGET = function(month_date,offset,limit) {
+    return new Promise(function(resolve, reject) {
+        sqlDb('book_essentials')
+            .join('cart_book', 'book_id', 'book')
+            .join('cart', 'cart_book.cart', 'cart_id')
+            .join('order', 'order.cart', 'cart_id')
+            .where('ordered', true)
+            .whereRaw("date_part('month', \"order\".order_date) = date_part('month', CURRENT_DATE)")
+            .orderByRaw("quantity DESC")
+            .limit(limit ? limit : 3) //se non viene specificato mostra i 3 più venduti
+            .then(rows => {
+                resolve(rows);
+            })
+            .catch(err => reject(err));
+    });
+};
+
+
+
+/**
+ * Books filter
+ * Filter books by specified criteria
+ *
  * title String Filter by name  (optional)
  * not_in_stock Boolean If true returns also books not in stock. Default is false. (optional)
  * publishers List Filter by publishers' ID  (optional)
@@ -85,12 +113,11 @@ exports.similarBooksDbSetup = function(database) {
  * max_price BigDecimal Filter by price lower than value (optional)
  * genre List Filter by genres (optional)
  * themes List Filter by themes (optional)
- * best_seller Boolean If true returns bestsellers only (optional)
  * offset Integer Pagination offset. Default is 0. (optional)
  * limit Integer Maximum number of items per page. Default is 20 and cannot exceed 500. (optional)
  * returns List
  **/
-exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price,max_price,genre,themes,best_seller,offset,limit) {
+exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price,max_price,genre,themes,offset,limit) {
     return new Promise(function(resolve, reject){
 
         if(!sqlDb){
