@@ -20,7 +20,7 @@ $(document).ready(function () {
         $('.myaccount').html(data.first_name + ' ' + data.surname);
         $.getJSON('/api/cart', function (data) {
             console.log(data)// /api/cart GET CART
-            $(".dropdown-menu").empty();
+            $(".navbar-cart > ul").empty();
             for (i = 0; i < data[0].books.length; i++) {
                 console.log(data[0].books[i])                
                 book = data[0].books[i].book;
@@ -41,11 +41,11 @@ $(document).ready(function () {
                 elem += '</div></div></li>';                
 
 
-                $(".dropdown-menu").append(elem);
+                $(".navbar-cart > ul").append(elem);
 
             }
             elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
-            $(".dropdown-menu").append(elem);
+            $(".navbar-cart > ul").append(elem);
 
             
 
