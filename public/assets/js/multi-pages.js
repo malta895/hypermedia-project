@@ -58,10 +58,13 @@ $(document).ready(function () {
 
     })
         .fail(function (res) {
-        $('.logout').hide()
-        $('.myaccount').hide()
-        $('.signin').html('Sign in')
-        $('.review').hide()
+            $('.logout').hide()
+            $('.myaccount').hide()
+            $('.signin').html('Sign in')
+            $('.review').hide()
+            $(".navbar-cart > ul").hide();
+
+
         
     }
     );

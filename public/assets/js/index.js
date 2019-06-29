@@ -323,10 +323,12 @@ $(document).ready(function () {
 
         });
 
-    }).fail(function (res) {
+    })
+        .fail(function (res) {
         $('.logout').hide()
         $('.myaccount').hide()
-        $('.signin').html('Sign in')
+            $('.signin').html('Sign in')
+            $(".navbar-cart > ul").hide();
 
     }
     );
