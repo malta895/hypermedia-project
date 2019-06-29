@@ -96,6 +96,10 @@ paths:
         items:
           type: "integer"
           format: "int64"
+      - name: "bestseller"
+        in: "query"
+        type: "boolean"
+        description: "Show only bestsellers of the month"
       - name: "offset"
         in: "query"
         description: "Pagination offset. Default is 0."
@@ -198,8 +202,8 @@ paths:
         type: "string"
         format: "date"
         required: false
-        description: "Bestseller in the month of the specified date.\
-        Defaults to current month"
+        description: "Bestseller in the month of the specified date, \
+      \ ordered by the most sold to the less. Defaults to current month"
       - name: "offset"
         in: "query"
         description: "Pagination offset. Default is 0."
@@ -220,8 +224,6 @@ paths:
               $ref: "#/definitions/Book"
         404:
           description: "No book sold this mont!"
-
-
 
   /books/{bookId}/related:
     get:

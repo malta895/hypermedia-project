@@ -105,6 +105,11 @@ paths:
           type: "integer"
           format: "int64"
         collectionFormat: "multi"
+      - name: "bestseller"
+        in: "query"
+        description: "Show only bestsellers of the month"
+        required: false
+        type: "boolean"
       - name: "offset"
         in: "query"
         description: "Pagination offset. Default is 0."
@@ -197,16 +202,16 @@ paths:
     get:
       tags:
       - "book"
-      summary: "Books filter"
-      description: "Filter books by specified criteria"
+      summary: "Get bestsellers of a month"
+      description: "Get a list of bestsellers of a given month"
       operationId: "bestsellerGET"
       produces:
       - "application/json"
       parameters:
       - name: "month_date"
         in: "query"
-        description: "Bestseller in the month of the specified date.Defaults to current\
-          \ month"
+        description: "Bestseller in the month of the specified date,  ordered by the\
+          \ most sold to the less. Defaults to current month"
         required: false
         type: "string"
         format: "date"

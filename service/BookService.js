@@ -117,24 +117,28 @@ exports.bestsellerGET = function(month_date,offset,limit) {
  * limit Integer Maximum number of items per page. Default is 20 and cannot exceed 500. (optional)
  * returns List
  **/
-exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price,max_price,genre,themes,offset,limit) {
+exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price,max_price,genre,themes,bestseller,offset,limit) {
     return new Promise(function(resolve, reject){
 
         if(!sqlDb){
-            reject({status: 500, errorText: 'Database not found!'});
+            reject({status: 500, message: 'Database not found!'});
             return;
         }
 
         let query = sqlDb('book_essentials');
 
         if (title) //cerca nel titolo o nell'autore
-            query.where('title', 'like', `%${title}%`)
-            .orWhere('book_id', 'in' , function() {
-                this.select('book')
-                    .from('author_book')
-                    .join('author', 'author.author_id', 'author_book.author')
-                    .where('author.name', 'like', `%${title}%`);
+            query.orWhere(function() {
+                this
+                    .where('title', 'like', `%${title}%`)
+                    .orWhere('book_id', 'in' , function() {
+                        this.select('book')
+                            .from('author_book')
+                            .join('author', 'author.author_id', 'author_book.author')
+                            .where('author.name', 'like', `%${title}%`);
+                    });
             });
+
 
         if (min_price)
             query.where('price', '>=', min_price);
@@ -145,7 +149,7 @@ exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price
         if(iSBN)
             query.where('isbn', 'like', `%${iSBN}%`);
 
-        if(publishers) //ceca nel snob
+        if(publishers)
             query.where(sqlDb.raw("(publisher -> 'publisher_id')::integer"), 'in', publishers);
 
         if(authors){
@@ -153,8 +157,7 @@ exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price
                 query.where(el, 'in', function(){
                     this.select('author')
                         .from('author_book')
-                        .whereRaw('author_book.book = book_id')
-                        .catch(err => reject(err));
+                        .whereRaw('book = book_id');
                 });
             });
         }
@@ -179,16 +182,40 @@ exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price
             });
         }
 
-        if (offset)
-            query.offset(offset);
+        if(bestseller){
+            exports.bestsellerGET()
+                .then(rows => {
+                    let ids = [];
+                    for(var i=0;i<rows.length;i++){
+                        ids.push(rows[i].book_id);
+                    }
+                    query.where('book_id', 'in', ids);
 
-        if (limit)
-            query.limit(limit);
+                    if (offset)
+                        query.offset(offset);
 
-        query.then( (rows) => {
+                    if (limit)
+                        query.limit(limit);
+
+                    query.then( (rows) => {
+                        resolve(rows);
+                    })
+                        .catch((err) => reject(err));
+                });
+        } else {
+            if (offset)
+                query.offset(offset);
+
+            if (limit)
+                query.limit(limit);
+
+            query.then( (rows) => {
                 resolve(rows);
-        })
-            .catch((err) => reject({error: err, errorCode: 500}));
+            })
+                .catch((err) => reject(err));
+        }
+
+
 
     });
 
