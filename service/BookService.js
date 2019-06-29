@@ -153,7 +153,7 @@ exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price
                 query.where(el, 'in', function(){
                     this.select('author')
                         .from('author_book')
-                        .whereRaw('book = book_id')
+                        .whereRaw('author_book.book = book_id')
                         .catch(err => reject(err));
                 });
             });

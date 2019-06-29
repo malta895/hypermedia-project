@@ -38,20 +38,23 @@ $(window).on("load", function () {
 
 
     });
-    $.getJSON('/api/books?authors=' + id, function (data) {  // GET AUTHOR BY ID   
-        console.log(data);/*
+    $.getJSON('/api/books?limit=4&offset=40&authors' + id, function (data) {  // GET AUTHOR BY ID   
+        console.log(data);
         for (i = 0; i < data.length; i++) {
-            var id = data[i].id;
-            var name = data[i].name;
+            $('#products').html()
+            var id = data[i].book_id;
+            var title = data[i].title;
             var surname = data[i].surname;
             var picture = data[i].picture;
-            var bio = data[i].biography;
+            var price = data[i].price;
             var elem = '';
-            $("#name").html(name);
-            $("#bio").html(bio);
-            var img = '<div class="item"><img src="' + picture + '" id="img" class="img - responsive" alt=""></div>';
-            $("#pic").append(img);
-        }*/
+            elem += '<div class="col-sm-3 col-xs-6"> <article class="product-item"> <div class="row"> <div class="col-sm-3"> <div class="product-overlay"> <div class="product-mask"></div> <a href="single-product.html?id=' + id + '" class="product-permalink"></a>';
+            elem += '<img src="' + picture + '" class="img-responsive" alt=""> </div> </div> <div class="col-sm-9"> <div class="product-body">';
+            elem += '<h3>' + title +'</h3> <span class="price"><ins><span class="amount">&euro;'+price+'</span></ins> </span>';
+            
+            elem += '<div class="buttons buttons-simple"> <a href=""><i class="fa fa-shopping-cart"></i></a> </div> </div> </div> </div> </article> </div>';
+            $('#products').append(elem)
+        }
 
 
 
