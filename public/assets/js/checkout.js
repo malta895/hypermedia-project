@@ -1,12 +1,25 @@
+function getFormData($form) {
+    var unindexed_array = $form.serializeArray();
+    var indexed_array = {};
+
+    $.map(unindexed_array, function (n, i) {
+        indexed_array[n['name']] = n['value'];
+    });
+
+    return indexed_array;
+}
+
 $(document).ready(function () {
 
 
-    $('.clearfix > a').on('click', function (e) {
-        
+    $('.checkout-steps form').on('submit', function (e) {
+        e.preventDefault()
+        /*$('.checkout-steps form input').each(function (index) {
 
-        let formData = $(this).serialize();
-        sessionStorage.setItem('formData', formData);
-
+            console.log($(this).val())
+        });*/
+        let formData = $(this).serializeArray();
+        console.log(formData)
 
 
 

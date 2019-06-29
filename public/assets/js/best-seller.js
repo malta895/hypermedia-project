@@ -3,7 +3,7 @@ var currencies = {
     USD: '$'
 };
 $(document).ready(function () {
-    $.getJSON('/api/books/monthBestseller?limit=20&offset=40', function (data) {  // /api/books GET ALL EVENTS
+    $.getJSON('/api/books/monthBestseller?month_date=2019-06-01', function (data) {  // /api/books GET ALL EVENTS
 
                 for (i = 0; i < data.length; i++) {
             var id = data[i].book_id;
