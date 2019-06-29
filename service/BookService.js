@@ -122,7 +122,7 @@ exports.bestsellerGET = function(month_date,offset,limit) {
  **/
 exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price,max_price,genre,themes,bestseller,offset,limit) {
     return new Promise(function(resolve, reject){
-p
+
         if(!sqlDb){
             reject({status: 500, message: 'Database not found!'});
             return;
