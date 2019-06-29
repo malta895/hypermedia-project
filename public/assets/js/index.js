@@ -21,8 +21,11 @@ var getUrlParameter = function getUrlParameter(sParam) {
 var routeFilter ='/api/books?limit=20&offset=40&';
 
 $(document).ready(function () {
-
-    $.getJSON('/api/books?limit=20&offset=40', function (data) {  // /api/books GET ALL BOOKS
+    titleS=''
+    if (getUrlParameter('search')) {
+        titleS = 'title='+getUrlParameter('search')+'&'
+    }
+    $.getJSON('/api/books?limit=20&offset=40&' + titleS, function (data) {  // /api/books GET ALL BOOKS
 
         for (i = 0; i < data.length; i++) {
             var id = data[i].book_id;
@@ -327,9 +330,7 @@ $(document).ready(function () {
 
     }
     );
-    $('.search-button').on('click', function () {
-
-    });
+    
     
     
 });

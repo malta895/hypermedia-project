@@ -56,7 +56,8 @@ $(document).ready(function () {
 
         });
 
-    }).fail(function (res) {
+    })
+        .fail(function (res) {
         $('.logout').hide()
         $('.myaccount').hide()
         $('.signin').html('Sign in')
@@ -64,7 +65,11 @@ $(document).ready(function () {
         
     }
     );
-
+    $('.navbar-search button').on('click', function () {
+        console.log('funzia')
+        search = $('.navbar-search input').val();
+        window.location.href = '../index.html?search=' + search;
+    });
  
         
         
