@@ -165,6 +165,7 @@ module.exports.userLogoutPOST = function userLogoutPOST (req, res, next) {
     try{
         session.unsetUserId();
         utils.writeJson(res, {message:"Succesful logout!"});
+        console.log("User logged out!");
     } catch(e){
         utils.writeJson(res, {message: "You were not logged in!"}, 400);
     }

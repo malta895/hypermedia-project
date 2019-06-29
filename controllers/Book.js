@@ -59,18 +59,22 @@ module.exports.booksGET = function booksGET (req, res, next) {
     var max_price = req.swagger.params['max_price'].value;
     var genre = req.swagger.params['genre'].value;
     var themes = req.swagger.params['themes'].value;
+    var bestseller = req.swagger.params['bestseller'].value;
     var offset = req.swagger.params['offset'].value;
     var limit = req.swagger.params['limit'].value;
 
 
     Book.booksGET(title,not_in_stock,publishers,authors,iSBN,
-                  min_price,max_price,genre,themes,
+                  min_price,max_price,genre,themes,bestseller,
                   offset,limit)
         .then(function (response) {
             utils.writeJson(res, response, response.length ? 200 : 404);
         })
         .catch(function (response) {
-            utils.writeJson(res, response, response.statusCode || 500);
+            console.error(response);
+            utils.writeJson(res,
+                            {message: "Internal Server Error!"},
+                            response.statusCode || 500);
         });
 };
 
