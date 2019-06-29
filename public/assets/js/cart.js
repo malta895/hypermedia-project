@@ -37,7 +37,7 @@ $(document).ready(function () {
 
     });
     $('.update-cart').on('click', function (e) {
-        e.preventDefault()
+        //e.preventDefault()
         cart = JSON.parse(sessionStorage.getItem('cart'))
         console.log(cart)
         $('#cart .upQuant').each(function (index) {
