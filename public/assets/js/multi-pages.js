@@ -62,7 +62,7 @@ $(document).ready(function () {
             $('.myaccount').hide()
             $('.signin').html('Sign in')
             $('.review').hide()
-            $(".navbar-cart > ul").hide();
+            $(".navbar-cart").hide();
 
 
         

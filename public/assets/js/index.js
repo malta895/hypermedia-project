@@ -328,7 +328,7 @@ $(document).ready(function () {
         $('.logout').hide()
         $('.myaccount').hide()
             $('.signin').html('Sign in')
-            $(".navbar-cart > ul").hide();
+            $(".navbar-cart").hide();
 
     }
     );
