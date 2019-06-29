@@ -1,9 +1,11 @@
 $(document).ready(function () {
     $.getJSON('/api/cart', function (data) {  // /api/cart GET CART
              
-        total=0
+        total = 0
+        var cart = []
         for (i = 0; i < data[0].books.length; i++) {
             book = data[0].books[i].book;
+            cart.push(book)
             var id = book.book_id;
             var title = book.title;
             var authors = book.authors;
@@ -24,13 +26,21 @@ $(document).ready(function () {
             $("#cart").append(elem);
 
         }
-
+        cart = JSON.stringify(cart)
+        sessionStorage.setItem('cart', cart)
         $(".total").html('&euro;'+total);
         
 
 
 
 
+
+    });
+    $('.update-cart').on('click', function (e) {
+        e.preventDefault()
+        cart = JSON.parse(sessionStorage.getItem('cart'))
+        console.log(cart)
+        
 
     });
 
