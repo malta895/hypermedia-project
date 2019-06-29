@@ -73,7 +73,19 @@ $(document).ready(function () {
         search = $('.navbar-search input').val();
         window.location.href = '../index.html?search=' + search;
     });
- 
+    $('.logout').click(function (e) {
+        e.preventDefault()
+        $.post('/api/user/logout', function (res) {
+            console.log("Logout succesful!")
+            sessionStorage.clear();
+            window.location.href = "signin.html"
+
+        })
+            .fail(res => {
+                //TODO gestire errore
+                console.log(res);
+            })
+    });
         
         
 

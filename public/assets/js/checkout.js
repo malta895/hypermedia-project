@@ -18,7 +18,7 @@ $(document).ready(function () {
 
             console.log($(this).val())
         });*/
-        let formData = $(this).serializeArray();
+        let formData = JSON.stringify($(this).serializeArray());
         console.log(formData)
 
 
