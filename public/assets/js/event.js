@@ -5,7 +5,7 @@ $(document).ready(function () {
             var id = data[i].event_id;
             var date = data[i].date;
             var location = data[i].location;
-            var address = location.street_line1 + ','+location.street_line2 +','+ location.city;
+            //var address = location.street_line1 + ','+location.street_line2 +','+ location.city;
             /*var book = data[i].presented_book;
             var title = book.title;
             var picture = book.picture_path;
