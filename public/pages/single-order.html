@@ -209,10 +209,10 @@
                                     <div class="box">
                                         <h4>Billing Address</h4>
                                         <ul class="list-unstyled">
-                                            <li><b>Alessandro Carughi</b></li>
-                                            <li>Via Vallardi 7</li>
-                                            <li>22070 Appiano Gentile</li>
-                                            <li>Italy</li>
+                                            <li class="name"><b></b></li>
+                                            <li class="address"></li>
+                                            <li class="zipcity"></li>
+                                            <li class="country"></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -220,10 +220,10 @@
                                     <div class="box">
                                         <h4>Shipping Address</h4>
                                         <ul class="list-unstyled">
-                                            <li><b>Alessandro Carughi</b></li>
-                                            <li>Via Vallardi 7</li>
-                                            <li>22070 Appiano Gentile</li>
-                                            <li>Italy</li>
+                                            <li class="name"><b></b></li>
+                                            <li class="address"></li>
+                                            <li class="zipcity"></li>
+                                            <li class="country"></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -233,13 +233,13 @@
                                     <div class="box">
                                         <h4>Payment Method</h4>
                                         <ul class="list-unstyled">
-                                            <li>Pay Pal</li>
+                                            <li class="payment_method"></li>
                                         </ul>
                                     </div>
                                     <div class="box">
                                         <h4>Shipping Method</h4>
                                         <ul class="list-unstyled">
-                                            <li>Delivery to your address</li>
+                                            <li class="shipping_method"></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -266,7 +266,7 @@
                                                 <th>Subtotal</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="cart">
                                             <tr>
                                                 <td class="col-xs-1"><img src="../assets/images/products/product-1.jpg" alt="" class="img-responsive"></td>
                                                 <td class="col-xs-4 col-md-5">
@@ -276,30 +276,13 @@
                                                 <td class="col-xs-2 col-md-1 text-center"><span><b>2 items</b></span></td>
                                                 <td class="col-xs-2 text-center"><span><b>$60</b></span></td>
                                             </tr>
-                                            <tr>
-                                                <td class="col-xs-1"><img src="../assets/images/products/product-2.jpg" alt="" class="img-responsive"></td>
-                                                <td class="col-xs-4 col-md-5">
-                                                    <h4><a href="single-product.html">Fusce Aliquam</a><small>M, Black, Esprit</small></h4>
-                                                </td>
-                                                <td class="col-xs-2 text-center"><span>$80</span></td>
-                                                <td class="col-xs-2 col-md-1 text-center"><span><b>2 items</b></span></td>
-                                                <td class="col-xs-2 text-center"><span><b>$160</b></span></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-xs-1"><img src="../assets/images/products/product-3.jpg" alt="" class="img-responsive"></td>
-                                                <td class="col-xs-4 col-md-5">
-                                                    <h4><a href="single-product.html">Fusce Aliquam</a><small>M, Black, Esprit</small></h4>
-                                                </td>
-                                                <td class="col-xs-2 text-center"><span>$95</span></td>
-                                                <td class="col-xs-2 col-md-1 text-center"><span><b>1 item</b></span></td>
-                                                <td class="col-xs-2 text-center"><span><b>$95</b></span></td>
-                                            </tr>
+                                            
                                         </tbody>
                                     </table>
                                 </div>
 
                                 <ul class="list-unstyled order-total">
-                                    <li>Subtotal<span class="total">$330.00</span></li>
+                                    <li>Subtotal<span class="total"></span></li>
                                 </ul>
                             </div>
                         </article>
@@ -374,7 +357,7 @@
     <script src="../assets/js/twitterFetcher_min.js"></script>
     <script src="../assets/js/color-switcher.js"></script>
     <script src="../assets/js/custom.js"></script>
-    <script src="../assets/js/single-product.js"></script>
+    <script src="../assets/js/single-order.js"></script>
 </body>
 
 </html>
