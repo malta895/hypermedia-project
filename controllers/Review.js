@@ -43,7 +43,7 @@ module.exports.bookAddReviewPOST = function bookAddReviewPOST (req, res, next) {
             utils.writeJson(res, response);
         })
         .catch(function (response) {
-            utils.writeJson(res, response, response.statusCode || 500);
+            utils.writeJson(res, response, response.errorCode || 500);
         });
 };
 
@@ -57,7 +57,7 @@ module.exports.bookReviewsGET = function bookReviewsGET (req, res, next) {
             utils.writeJson(res, response, response.length ? 200 : 404);
         })
         .catch(function (response) {
-            utils.writeJson(res, response, response.statusCode || 500);
+            utils.writeJson(res, response, response.errorCode || 500);
         });
 };
 
@@ -81,6 +81,6 @@ module.exports.userReviewsGET = function userReviewsGET (req, res, next) {
             utils.writeJson(res, response, response.length ? 200 : 404);
         })
         .catch(function (response) {
-            utils.writeJson(res, response, response.statusCode || 500);
+            utils.writeJson(res, response, response.errorCode || 500);
         });
 };
