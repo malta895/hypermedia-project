@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $.getJSON('/api/events?limit=20&offset=40', function (data) {  // /api/books GET ALL EVENTS
+    $.getJSON('/api/events', function (data) {  // /api/books GET ALL EVENTS
 
         for (i = 0; i < data.length; i++) {
             var id = data[i].event_id;

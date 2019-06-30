@@ -23,7 +23,7 @@ module.exports.eventGET = function eventGET (req, res, next) {
   var limit = req.swagger.params['limit'].value;
   Event.eventGET(offset,limit)
     .then(function (response) {
-      utils.writeJson(res, response);
+        utils.writeJson(res, response, response.length ? 200 : 404);
     })
     .catch(function (response) {
           let statusCode;

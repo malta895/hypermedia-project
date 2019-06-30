@@ -41,7 +41,7 @@ exports.eventGET = function (offset, limit) {
         if (!sqlDb)
             reject({ status: 500, errorText: 'Database not found!' });
 
-        let query = sqlDb('event')
+        let query = sqlDb('public.event')
             .select();
 
         if (offset)
