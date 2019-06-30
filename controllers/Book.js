@@ -82,7 +82,11 @@ module.exports.getBookById = function getBookById (req, res, next) {
     var bookId = req.swagger.params['bookId'].value;
     Book.getBookById(bookId)
         .then(function (response) {
-            utils.writeJson(res, response, response.length ? 200 : 404);
+            if(response.length){
+                utils.writeJson(res, response[0]);
+            } else {
+                utils.writeJson(res, response, 404)
+            }
         })
         .catch(function (response) {
             utils.writeJson(res, response, response.statusCode || 500);

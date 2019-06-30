@@ -13,9 +13,15 @@ $(document).ready(function () {
             var abstract = book.abstract;
 
             var authors = book.authors.reduce(function(acc, currVal){
-                return acc === '' ? currVal : ', ' + currVal;
+                return (acc === '' ? '' : (acc + ', ')) + currVal.name;
             }, '');
-            //var genre = book.genre.name;
+
+            let dateObj = new Date(date);
+            let dateString = dateObj.toLocaleDateString();
+            let timeString = dateObj.toLocaleTimeString();
+
+            date = dateString + ' ' + timeString;
+
             var elem = '';
             elem += '<div class="col-sm-12 col-xs-6"> <article class="product-item"> <div class="row"> <div class="col-sm-3"> <div class="product-overlay"> <div class="product-mask"></div>';
             elem += '<a href="single-event.html?id=' + id + '" class="product-permalink"></a>';
