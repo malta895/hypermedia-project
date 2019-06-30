@@ -83,7 +83,7 @@ o.payment_method,
 o.shipping_method,
 to_jsonb(ad.*) AS shipment_address,
 sum(b.price * cb.quantity::double precision) AS total_amount,
-jsonb_agg(to_jsonb(b.*)) AS books
+jsonb_agg(jsonb_build_object('book', b.*, 'quantity', cb.quantity)) AS books
 FROM "order" o
 LEFT JOIN address ad ON ad.address_id = o.shipment_address
 LEFT JOIN cart ON o.cart = cart.cart_id

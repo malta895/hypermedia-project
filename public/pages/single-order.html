@@ -205,56 +205,55 @@
                         <article class="account-content">
                             <h3>Order #124321</h3>
                             <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="box">
-                                        <h4>Billing Address</h4>
-                                        <ul class="list-unstyled">
-                                            <li class="name"><b></b></li>
-                                            <li class="address"></li>
-                                            <li class="zipcity"></li>
-                                            <li class="country"></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                <!-- <div class="col-sm-6">
+                                     <div class="box">
+                                     <h4>Billing Address</h4>
+                                     <ul class="list-unstyled">
+                                     <li id="address-complete-name"><b></b></li>
+                                     <li class=""></li>
+                                     <li class="zipcity"></li>
+                                     <li class="country"></li>
+                                     </ul>
+                                     </div>
+                                     </div> -->
                                 <div class="col-sm-6">
                                     <div class="box">
                                         <h4>Shipping Address</h4>
                                         <ul class="list-unstyled">
-                                            <li class="name"><b></b></li>
-                                            <li class="address"></li>
-                                            <li class="zipcity"></li>
-                                            <li class="country"></li>
+                                            <li><b> Name: </b><span id="addr-complete-name"></span> </li>
+                                            <li><b> Street line 1: </b><span id="addr-street-line1"></span></li>
+                                            <li><b> Street line 2: </b><span id="addr-street-line2"></span></li>
+                                            <li><b> City: </b><span id="addr-city"></span></li>
+                                            <li><b> Zip Code: </b><span id="addr-zip-code"></span></li>
+                                            <li><b> Province: </b><span id="addr-province"></span></li>
+                                            <li><b> Country: </b><span id="addr-country"></span></li>
                                         </ul>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="box">
                                         <h4>Payment Method</h4>
                                         <ul class="list-unstyled">
-                                            <li class="payment_method"></li>
+                                            <li id="payment_method"></li>
                                         </ul>
                                     </div>
                                     <div class="box">
                                         <h4>Shipping Method</h4>
                                         <ul class="list-unstyled">
-                                            <li class="shipping_method"></li>
+                                            <li id="shipping_method"></li>
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="box">
-                                        <h4>Order Details</h4>
-                                        <ul class="list-unstyled">
-                                            <li><b>Email: </b>ale.caru@gmail.com</li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                <!-- <div class="col-sm-6">
+                                     <div class="box">
+                                     <h4>Order Details</h4>
+                                     <ul class="list-unstyled">
+                                     <li><b>Email: </b>ale.caru@gmail.com</li>
+                                     </ul>
+                                     </div>
+                                     </div> -->
                             </div>
-
                             <div class="products-order">
-
                                 <div class="table-responsive">
                                     <table class="table table-products">
                                         <thead>
@@ -267,22 +266,22 @@
                                             </tr>
                                         </thead>
                                         <tbody id="cart">
-                                            <tr>
-                                                <td class="col-xs-1"><img src="../assets/images/products/product-1.jpg" alt="" class="img-responsive"></td>
-                                                <td class="col-xs-4 col-md-5">
-                                                    <h4><a href="single-product.html">Fusce Aliquam</a><small>M, Black, Esprit</small></h4>
-                                                </td>
-                                                <td class="col-xs-2 text-center"><span>$30</span></td>
-                                                <td class="col-xs-2 col-md-1 text-center"><span><b>2 items</b></span></td>
-                                                <td class="col-xs-2 text-center"><span><b>$60</b></span></td>
-                                            </tr>
-                                            
+                                            <!-- <tr>
+                                                 <td class="col-xs-1"><img src="../assets/images/products/product-1.jpg" alt="" class="img-responsive"></td>
+                                                 <td class="col-xs-4 col-md-5">
+                                                 <h4><a href="single-product.html">Fusce Aliquam</a><small>M, Black, Esprit</small></h4>
+                                                 </td>
+                                                 <td class="col-xs-2 text-center"><span>$30</span></td>
+                                                 <td class="col-xs-2 col-md-1 text-center"><span><b>2 items</b></span></td>
+                                                 <td class="col-xs-2 text-center"><span><b>$60</b></span></td>
+                                                 </tr> -->
+
                                         </tbody>
                                     </table>
                                 </div>
 
                                 <ul class="list-unstyled order-total">
-                                    <li>Subtotal<span class="total"></span></li>
+                                    <li>Subtotal<span id="total"></span></li>
                                 </ul>
                             </div>
                         </article>
@@ -327,13 +326,6 @@
                         </p>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="footer-widget footer-credits">
-                        This web application was developed by:
-                        <p class="webmaster-names">
-                            <span>Alessandro Carughi - Luca Maltagliati - Marco Turetta</span>
-                        </p>
-                    </div>
                 </div>
             </div>
         </footer>

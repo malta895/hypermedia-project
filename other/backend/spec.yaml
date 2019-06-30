@@ -1011,6 +1011,31 @@ paths:
         200:
           description: "Successful operation"
           schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Order"
+        403:
+          description: "Not authorized!"
+
+  /orders/{orderId}:
+    get:
+      tags:
+      - "order"
+      summary: "Get an order by ID"
+      description: "Get a specific order by providing ID"
+      operationId: "orderByIdGET"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "orderId"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
             $ref: "#/definitions/Order"
         403:
           description: "Not authorized!"

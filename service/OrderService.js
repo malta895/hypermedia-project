@@ -81,6 +81,26 @@ exports.orderDbSetup = function(database) {
     });
 };
 
+/**
+ * Get an order by ID
+ * Get a specific order by providing ID
+ *
+ * orderId Long 
+ * returns Order
+ **/
+exports.orderByIdGET = function(userId,orderId) {
+    return new Promise(function(resolve, reject) {
+        let query = sqlDb('order_essentials')
+            .where('order_id', orderId);
+
+        query.where('user_id', userId);
+
+        query.then( rows => {
+            resolve(rows);
+        });
+    });
+};
+
 
 /**
  * Place a new order

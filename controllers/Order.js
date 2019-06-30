@@ -4,6 +4,30 @@ const utils = require('../utils/writer.js'),
       Order = require('../service/OrderService'),
       session = require('../utils/SessionManager');
 
+
+module.exports.orderByIdGET = function orderByIdGET (req, res, next) {
+    var orderId = req.swagger.params['orderId'].value;
+
+    if(!session.userIdExists()){
+        utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
+        return;
+    }
+
+    let userId = session.getUserId();
+
+    Order.orderByIdGET(userId, orderId)
+        .then(function (response) {
+            if(response.length)
+                utils.writeJson(res, response[0]);
+            else
+                utils.writeJson(res, {message: "Order Not Found!"}, 404);
+        })
+        .catch(function (response) {
+            console.error(response);
+            utils.writeJson(res, {message: "Internal Server Error!"}, 500);
+        });
+};
+
 module.exports.orderPlacePOST = function orderPlacePOST (req, res, next) {
     var addressStreetLine1 = req.swagger.params['addressStreetLine1'].value;
     var city = req.swagger.params['city'].value;
@@ -15,6 +39,7 @@ module.exports.orderPlacePOST = function orderPlacePOST (req, res, next) {
     var first_name = req.swagger.params['first_name'].value;
     var last_name = req.swagger.params['last_name'].value;
     var addressStreetLine2 = req.swagger.params['addressStreetLine2'].value;
+
 
     if(!session.userIdExists()){
         utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
