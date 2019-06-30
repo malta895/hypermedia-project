@@ -41,8 +41,12 @@ exports.eventGET = function (offset, limit) {
         if (!sqlDb)
             reject({ status: 500, errorText: 'Database not found!' });
 
-        let query = sqlDb('public.event')
-            .select();
+        let query = sqlDb('event')
+            .join('book_essentials', 'event.book', 'book_essentials.book_id')
+            .join('address', 'event.location', 'address.address_id')
+            .select('event_id', 'name', 'date_time',
+                    sqlDb.raw("to_jsonb(book_essentials.*) as book"),
+                    sqlDb.raw("to_jsonb(address.*) as location"));
 
         if (offset)
             query.offset(offset);
@@ -66,9 +70,16 @@ exports.eventGET = function (offset, limit) {
 exports.eventIdGET = function (eventId) {
 
     return new Promise(function (resolve, reject) {
-        let query = sqlDb('event ').where('event_id', eventId);
+        let query = sqlDb('event ')
+            .join('book_essentials', 'event.book', 'book_essentials.book_id')
+            .join('address', 'event.location', 'address.address_id')
+            .select('event_id', 'name', 'date_time',
+                    sqlDb.raw("to_jsonb(book_essentials.*) as book"),
+                    sqlDb.raw("to_jsonb(address.*) as location"))
 
-        query.then(rows => resolve(rows))
+            .where('event_id', eventId)
+
+            .then(rows => resolve(rows))
             .catch( err => reject({error: err, errorCode: 500}));
 
     });
@@ -87,6 +98,12 @@ exports.bookEventsGET = function(bookId,offset,limit) {
     return new Promise(function(resolve, reject) {
 
         let query = sqlDb('event')
+            .join('book_essentials', 'event.book', 'book_essentials.book_id')
+            .join('address', 'event.location', 'address.address_id')
+            .select('event_id', 'name', 'date_time',
+                    sqlDb.raw("to_jsonb(book_essentials.*) as book"),
+                    sqlDb.raw("to_jsonb(address.*) as location"))
+
             .where('book', bookId);
 
         if(offset)

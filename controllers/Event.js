@@ -1,52 +1,47 @@
 'use strict';
 
-var utils = require('../utils/writer.js');
-var Event = require('../service/EventService');
+const utils = require('../utils/writer.js'),
+      Event = require('../service/EventService');
 
 module.exports.bookEventsGET = function bookEventsGET (req, res, next) {
     var bookId = req.swagger.params['bookId'].value;
     var offset = req.swagger.params['offset'].value;
     var limit = req.swagger.params['limit'].value;
 
-    //TODO IMPLEMENTARE
     Event.bookEventsGET(bookId,offset,limit)
         .then(function (response) {
             utils.writeJson(res, response);
         })
         .catch(function (response) {
-            utils.writeJson(res, response);
+            console.error(response);
+            utils.writeJson(res, {message: "Internal Server Error!"}, 500);
         });
 };
 
 module.exports.eventGET = function eventGET (req, res, next) {
-  var offset = req.swagger.params['offset'].value;
-  var limit = req.swagger.params['limit'].value;
-  Event.eventGET(offset,limit)
-    .then(function (response) {
-        utils.writeJson(res, response, response.length ? 200 : 404);
-    })
-    .catch(function (response) {
-          let statusCode;
-          if (response.notFound)
-              statusCode = 404;
-          else
-              statusCode = 500;
-          utils.writeJson(res, response, statusCode);
-     });;
+    var offset = req.swagger.params['offset'].value;
+    var limit = req.swagger.params['limit'].value;
+    Event.eventGET(offset,limit)
+        .then(function (response) {
+            utils.writeJson(res, response);
+        })
+        .catch(function (response) {
+            console.error(response);
+            utils.writeJson(res, {message: "Internal Server Error!"}, 500);
+        });
 };
 
 module.exports.eventIdGET = function eventIdGET (req, res, next) {
-  var eventId = req.swagger.params['eventId'].value;
-  Event.eventIdGET(eventId)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-      .catch(function (response) {
-          let statusCode;
-          if (response.notFound)
-              statusCode = 404;
-          else
-              statusCode = 500;
-          utils.writeJson(res, response, statusCode);
-      });
+    var eventId = req.swagger.params['eventId'].value;
+    Event.eventIdGET(eventId)
+        .then(function (response) {
+            if(response.length)
+                utils.writeJson(res, response[0]);
+            else
+                utils.writeJson(res, {message: "Event Not Found!"}, 404);
+        })
+        .catch(function (response) {
+            console.error(response);
+            utils.writeJson(res, {message: "Internal Server Error!"}, 500);
+        });
 };
