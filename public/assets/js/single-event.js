@@ -17,24 +17,24 @@ $(window).on("load", function () {
     var id = getUrlParameter('id');
     $.getJSON('/api/events/' + id, function (data) {  // GET BOOK BY ID /api/book/{bookId}    
         console.log(data);
-        for (i = 0; i < data.length; i++) {
-            var event_id = data[i].event_id;
-            var name = data[i].name;
-            var id = data[i].id;
-            var date = data[i].date;
+        
+            var event_id = data.event_id;
+            var name = data.name;
+            var id = data.id;
+            var date = data.date;
             //LOCATION
-            var location = data[i].location;
+            var location = data.location;
             var address = location.street_line1 + ',' + location.street_line2 + ',' + location.city;
             //BOOK
-            var book = data[i].presented_book;
+            var book = data.book;
             var title = book.title;
-            var picture = book.picture_path;
+            var picture = book.picture;
             var authors = book.authors;
             a = '';
             for (y = 0; y < authors.length; y++) {
                 a += authors[y].name;
             }
-            var genre = data[i].genre;
+            
             var elem = '';
 
             $("#title").html('Presentation:'+title+'(Authors:'+a+')');
@@ -42,7 +42,7 @@ $(window).on("load", function () {
             $("#where").html(address);
             var img = '<div class="item"><img src="' + picture + '" id="img" class="img - responsive" alt=""></div>';
             $("#pic").append(img);
-        }
+        
 
 
 

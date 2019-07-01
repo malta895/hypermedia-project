@@ -18,6 +18,7 @@ $(document).ready(function () {
         $('.logout').html('Logout')
         $('.signin').hide()
         $('.myaccount').html(data.first_name + ' ' + data.surname);
+        sessionStorage.setItem('user', JSON.stringify(data));
         $.getJSON('/api/cart', function (data) {
             console.log(data)// /api/cart GET CART
             $(".navbar-cart > ul").empty();

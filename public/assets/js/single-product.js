@@ -48,7 +48,9 @@ $(window).on("load",function () {
         }
 
         $(".product-rating").html(d);
+
         $("#title").html(title);
+        $("#summary2").html(book.abstract);
         $("#author").html("<span>Author</span>"+ authors);
         $("#price").html(price +'\u20AC');
         $("#isbn").html("<span>ISBN</span>"+isbn);
@@ -95,7 +97,7 @@ $(window).on("load",function () {
         });
     });
     //get review by book id
-    $.getJSON('/api/books/' + id + '/reviews', function (data) { //get similar_books by book_id
+    $.getJSON('/api/books/'+ id +'/reviews', function (data) { //get similar_books by book_id
         console.log(data);
         for (let i = 0; i < data.length; i++) {
             var review = data[i];
@@ -123,9 +125,28 @@ $(window).on("load",function () {
             $(".comments").append(elem);
         }
 
+    }).fail(res => {
+        console.log(res);
+
+        switch (res.status) {
+            case 404:
+                $(".comments").html('<p><b>There are no reviews for this book</b></p>');
+
+                break;
+        }
+
+        //TODO GESTIRE ERRORE
+
+    });;
+    var userId=JSON.parse(sessionStorage.getItem('userId')).userId;
+    $.getJSON('/api/user/'+userId+'/reviews', function (data) {
+        console.log(data)
+        for (i = 0; i < data.length;i++) {
+            if (data[i].book == id) {
+                $('.review').hide()
+            }
+        }
     });
-
-
     $.getJSON('/api/books/' + id+'/related', function (data) { //get similar_books by book_id
         console.log(data);
         for (let i = 0; i < data.length; i++) {
@@ -167,6 +188,7 @@ $(window).on("load",function () {
 
     });
 
+
     $('.modal-body > form').on('submit', function (e) {
         e.preventDefault();
 
@@ -196,7 +218,7 @@ $(window).on("load",function () {
 
 
     });
-
+    
 });
 
 
