@@ -74,6 +74,13 @@ $(document).ready(function () {
         search = $('.navbar-search input').val();
         window.location.href = '../index.html?search=' + search;
     });
+    $('.navbar-search input').keypress(function (e) {
+        if (e.which == 13) {
+            search = $('.navbar-search input').val();
+            window.location.href = '../index.html?search=' + search;
+            return false;    //<---- Add this line
+        }
+    });
     $('.logout').click(function (e) {
         e.preventDefault()
         $.post('/api/user/logout', function (res) {

@@ -13,7 +13,7 @@ $(document).ready(function () {
             var picture = data[i].picture;
             var genre = data[i].genre;
             var elem = '';
-            elem += '<div class="col-sm-4 col-xs-6" id="' + id + '">';
+            elem += '<div class="col-sm-3 col-xs-6" id="' + id + '">';
             elem += '<article class="product-item">';
             elem += '<div class="row">';
             elem += '<div class="col-sm-3">';

@@ -1,0 +1,305 @@
+[
+  {
+    "book_id": 1,
+    "isbn": "439023483",
+    "title": "The Hunger Games",
+    "price": 49,
+    "picture": "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
+    "abstract": "Lorem ipsum",
+    "interview": "Lorem ipsum",
+    "status": "Available",
+    "publisher": {
+      "name": "Hoepli",
+      "publisher_id": 5
+    },
+    "genres": [
+      "Noir"
+    ],
+    "themes": [
+      "Coming of Age",
+      "Prejudice",
+      "Society"
+    ],
+    "authors": [
+      {
+        "name": "Suzanne Collins",
+        "picture": null,
+        "author_id": 1
+      }
+    ],
+    "average_rating": null
+  },
+  {
+    "book_id": 2,
+    "isbn": "439554934",
+    "title": "Harry Potter and the Philosopher's Stone",
+    "price": 29,
+    "picture": "https://images.gr-assets.com/books/1474154022l/3.jpg",
+    "abstract": "Lorem ipsum",
+    "interview": "Lorem ipsum",
+    "status": "Available",
+    "publisher": {
+      "name": "Editori Riuniti",
+      "publisher_id": 6
+    },
+    "genres": [
+      "Hystorical"
+    ],
+    "themes": [
+      "Betrayal"
+    ],
+    "authors": [
+      {
+        "name": " Mary GrandPré",
+        "picture": null,
+        "author_id": 3
+      },
+      {
+        "name": "J.K. Rowling",
+        "picture": null,
+        "author_id": 2
+      }
+    ],
+    "average_rating": null
+  },
+  {
+    "book_id": 4,
+    "isbn": "61120081",
+    "title": "To Kill a Mockingbird",
+    "price": 49,
+    "picture": "https://images.gr-assets.com/books/1361975680l/2657.jpg",
+    "abstract": "Lorem ipsum",
+    "interview": "Lorem ipsum",
+    "status": "Available",
+    "publisher": {
+      "name": "Pearson",
+      "publisher_id": 7
+    },
+    "genres": [
+      "Hystorical"
+    ],
+    "themes": [
+      "Death"
+    ],
+    "authors": [
+      {
+        "name": "Harper Lee",
+        "picture": null,
+        "author_id": 5
+      }
+    ],
+    "average_rating": null
+  },
+  {
+    "book_id": 5,
+    "isbn": "743273567",
+    "title": "The Great Gatsby",
+    "price": 45,
+    "picture": "https://images.gr-assets.com/books/1490528560l/4671.jpg",
+    "abstract": "Lorem ipsum",
+    "interview": "Lorem ipsum",
+    "status": "Available",
+    "publisher": {
+      "name": "Editori Riuniti",
+      "publisher_id": 6
+    },
+    "genres": [
+      "Noir"
+    ],
+    "themes": [
+      "Courage and Heroism",
+      "Survival"
+    ],
+    "authors": [
+      {
+        "name": "F. Scott Fitzgerald",
+        "picture": null,
+        "author_id": 6
+      }
+    ],
+    "average_rating": null
+  },
+  {
+    "book_id": 6,
+    "isbn": "525478817",
+    "title": "The Fault in Our Stars",
+    "price": 29,
+    "picture": "https://images.gr-assets.com/books/1360206420l/11870085.jpg",
+    "abstract": "Lorem ipsum",
+    "interview": "Lorem ipsum",
+    "status": "Available",
+    "publisher": {
+      "name": "La Feltrinelli",
+      "publisher_id": 2
+    },
+    "genres": [
+      "Horror",
+      "Legend",
+      "Religious"
+    ],
+    "themes": [
+      "Society"
+    ],
+    "authors": [
+      {
+        "name": "John Green",
+        "picture": null,
+        "author_id": 7
+      }
+    ],
+    "average_rating": null
+  },
+  {
+    "book_id": 7,
+    "isbn": "618260307",
+    "title": "The Hobbit or There and Back Again",
+    "price": 14,
+    "picture": "https://images.gr-assets.com/books/1372847500l/5907.jpg",
+    "abstract": "Lorem ipsum",
+    "interview": "Lorem ipsum",
+    "status": "Available",
+    "publisher": {
+      "name": "Zanichelli",
+      "publisher_id": 1
+    },
+    "genres": [
+      "Fantasy",
+      "Noir",
+      "Religious"
+    ],
+    "themes": [
+      "Power and Corruption"
+    ],
+    "authors": [
+      {
+        "name": "J.R.R. Tolkien",
+        "picture": null,
+        "author_id": 8
+      }
+    ],
+    "average_rating": null
+  },
+  {
+    "book_id": 8,
+    "isbn": "316769177",
+    "title": "The Catcher in the Rye",
+    "price": 31,
+    "picture": "https://images.gr-assets.com/books/1398034300l/5107.jpg",
+    "abstract": "Lorem ipsum",
+    "interview": "Lorem ipsum",
+    "status": "Available",
+    "publisher": {
+      "name": "Garzanti",
+      "publisher_id": 3
+    },
+    "genres": [
+      "Noir",
+      "Thriller"
+    ],
+    "themes": [
+      "Betrayal",
+      "Courage and Heroism"
+    ],
+    "authors": [
+      {
+        "name": "J.D. Salinger",
+        "picture": null,
+        "author_id": 9
+      }
+    ],
+    "average_rating": null
+  },
+  {
+    "book_id": 9,
+    "isbn": "1416524797",
+    "title": "Angels & Demons ",
+    "price": 49,
+    "picture": "https://images.gr-assets.com/books/1303390735l/960.jpg",
+    "abstract": "Lorem ipsum",
+    "interview": "Lorem ipsum",
+    "status": "Available",
+    "publisher": {
+      "name": "Hoepli",
+      "publisher_id": 5
+    },
+    "genres": [
+      "Drama",
+      "HumorPoetry"
+    ],
+    "themes": [
+      "Betrayal",
+      "Coming of Age"
+    ],
+    "authors": [
+      {
+        "name": "Dan Brown",
+        "picture": null,
+        "author_id": 10
+      }
+    ],
+    "average_rating": null
+  },
+  {
+    "book_id": 10,
+    "isbn": "679783261",
+    "title": "Pride and Prejudice",
+    "price": 40,
+    "picture": "https://images.gr-assets.com/books/1320399351l/1885.jpg",
+    "abstract": "Lorem ipsum",
+    "interview": "Lorem ipsum",
+    "status": "Available",
+    "publisher": {
+      "name": "La Feltrinelli",
+      "publisher_id": 2
+    },
+    "genres": [
+      "Fantasy",
+      "Noir",
+      "Thriller"
+    ],
+    "themes": [
+      "Coming of Age",
+      "Courage and Heroism",
+      "Power and Corruption"
+    ],
+    "authors": [
+      {
+        "name": "Jane Austen",
+        "picture": null,
+        "author_id": 11
+      }
+    ],
+    "average_rating": null
+  },
+  {
+    "book_id": 11,
+    "isbn": "1594480001",
+    "title": "The Kite Runner ",
+    "price": 41,
+    "picture": "https://images.gr-assets.com/books/1484565687l/77203.jpg",
+    "abstract": "Lorem ipsum",
+    "interview": "Lorem ipsum",
+    "status": "Available",
+    "publisher": {
+      "name": "Mondadori",
+      "publisher_id": 4
+    },
+    "genres": [
+      "Comedy",
+      "Horror",
+      "Noir"
+    ],
+    "themes": [
+      "Betrayal",
+      "Society"
+    ],
+    "authors": [
+      {
+        "name": "Khaled Hosseini",
+        "picture": null,
+        "author_id": 12
+      }
+    ],
+    "average_rating": null
+  }
+]

@@ -3,7 +3,7 @@ var currencies = {
     USD: '$'
 };
 $(document).ready(function () {
-    $.getJSON('/api/books/monthBestseller?limit=20&offset=40', function (data) {  // /api/books GET ALL EVENTS
+    $.getJSON('../assets/favourite.json', function (data) {  // /api/books GET ALL EVENTS
 
         for (i = 0; i < data.length; i++) {
             var id = data[i].book_id;
@@ -13,7 +13,7 @@ $(document).ready(function () {
             var picture = data[i].picture;
             var genre = data[i].genre;
             var elem = '';
-            elem += '<div class="col-sm-4 col-xs-6" id="' + id + '">';
+            elem += '<div class="col-sm-3 col-xs-6" id="' + id + '">';
             elem += '<article class="product-item">';
             elem += '<div class="row">';
             elem += '<div class="col-sm-3">';
