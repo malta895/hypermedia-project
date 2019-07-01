@@ -46,7 +46,9 @@ $(document).ready(function () {
             console.log(order)
             console.log(formData)
             //formData=formData.serialize(); 
-            $.post('/api/orders/create', order, function (data) { }, 'application/x-www-form-urlencoded');
+            $.post('/api/orders/create', order, function (data) {
+                window.location.href='../index.html'
+            }, 'application/x-www-form-urlencoded');
 
 
         });
