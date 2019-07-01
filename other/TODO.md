@@ -10,10 +10,12 @@
  * ....
  
 ## BACKEND:
+ * Creare api set cart
  * Creare un dataset completo: prendere solo 200/250 libri, creare 10 utenti, recensire la maggior parte dei libri con ciascun utente
  * creare un po di eventi random con alcuni dei libri (max 30 eventi)
  * controllare api inutili e sistemare tutte le risposte ed errori
  * unificare add e modify address
+ * mettere vincolo su numero di stelle libro
  
 ## DOCUMENTAZIONE:
  * fare tutta la documentazione backend in Markdown.
