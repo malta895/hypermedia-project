@@ -28,40 +28,49 @@ $(document).ready(function () {
     }
     
     function add() {
-        $.getJSON('/api/books?limit=10&offset=' + offset + '&' + titleS, function (data) {  // /api/books GET ALL BOOKS
+        $.ajax({
+            url: routeFilter,
+            type: 'GET',
+            success: function (data) {
+                for (i = 0; i < data.length; i++) {
+                    var id = data[i].book_id;
+                    var title = data[i].title;
+                    var authors = data[i].authors;
+                    var price = data[i].price;
+                    var picture = data[i].picture;
+                    var genre = data[i].genre;
+                    var elem = '';
+                    elem += '<div class="book col-sm-4 col-xs-6" id="' + id + '">';
+                    elem += '<article class="product-item">';
+                    elem += '<div class="row">';
+                    elem += '<div class="col-sm-3">';
+                    elem += '<div class="product-overlay">';
+                    elem += '<div class="product-mask"></div>';
+                    elem += '<a href="pages/single-product.html?id=' + id + '" class="product-permalink"></a><img src="' + picture + '" width="262.5" height="350" class="img-responsive" alt="">';
+                    elem += '<img src="' + picture + '" class="img-responsive product-image-2" alt="" width="262.5" height="350"></div></div>';
+                    elem += '<div class="col-sm-9"><div class="product-body">';
+                    elem += '<h3>' + title + '</h3>';
+                    elem += '<div class="product-rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></div>';
+                    elem += '<span class="price"><ins><span class="amount">' + currencies.EUR + price + '</span></ins></span>';
+                    elem += '<div class="buttons"><button class="btn btn-primary btn-sm add-to-cart addCart" id="' + id + '"><i class="fa fa-shopping-cart"></i>Add to cart</a></div>';
+                    elem += '</div>';
+                    elem += '</div>';
+                    elem += '</div>';
+                    elem += '</article>';
+                    elem += '</div>';
 
-            for (i = 0; i < data.length; i++) {
-                var id = data[i].book_id;
-                var title = data[i].title;
-                var authors = data[i].authors;
-                var price = data[i].price;
-                var picture = data[i].picture;
-                var genre = data[i].genre;
-                var elem = '';
-                elem += '<div class="col-sm-4 col-xs-6" id="' + id + '">';
-                elem += '<article class="product-item">';
-                elem += '<div class="row">';
-                elem += '<div class="col-sm-3">';
-                elem += '<div class="product-overlay">';
-                elem += '<div class="product-mask"></div>';
-                elem += '<a href="pages/single-product.html?id=' + id + '" class="product-permalink"></a><img src="' + picture + '" width="262.5" height="350" class="img-responsive" alt="">';
-                elem += '<img src="' + picture + '" class="img-responsive product-image-2" alt="" width="262.5" height="350"></div></div>';
-                elem += '<div class="col-sm-9"><div class="product-body">';
-                elem += '<h3>' + title + '</h3>';
-                elem += '<div class="product-rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></div>';
-                elem += '<span class="price"><ins><span class="amount">' + currencies.EUR + price + '</span></ins></span>';
-                elem += '<div class="buttons"><button class="btn btn-primary btn-sm add-to-cart addCart" id="' + id + '"><i class="fa fa-shopping-cart"></i>Add to cart</a></div>';
-                elem += '</div>';
-                elem += '</div>';
-                elem += '</div>';
-                elem += '</article>';
-                elem += '</div>';
+
+                    $("#products").append(elem);
 
 
-                $("#products").append(elem);
-
+                }
+                $(window).trigger("scroll");
+            },
+            error: function (data) {
+                $('#products').empty();
+                $('#products').html('No Results!');
+                $(window).trigger("scroll");
             }
-            
         });
     }
     $.getJSON('/api/books?limit=10&offset='+offset+'&' + titleS, function (data) {  // /api/books GET ALL BOOKS
@@ -200,9 +209,11 @@ $(document).ready(function () {
                         $("#products").append(elem);
 
                     }
+                    $(window).trigger("scroll");
                 },
                 error: function (data) {
                     $('#products').empty();
+                    $(window).trigger("scroll");
                     $('#products').html('No Results!');
                 }
             });
@@ -257,16 +268,27 @@ $(document).ready(function () {
                         $("#products").append(elem);
 
                     }
+                    $(window).trigger("scroll");
                 },
                 error: function (data) {
                     $('#products').empty();
                     $('#products').html('No Results!');
+                    $(window).trigger("scroll");
                 }
             });
         });
 
         
         $('.search-button').on('click', function () {
+            search()
+        });
+        $('.search-input').keypress(function (e) {
+            if (e.which == 13) {
+                search()
+                return false;    //<---- Add this line
+            }
+        });
+        function search() {
             value = $('.search-input').val();
             searchFilter = ''
             if (value !== null) {
@@ -313,7 +335,8 @@ $(document).ready(function () {
                     $('#products').html('No Results!');
                 }
             });
-        });
+
+        }
 
 
 
