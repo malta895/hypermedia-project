@@ -56,7 +56,7 @@ $(window).on("load",function () {
         $("#isbn").html("<span>ISBN</span>"+isbn);
         $("#genre").html("<span>Genre</span>" + genre);
         $("#theme").html("<span>Themes</span>" + themes);
-        var img = '<div class="item"><img src="' + picture + '" id="img" class="img - responsive" alt=""></div>';
+        var img = '<div class="item"><img src="' + picture + '" id="img" class="img-responsive" alt=""></div>';
         $("#product-carousel").append(img);
         $('.addCart').click(function () {
             $.ajax({
@@ -147,17 +147,17 @@ $(window).on("load",function () {
             }
         }
     });
-    $.getJSON('/api/books/' + id+'/related', function (data) { //get similar_books by book_id
+    $.getJSON('/api/books/' + id+'/related?limit=4', function (data) { //get similar_books by book_id
         console.log(data);
         for (let i = 0; i < data.length; i++) {
             var id = data[i].book_id;
             var title = data[i].title;
-            var authors = data[i].authors.reduce(function(acc, au) {
+            /*var authors = data[i].authors.reduce(function(acc, au) {
                 return (acc === '' ? '' : (acc + ', ')) + au.name;
-            }, '');
+            }, '');*/
             var price = data[i].price;
             var picture = data[i].picture;
-            var genres = data[i].genres.join(', ');
+            
             var elem = '';
             elem += '<div class="col-sm-3 col-xs-6" id="' + id + '">';
             elem += '<article class="product-item">';
@@ -165,7 +165,7 @@ $(window).on("load",function () {
             elem += '<div class="col-sm-3">';
             elem += '<div class="product-overlay">';
             elem += '<div class="product-mask"></div>';
-            elem += '<a href="pages/single-product.html?id=' + id + '" class="product-permalink"></a><img src="' + picture + '" width="262.5" height="350" class="img-responsive" alt="">';
+            elem += '<a href="single-product.html?id=' + id + '" class="product-permalink"></a><img src="' + picture + '" width="262.5" height="350" class="img-responsive" alt="">';
             elem += '<img src="' + picture + '" class="img-responsive product-image-2" alt="" width="262.5" height="350"></div></div>';
             elem += '<div class="col-sm-9"><div class="product-body">';
             elem += '<h3>' + title + '</h3>';
