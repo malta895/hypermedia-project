@@ -3,13 +3,64 @@ var currencies = {
     USD: '$'
 };
 
+function generateRouteFilter(offset ){
+    return '/api/books?limit=9&offset='+offset+'&';
+}
+
+function add(offset) {
+    $.ajax({
+        url: generateRouteFilter(offset),
+        type: 'GET',
+        success: function (data) {
+            for (let i = 0; i < data.length; i++) {
+                var id = data[i].book_id;
+                var title = data[i].title;
+                var authors = data[i].authors;
+                var price = data[i].price;
+                var picture = data[i].picture;
+                var genre = data[i].genre;
+                var elem = '';
+                elem += '<div class="book col-sm-4 col-xs-6" id="' + id + '">';
+                elem += '<article class="product-item">';
+                elem += '<div class="row">';
+                elem += '<div class="col-sm-3">';
+                elem += '<div class="product-overlay">';
+                elem += '<div class="product-mask"></div>';
+                elem += '<a href="pages/single-product.html?id=' + id + '" class="product-permalink"></a><img src="' + picture + '" width="262.5" height="350" class="img-responsive" alt="">';
+                elem += '<img src="' + picture + '" class="img-responsive product-image-2" alt="" width="262.5" height="350"></div></div>';
+                elem += '<div class="col-sm-9"><div class="product-body">';
+                elem += '<h3>' + title + '</h3>';
+                elem += '<div class="product-rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></div>';
+                elem += '<span class="price"><ins><span class="amount">' + currencies.EUR + price + '</span></ins></span>';
+                elem += '<div class="buttons"><button class="btn btn-primary btn-sm add-to-cart addCart" id="' + id + '"><i class="fa fa-shopping-cart"></i>Add to cart</a></div>';
+                elem += '</div>';
+                elem += '</div>';
+                elem += '</div>';
+                elem += '</article>';
+                elem += '</div>';
+
+
+                $("#products").append(elem);
+
+
+            }
+            $(window).trigger("scroll");
+        },
+        error: function (data) {
+            $('#products').empty();
+            $('#products').html('No Results!');
+            $(window).trigger("scroll");
+        }
+    });
+}
+
+
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1),
         sURLVariables = sPageURL.split('&'),
-        sParameterName,
-        i;
+        sParameterName;
 
-    for (i = 0; i < sURLVariables.length; i++) {
+    for (let i = 0; i < sURLVariables.length; i++) {
         sParameterName = sURLVariables[i].split('=');
 
         if (sParameterName[0] === sParam) {
@@ -17,9 +68,9 @@ var getUrlParameter = function getUrlParameter(sParam) {
         }
     }
     return undefined;
-}
+};
 var offset=0
-var routeFilter ='/api/books?limit=10&offset='+offset+'&';
+
 
 $(document).ready(function () {
     titleS=''
@@ -27,53 +78,8 @@ $(document).ready(function () {
         titleS = 'title=' + getUrlParameter('search') + '&';
     }
     
-    function add() {
-        $.ajax({
-            url: routeFilter,
-            type: 'GET',
-            success: function (data) {
-                for (i = 0; i < data.length; i++) {
-                    var id = data[i].book_id;
-                    var title = data[i].title;
-                    var authors = data[i].authors;
-                    var price = data[i].price;
-                    var picture = data[i].picture;
-                    var genre = data[i].genre;
-                    var elem = '';
-                    elem += '<div class="book col-sm-4 col-xs-6" id="' + id + '">';
-                    elem += '<article class="product-item">';
-                    elem += '<div class="row">';
-                    elem += '<div class="col-sm-3">';
-                    elem += '<div class="product-overlay">';
-                    elem += '<div class="product-mask"></div>';
-                    elem += '<a href="pages/single-product.html?id=' + id + '" class="product-permalink"></a><img src="' + picture + '" width="262.5" height="350" class="img-responsive" alt="">';
-                    elem += '<img src="' + picture + '" class="img-responsive product-image-2" alt="" width="262.5" height="350"></div></div>';
-                    elem += '<div class="col-sm-9"><div class="product-body">';
-                    elem += '<h3>' + title + '</h3>';
-                    elem += '<div class="product-rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></div>';
-                    elem += '<span class="price"><ins><span class="amount">' + currencies.EUR + price + '</span></ins></span>';
-                    elem += '<div class="buttons"><button class="btn btn-primary btn-sm add-to-cart addCart" id="' + id + '"><i class="fa fa-shopping-cart"></i>Add to cart</a></div>';
-                    elem += '</div>';
-                    elem += '</div>';
-                    elem += '</div>';
-                    elem += '</article>';
-                    elem += '</div>';
 
-
-                    $("#products").append(elem);
-
-
-                }
-                $(window).trigger("scroll");
-            },
-            error: function (data) {
-                $('#products').empty();
-                $('#products').html('No Results!');
-                $(window).trigger("scroll");
-            }
-        });
-    }
-    $.getJSON('/api/books?limit=10&offset='+offset+'&' + titleS, function (data) {  // /api/books GET ALL BOOKS
+    $.getJSON('/api/books?limit=9&offset='+offset+'&' + titleS, function (data) {  // /api/books GET ALL BOOKS
 
         for (i = 0; i < data.length; i++) {
             var id = data[i].book_id;
@@ -106,7 +112,7 @@ $(document).ready(function () {
             $("#products").append(elem);
 
         }
-       
+        
 
 
         //add event listener to the buttons
@@ -157,7 +163,10 @@ $(document).ready(function () {
                 }
             });
         });
-        
+
+
+        var routeFilter = generateRouteFilter(offset);
+
         $('.widget-genre input:checkbox').on('change',function () {
             value = $(this).val();
             console.log(value);
@@ -374,15 +383,15 @@ $(document).ready(function () {
     });
 
     $.getJSON('/api/me', function (data) {
-        $('.logout').html('Logout')
-        $('.signin').hide()
+        $('.logout').html('Logout');
+        $('.signin').hide();
         $('.myaccount').html(data.first_name + ' ' + data.surname);
         sessionStorage.setItem('user', JSON.stringify(data));
         $.getJSON('/api/cart', function (data) {
-            console.log(data)// /api/cart GET CART
+            console.log(data);// /api/cart GET CART
             $(".navbar-cart > ul").empty();
-            for (i = 0; i < data[0].books.length; i++) {
-                console.log(data[0].books[i])
+            for (let i = 0; i < data[0].books.length; i++) {
+                console.log(data[0].books[i]);
                 book = data[0].books[i].book;
                 var id = book.book_id;
                 var title = book.title;
@@ -408,49 +417,41 @@ $(document).ready(function () {
             $(".navbar-cart > ul").append(elem);
 
 
-
-
-
-
-
-
         });
 
     })
         .fail(function (res) {
-        $('.logout').hide()
-        $('.myaccount').hide()
-            $('.signin').html('Sign in')
+            $('.logout').hide();
+            $('.myaccount').hide();
+            $('.signin').html('Sign in');
             $(".navbar-cart").hide();
 
-    }
-    );
+        }
+             );
     $('.logout').click(function (e) {
-        e.preventDefault()
+        e.preventDefault();
         $.post('/api/user/logout', function (res) {
-            console.log("Logout succesful!")
+            console.log("Logout succesful!");
             sessionStorage.clear();
-            window.location.href = "pages/signin.html"
+            window.location.href = "pages/signin.html";
 
         })
             .fail(res => {
                 //TODO gestire errore
                 console.log(res);
-            })
+            });
     });
 
     $(window).on("scroll", function () {
-        console.log('scroll')
+        console.log('scroll');
         var scrollHeight = $(document).height();
         var scrollPosition = $(window).height() + $(window).scrollTop();
         if ((scrollHeight - scrollPosition) / scrollHeight <=0.001) {
-            offset += 10
-            add()
+            offset += 10;
+            add(offset);
         }
     });
 
-    
-    
 });
 
 

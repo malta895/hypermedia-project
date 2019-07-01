@@ -133,7 +133,8 @@ exports.booksGET = function(title,not_in_stock,publishers,authors,iSBN,min_price
         if (title) //cerca nel titolo o nell'autore
             query.orWhere(function() {
                 this
-                    .where('title', 'like', `%${title}%`)
+                //.where('title', 'like', `%${title}%`)
+                    .whereRaw('LOWER(title) like ?', [`%${title.toLowerCase()}%`])
                     .orWhere('book_id', 'in' , function() {
                         this.select('book')
                             .from('author_book')

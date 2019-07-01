@@ -5899,3 +5899,20 @@ footer .fa {
     font-size: 17px;
     color: gainsboro;
 }
+
+.navbar-right li a {
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+/* review stars */
+/* HIDE RADIO */
+#rating-box [type=radio] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+}
+/* end review stars */

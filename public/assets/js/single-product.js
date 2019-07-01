@@ -101,11 +101,12 @@ $(window).on("load",function () {
         console.log(data);
         for (let i = 0; i < data.length; i++) {
             var review = data[i];
-            var id = data[i].review_id;
-            var title = data[i].title;
-            var book = data[i].book;
-            var user = data[i].user;
-            var rating = data[i].rating;
+            var id = review.review_id;
+            var title = review.title || '';
+            var text = review.text || '';
+            var book = review.book;
+            var user = review.user;
+            var rating = review.rating;
             let dateTimePublished = new Date(review.date_published);
             let dateString = dateTimePublished.toLocaleDateString();
             var elem = '';
@@ -119,9 +120,9 @@ $(window).on("load",function () {
 
             }
             elem += '<div class="">';
-            elem += '<div class=""> <h3 class="media-heading">'+d+' '+title+'</h3>';
+            elem += '<div class=""> <h3 class="media-heading">'+d+' '+ title +'</h3>';
             elem += '<div class="meta"> <span class="date">' + dateString + ' - ' + user.first_name + '</span></div>';
-            elem += '<p>' + review.text + '</p> </div> </div>';
+            elem += '<p>' + text + '</p> </div> </div>';
             $(".comments").append(elem);
         }
 
@@ -157,7 +158,6 @@ $(window).on("load",function () {
             }, '');*/
             var price = data[i].price;
             var picture = data[i].picture;
-            
             var elem = '';
             elem += '<div class="col-sm-3 col-xs-6" id="' + id + '">';
             elem += '<article class="product-item">';
@@ -179,13 +179,6 @@ $(window).on("load",function () {
             elem += '</div>';
             $("#products").append(elem);
         }
-
-
-
-
-
-
-
     });
 
 
@@ -218,7 +211,22 @@ $(window).on("load",function () {
 
 
     });
-    
+
+
+    $('input[name="rating"]').change(function(){
+        console.log($(this).val());
+        let rating = parseInt($(this).val());
+        $('.rating-star').each(function(){
+            if(parseInt($(this).attr('data-rating')) <= rating){
+                $(this).removeClass('fa-star-o');
+                $(this).addClass('fa-star');
+            } else {
+                $(this).addClass('fa-star-o');
+                $(this).removeClass('fa-star');
+            }
+        });
+    });
+
 });
 
 
