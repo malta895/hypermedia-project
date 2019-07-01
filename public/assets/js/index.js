@@ -18,15 +18,53 @@ var getUrlParameter = function getUrlParameter(sParam) {
     }
     return undefined;
 }
-var offset=40
-var routeFilter ='/api/books?limit=20&offset='+offset+'&';
+var offset=0
+var routeFilter ='/api/books?limit=10&offset='+offset+'&';
 
 $(document).ready(function () {
     titleS=''
     if (getUrlParameter('search')) {
         titleS = 'title=' + getUrlParameter('search') + '&';
     }
-    $.getJSON('/api/books?limit=20&offset='+offset+'&' + titleS, function (data) {  // /api/books GET ALL BOOKS
+    
+    function add() {
+        $.getJSON('/api/books?limit=10&offset=' + offset + '&' + titleS, function (data) {  // /api/books GET ALL BOOKS
+
+            for (i = 0; i < data.length; i++) {
+                var id = data[i].book_id;
+                var title = data[i].title;
+                var authors = data[i].authors;
+                var price = data[i].price;
+                var picture = data[i].picture;
+                var genre = data[i].genre;
+                var elem = '';
+                elem += '<div class="col-sm-4 col-xs-6" id="' + id + '">';
+                elem += '<article class="product-item">';
+                elem += '<div class="row">';
+                elem += '<div class="col-sm-3">';
+                elem += '<div class="product-overlay">';
+                elem += '<div class="product-mask"></div>';
+                elem += '<a href="pages/single-product.html?id=' + id + '" class="product-permalink"></a><img src="' + picture + '" width="262.5" height="350" class="img-responsive" alt="">';
+                elem += '<img src="' + picture + '" class="img-responsive product-image-2" alt="" width="262.5" height="350"></div></div>';
+                elem += '<div class="col-sm-9"><div class="product-body">';
+                elem += '<h3>' + title + '</h3>';
+                elem += '<div class="product-rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></div>';
+                elem += '<span class="price"><ins><span class="amount">' + currencies.EUR + price + '</span></ins></span>';
+                elem += '<div class="buttons"><button class="btn btn-primary btn-sm add-to-cart addCart" id="' + id + '"><i class="fa fa-shopping-cart"></i>Add to cart</a></div>';
+                elem += '</div>';
+                elem += '</div>';
+                elem += '</div>';
+                elem += '</article>';
+                elem += '</div>';
+
+
+                $("#products").append(elem);
+
+            }
+            
+        });
+    }
+    $.getJSON('/api/books?limit=10&offset='+offset+'&' + titleS, function (data) {  // /api/books GET ALL BOOKS
 
         for (i = 0; i < data.length; i++) {
             var id = data[i].book_id;
@@ -59,6 +97,8 @@ $(document).ready(function () {
             $("#products").append(elem);
 
         }
+       
+
 
         //add event listener to the buttons
         
@@ -108,6 +148,7 @@ $(document).ready(function () {
                 }
             });
         });
+        
         $('.widget-genre input:checkbox').on('change',function () {
             value = $(this).val();
             console.log(value);
@@ -166,17 +207,7 @@ $(document).ready(function () {
                 }
             });
         });
-        /*$('.widget-best input:checkbox').click(function () {
-            value = $(this).val();
-            console.log(value);
-            $.ajax({
-                url: '/api/cart/add/book/' + id,
-                type: 'GET',
-                success: function (response) {
-                    //TODO IMPLEMENTARE
-                }
-            });
-        });*/
+        
         $('.widget-themes input:checkbox').on('change', function () {
             value = $(this).val();
             
@@ -234,62 +265,7 @@ $(document).ready(function () {
             });
         });
 
-        /*$('.widget-best input:checkbox').on('change', function () {
-            value = $(this).val();
-
-            if ($(this).is(':checked')) {
-
-                routeFilter += 'themes=' + value + '&';
-
-            } else if (!$(this).is(':checked')) {
-
-
-                routeFilter = routeFilter.replace('themes=' + value + '&', '');
-                console.log(routeFilter)
-            }
-            $.ajax({
-                url: routeFilter,
-                type: 'GET',
-                success: function (data) {
-                    $('#products').empty();
-                    for (i = 0; i < data.length; i++) {
-                        var id = data[i].book_id;
-                        var title = data[i].title;
-                        var authors = data[i].authors;
-                        var price = data[i].price;
-                        var picture = data[i].picture;
-                        var genre = data[i].genre;
-                        var elem = '';
-                        elem += '<div class="col-sm-4 col-xs-6" id="' + id + '">';
-                        elem += '<article class="product-item">';
-                        elem += '<div class="row">';
-                        elem += '<div class="col-sm-3">';
-                        elem += '<div class="product-overlay">';
-                        elem += '<div class="product-mask"></div>';
-                        elem += '<a href="pages/single-product.html?id=' + id + '" class="product-permalink"></a><img src="' + picture + '" width="262.5" height="350" class="img-responsive" alt="">';
-                        elem += '<img src="' + picture + '" class="img-responsive product-image-2" alt="" width="262.5" height="350"></div></div>';
-                        elem += '<div class="col-sm-9"><div class="product-body">';
-                        elem += '<h3>' + title + '</h3>';
-                        elem += '<div class="product-rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></div>';
-                        elem += '<span class="price"><ins><span class="amount">' + currencies.EUR + price + '</span></ins></span>';
-                        elem += '<div class="buttons"><button class="btn btn-primary btn-sm add-to-cart addCart" id="' + id + '"><i class="fa fa-shopping-cart"></i>Add to cart</a></div>';
-                        elem += '</div>';
-                        elem += '</div>';
-                        elem += '</div>';
-                        elem += '</article>';
-                        elem += '</div>';
-
-
-                        $("#products").append(elem);
-
-                    }
-                },
-                error: function (data) {
-                    $('#products').empty();
-                    $('#products').html('No Results!');
-                }
-            });
-        });*/
+        
         $('.search-button').on('click', function () {
             value = $('.search-input').val();
             searchFilter = ''
@@ -373,6 +349,7 @@ $(document).ready(function () {
 
         }
     });
+
     $.getJSON('/api/me', function (data) {
         $('.logout').html('Logout')
         $('.signin').hide()
@@ -438,8 +415,21 @@ $(document).ready(function () {
                 console.log(res);
             })
     });
-    
+
+    $(window).on("scroll", function () {
+        console.log('scroll')
+        var scrollHeight = $(document).height();
+        var scrollPosition = $(window).height() + $(window).scrollTop();
+        if ((scrollHeight - scrollPosition) / scrollHeight <=0.001) {
+            offset += 10
+            add()
+        }
+    });
+
     
     
 });
+
+
+
 
