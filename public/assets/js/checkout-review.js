@@ -51,6 +51,26 @@ $(document).ready(function () {
             }, 'application/x-www-form-urlencoded');
 
 
+            $.ajax({
+                url: '/api/orders/create',
+                data:order,
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded',
+                success: function (response) {
+                    
+
+                },
+                statusCode: {
+                    200: function () {
+                        window.location.href = '../index.html'
+                    }
+                }
+            })
+                .fail(function () {
+
+                });
+
+
         });
 
 
