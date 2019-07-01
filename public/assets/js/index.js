@@ -69,19 +69,21 @@ var getUrlParameter = function getUrlParameter(sParam) {
     }
     return undefined;
 };
-var offset=0
+
+
+var offset=0;
 
 
 $(document).ready(function () {
-    titleS=''
+    let titleS='';
     if (getUrlParameter('search')) {
         titleS = 'title=' + getUrlParameter('search') + '&';
     }
-    
+
 
     $.getJSON('/api/books?limit=9&offset='+offset+'&' + titleS, function (data) {  // /api/books GET ALL BOOKS
 
-        for (i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             var id = data[i].book_id;
             var title = data[i].title;
             var authors = data[i].authors;
@@ -112,11 +114,10 @@ $(document).ready(function () {
             $("#products").append(elem);
 
         }
-        
+
 
 
         //add event listener to the buttons
-        
 
         $('.addCart').click(function () {
             console.log('remove');
@@ -159,7 +160,7 @@ $(document).ready(function () {
                     }
                 },
                 success: function (response) {
-                    
+
                 }
             });
         });
@@ -168,20 +169,19 @@ $(document).ready(function () {
         var routeFilter = generateRouteFilter(offset);
 
         $('.widget-genre input:checkbox').on('change',function () {
-            value = $(this).val();
-            console.log(value);
+            let value = $(this).val();
+            // console.log(value);
             if ($(this).is(':checked')) {
                 console.log('vero')
 
                 routeFilter += 'genre=' + value + '&';
 
-            } else if (!$(this).is(':checked')) {
+            } else {
                 console.log('false')
-                
-                
+
                 routeFilter=routeFilter.replace('genre=' + value + '&', '');
             }
-            
+
             $.ajax({
                 url: routeFilter,
                 type: 'GET',
@@ -227,10 +227,10 @@ $(document).ready(function () {
                 }
             });
         });
-        
+
         $('.widget-themes input:checkbox').on('change', function () {
             value = $(this).val();
-            
+
             if ($(this).is(':checked')) {
 
                 routeFilter += 'themes=' + value + '&';
@@ -239,7 +239,7 @@ $(document).ready(function () {
 
 
                 routeFilter =routeFilter.replace('themes=' + value + '&', '');
-                console.log(routeFilter)
+                console.log(routeFilter);
             }
             $.ajax({
                 url: routeFilter,
@@ -287,21 +287,21 @@ $(document).ready(function () {
             });
         });
 
-        
+
         $('.search-button').on('click', function () {
-            search()
+            search();
         });
         $('.search-input').keypress(function (e) {
-            if (e.which == 13) {
-                search()
-                return false;    //<---- Add this line
+            if (e.which == 13) { //tasto invio
+                search();
+                return false;
             }
         });
         function search() {
-            value = $('.search-input').val();
-            searchFilter = ''
+            let value = $('.search-input').val();
+            let searchFilter = '';
             if (value !== null) {
-                searchFilter += routeFilter
+                searchFilter += routeFilter;
                 searchFilter += 'title=' + value + '&';
             }
             $.ajax({
@@ -309,7 +309,7 @@ $(document).ready(function () {
                 type: 'GET',
                 success: function (data) {
                     $('#products').empty();
-                    for (i = 0; i < data.length; i++) {
+                    for (let i = 0; i < data.length; i++) {
                         var id = data[i].book_id;
                         var title = data[i].title;
                         var authors = data[i].authors;
@@ -371,7 +371,7 @@ $(document).ready(function () {
             var id = data[i].genre_id;
             var name = data[i].name;
             var elem = '';
-            let index=i+1
+            let index=i+1;
             elem += '<div class="checkbox">';
             elem += '<input id="genre' + index +'" type="checkbox" value="' + id + '">';
             elem += '<label for="genre' + index +'">' + name + '</label></div>';
@@ -392,7 +392,7 @@ $(document).ready(function () {
             $(".navbar-cart > ul").empty();
             for (let i = 0; i < data[0].books.length; i++) {
                 console.log(data[0].books[i]);
-                book = data[0].books[i].book;
+                let book = data[0].books[i].book;
                 var id = book.book_id;
                 var title = book.title;
                 var authors = book.authors;
