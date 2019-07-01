@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -65,8 +65,10 @@
                     </div>
                     <div class="col-sm-7 text-right">
                         <ul class="list-inline links">
-                            <li><a href="my-account.html">My account</a></li>
-                            <li><a href="signin.html">Logout</a></li>
+                            
+                            <li><a href="my-account.html" class="myaccount"></a></li>
+                            <li><a href="#" class="logout"></a></li>
+                            <li><a href="signin.html" class="signin"></a></li>
                         </ul>
                     </div>
                 </div>
@@ -94,60 +96,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="300" data-close-others="true"><i class="fa fa-shopping-cart"></i></a>
                             <ul class="dropdown-menu">
 
-                                <!-- CART ITEM - START -->
-                                <li>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <img src="../assets/images/products/product-1.jpg" class="img-responsive" alt="">
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <h4><a href="single-product.html">Fusce Aliquam</a></h4>
-                                            <p>1x - $20.00</p>
-                                            <a href="#" class="remove"><i class="fa fa-times-circle"></i></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- CART ITEM - END -->
-                                <!-- CART ITEM - START -->
-                                <li>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <img src="../assets/images/products/product-2.jpg" class="img-responsive" alt="">
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <h4><a href="single-product.html">Fusce Aliquam</a></h4>
-                                            <p>1x - $20.00</p>
-                                            <a href="#" class="remove"><i class="fa fa-times-circle"></i></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- CART ITEM - END -->
-                                <!-- CART ITEM - START -->
-                                <li>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <img src="../assets/images/products/product-3.jpg" class="img-responsive" alt="">
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <h4><a href="single-product.html">Fusce Aliquam</a></h4>
-                                            <p>1x - $20.00</p>
-                                            <a href="#" class="remove"><i class="fa fa-times-circle"></i></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- CART ITEM - END -->
-                                <!-- CART ITEM - START -->
-                                <li>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <a href="cart.html" class="btn btn-primary btn-block">View Cart</a>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <a href="checkout.html" class="btn btn-primary btn-block">Checkout</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- CART ITEM - END -->
+                                
 
                             </ul>
                         </li>
@@ -185,7 +134,7 @@
                         <div class="row">
                             <div class="col-sm-3">
                                 <ul class="nav nav-tabs" role="tablist">
-                                    <li role="presentation" class=""><a href="#faq-1" role="tab" data-toggle="tab" aria-controls="faq-1" aria-expanded="false">General</a></li>
+                                    <li role="presentation" class=""><a href="#faq-1" role="tab" data-toggle="tab" aria-controls="faq-1" aria-expanded="false">Popular Questions</a></li>
                                     <li role="presentation" class="active"><a href="#faq-2" role="tab" data-toggle="tab" aria-controls="faq-2" aria-expanded="true">Shipping</a></li>
                                     <li role="presentation" class=""><a href="#faq-3" role="tab" data-toggle="tab" aria-controls="faq-3" aria-expanded="false">Reclamation</a></li>
                                     <li role="presentation" class=""><a href="#faq-4" role="tab" data-toggle="tab" aria-controls="faq-4" aria-expanded="false">Category 4</a></li>
@@ -201,37 +150,63 @@
                                             <!-- QUESTION - START -->
                                             <div class="panel panel-primary">
                                                 <div class="panel-heading" role="tab">
-                                                    <h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#faq-1-accordion" href="#faq-1-q-1" aria-expanded="true" aria-controls="faq-1-q-1">Lorem ipsum Question #1</a></h4>
+                                                    <h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#faq-1-accordion" href="#faq-1-q-1" aria-expanded="true" aria-controls="faq-1-q-1">What are my shipping options?</a></h4>
                                                 </div>
                                                 <div id="faq-1-q-1" class="panel-collapse collapse in" role="tabpanel">
                                                     <div class="panel-body">
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Suspendisse aliquet imperdiet commodo. Aenean vel lacinia elit. Class aptent taciti sociosqu ad litora torquent per.
+                                                        Standard delivery service is available as well as standard pick up delivery to the pick-up point nearest to you.
                                                     </div>
                                                 </div>
                                             </div>
                                             <!-- QUESTION - END -->
-
                                             <!-- QUESTION - START -->
                                             <div class="panel panel-primary">
                                                 <div class="panel-heading" role="tab">
-                                                    <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse" data-parent="#faq-1-accordion" href="#faq-1-q-2" aria-expanded="false" aria-controls="faq-1-q-2">Question #2</a></h4>
+                                                    <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse" data-parent="#faq-1-accordion" href="#faq-1-q-2" aria-expanded="false" aria-controls="faq-1-q-2">What are the payments method available?</a></h4>
                                                 </div>
                                                 <div id="faq-1-q-2" class="panel-collapse collapse" role="tabpanel">
                                                     <div class="panel-body">
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Suspendisse aliquet imperdiet commodo. Aenean vel lacinia elit. Class aptent taciti sociosqu ad litora torquent per.
+                                                        At the moment, we only accept Bank transfer, Paypal and by person payments.
                                                     </div>
                                                 </div>
                                             </div>
                                             <!-- QUESTION - END -->
-
                                             <!-- QUESTION - START -->
                                             <div class="panel panel-primary">
                                                 <div class="panel-heading" role="tab">
-                                                    <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse" data-parent="#faq-1-accordion" href="#faq-1-q-3" aria-expanded="false" aria-controls="faq-1-q-3">Question #3</a></h4>
+                                                    <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse" data-parent="#faq-1-accordion" href="#faq-1-q-3" aria-expanded="false" aria-controls="faq-1-q-3">What happens if there's been a delivery mishap to my order?</a></h4>
                                                 </div>
                                                 <div id="faq-1-q-3" class="panel-collapse collapse" role="tabpanel">
                                                     <div class="panel-body">
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Suspendisse aliquet imperdiet commodo. Aenean vel lacinia elit. Class aptent taciti sociosqu ad litora torquent per.
+                                                        We take such matters very seriously and will look into individual cases thoroughly. Any order that falls under the below categories should not be thrown away before taking photo proof and emailing the photo of the affected sample and your D.O (Delivery Order) to us at help@bookhub.com (if applicable).
+
+                                                        We regret to inform you that no refunds will be given for orders that fall under the below categories.
+
+                                                        1. In the event of damaged samples received, we will require photo proof of the affected samples and your D.O (Delivery Order) in order for us to investigate and review before a decision is made to re-send the sample to you at no cost, subject to availability. In light of this, any sample that falls into this category should not be thrown away before taking photo proof and emailing the photo to us at help@bookhub.com
+
+                                                        2. In the event of lost mail, we will try to locate the delivery team and if there's a clear indication that your order is indeed lost, we'll re-send the order to you at no cost, subject to availability.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- QUESTION - END -->
+                                            <!-- QUESTION - START -->
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading" role="tab">
+                                                    <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse" data-parent="#faq-1-accordion" href="#faq-1-q-4" aria-expanded="false" aria-controls="faq-1-q-4">What happens in the event of unsatisfactory/expired/wrong book/missign books?</a></h4>
+                                                </div>
+                                                <div id="faq-1-q-4" class="panel-collapse collapse" role="tabpanel">
+                                                    <div class="panel-body">
+                                                        We take such matters very seriously and will look into individual cases thoroughly. Any sample that falls under the below categories should not be thrown away before taking photo proof and emailing the photo of the affected sample and your D.O (Delivery Order) to us at help@bookhub.com (if applicable).
+
+                                                        We regret to inform you that no refunds will be given for orders that fall under the below categories.
+
+                                                        1. In the event that the book you've received is unsatisfactory in any way you perceive, we will require photo proof of the book and your D.O (Delivery Order) as well and you may be required to send us back the sample for close inspection and review before a decision is made to re-send a book to you at no cost, subject to availability. The postage cost will be credited back to your account after we receive the returned item.
+
+                                                        2. In the event that you receive an expired product, we will require clear photo proof of the book and its expiry date for close inspection and review before a decision is made to re-send a sample to you at no cost, subject to availability.
+
+                                                        3. In the event that you've received the wrong book, we will require photo proof of the wrongly sent book and D.O (Delivery Order) and after reviewing, we'll re-send the correct book to you at no cost, subject to availability.
+
+                                                        4. In the event you've received your order with a missing book, we will require you to email us a clear photo proof of your D.O (Delivery Order) to help@bookhub.com and after which, kindly give us a call at (+39) 3395909851 and our customer service officer will attend to you to find out more before a decision is made to re-send the missing sample to you at no cost, subject to availability.
                                                     </div>
                                                 </div>
                                             </div>
@@ -284,7 +259,7 @@
                                             <!-- QUESTION - END -->
 
                                             <!-- QUESTION - START -->
-                                            <div class="panel panel-default">
+                                            <div class="panel panel-primary">
                                                 <div class="panel-heading" role="tab">
                                                     <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse" data-parent="#faq-2-accordion" href="#faq-2-q-4" aria-expanded="false" aria-controls="faq-2-q-4">Question #4</a></h4>
                                                 </div>
@@ -408,7 +383,7 @@
     <script src="../assets/js/twitterFetcher_min.js"></script>
     <script src="../assets/js/color-switcher.js"></script>
     <script src="../assets/js/custom.js"></script>
-    <script src="../assets/js/single-product.js"></script>
+    <script src="../assets/js/multi-pages.js"></script>
 </body>
 
 </html>
