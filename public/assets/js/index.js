@@ -18,14 +18,15 @@ var getUrlParameter = function getUrlParameter(sParam) {
     }
     return undefined;
 }
-var routeFilter ='/api/books?limit=20&offset=40&';
+var offset=40
+var routeFilter ='/api/books?limit=20&offset='+offset+'&';
 
 $(document).ready(function () {
     titleS=''
     if (getUrlParameter('search')) {
-        titleS = 'title='+getUrlParameter('search')+'&'
+        titleS = 'title=' + getUrlParameter('search') + '&';
     }
-    $.getJSON('/api/books?limit=20&offset=40&' + titleS, function (data) {  // /api/books GET ALL BOOKS
+    $.getJSON('/api/books?limit=20&offset='+offset+'&' + titleS, function (data) {  // /api/books GET ALL BOOKS
 
         for (i = 0; i < data.length; i++) {
             var id = data[i].book_id;
@@ -96,7 +97,7 @@ $(document).ready(function () {
                                 $(".navbar-cart > ul").append(elem);
 
                             }
-                            elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
+                            elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="pages/cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
                             $(".navbar-cart > ul").append(elem);
 
                         });

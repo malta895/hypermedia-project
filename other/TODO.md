@@ -2,7 +2,6 @@
 ## FRONTEND:
  * Aggiungere barra con offset su index, mostrare solo 15/20 libri per pagina
  * sistemare gestione degli errori in tutte le cose inserite da utente: review, login, signup, ordine
- * sistemare il ridimensionamento delle immagini quando si cambia le dimensioni della finestra
  * controllare la responsiveness
  * finire la pagina modify-address.html e relativi script
  * ....
