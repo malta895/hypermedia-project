@@ -143,6 +143,31 @@ exports.cartRemoveDELETE = function(userId, bookId, quantity) {
     });
 };
 
+/**
+ * Set the quantity of the given book in the cart
+ * Set the quantity of a book in the cart. The book must be already in the cart
+ *
+ * bookId Long 
+ * quantity Integer Number of copies of the book in the cart
+ * no response value expected for this operation
+ **/
+exports.cartSetQuantityPUT = function(userId,bookId,quantity) {
+    return new Promise(function(resolve, reject) {
+        // se la quantità va sotto zero, esiste un trigger che rimuove la tupla, quindi non è necessario fare ulteriori controlli
+        sqlDb('cart_book')
+            .update({quantity: quantity})
+            .whereIn('cart', function() {
+                this.from('cart')
+                    .select('cart_id')
+                    .where('cart.user', userId);
+            })
+            .returning('*')
+            .where('cart_book.book', bookId)
+            .then(response => resolve(response))
+            .catch(err => reject(err));
+    });
+};
+
 
 /**
  * Add elements to the cart
@@ -204,8 +229,7 @@ exports.cartUpdatePUT = function (userId, bookId, quantity) {
                    && err.constraint === "cart_book_book_foreign")
                     reject({message: "Book not found!", errorCode: 404});
                 else{
-                    console.error(err);
-                    reject({message: "Internal Server Error!", errorCode: 500});
+                    reject(err);
                 }
             });
     });

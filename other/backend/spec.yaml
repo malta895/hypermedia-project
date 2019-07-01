@@ -804,6 +804,32 @@ paths:
         400:
           description: "Bad request"
 
+  /cart/setQuantity/book/{bookId}:
+    put:
+      tags:
+      - "cart"
+      summary: "Set the quantity of the given book in the cart"
+      description: "Set the quantity of a book in the cart. The book must be already in the cart"
+      operationId: "cartSetQuantityPUT"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "quantity"
+        in: "query"
+        type: "integer"
+        required: true
+        description: "Number of copies of the book in the cart"
+      responses:
+        200:
+          description: "Successful operation"
+        404:
+          description: "Book not in the cart"
+        400:
+          description: "Bad request"
+
   /cart/empty:
     delete:
       tags:

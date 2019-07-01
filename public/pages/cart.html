@@ -180,7 +180,36 @@
         </header>
         <!-- ==========================
         HEADER - END
-        =========================== -->
+             =========================== -->
+        <!-- MODAL CONFIRM DELETE CART START -->
+
+        <div class="modal fade" tabindex="-1" role="dialog" id ="modal-confirm-delete-cart">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Modal body text goes here.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL CONFIRM DELETE CART - END -->
+
+
+
+
         <!-- ==========================
                 MY ACCOUNT - START
             =========================== -->
@@ -210,7 +239,7 @@
                                         </table>
                                     </div>
                                     <a href="../index.html" class="btn btn-inverse">Continue Shopping</a>
-                                    <a href="" class="btn btn-inverse update-cart">Update Shopping Cart</a>
+                                    <button type="button" class="btn btn-inverse update-cart" data-toggle="modal" data-target="modal-confirm-delete-cart">Empty Shopping Cart</a>
                                 </div>
 
                                 <div class="box">
@@ -219,7 +248,7 @@
                                         </div>
                                         <div class="col-sm-4 col-sm-offset-2">
                                             <ul class="list-unstyled order-total">
-                                                <li>Subtotal<span class="total">$290.00</span></li>
+                                                <li>Subtotal <span id="total">&euro;0</span></li>
                                             </ul>
                                         </div>
                                     </div>
