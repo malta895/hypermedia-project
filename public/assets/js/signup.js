@@ -13,31 +13,34 @@ $(document).ready(function () {
         console.log(password);
         console.log(this);
 
-        //TODO mettere qui eventuali controlli su:
-        // esistenza/validità email (get su /user/emailAvailable/{email})
-        // esistenza username (get se /user/email/usernameAvailable/{username})
-        // password?
+        
         let formData = $(this).serialize(); 
         $.get('/api/user/emailAvailable/' + email, function (res) {
             $.get('/api/user/usernameAvailable/'+username, function (res1) {
                                
-                $.post('/api/user/register', formData, function (res2) {
-                    console.log('reg')
-                    location.href = "signin.html";
-                }, 'application/x-www-form-urlencoded')
-                    .fail(res => {
-                        //TODO gestire errore
-                        console.log(res);
-                    });
+                
+                $.ajax({
+                    url: '/api/user/register',
+                    type: 'POST',
+                    data: formData,
+                    contentType: 'application/x-www-form-urlencoded',
+                    success: function (data) {
+                        window.location.href = "signin.html";
+                    },
+                    statusCode: {
+                        200: function(){
+                           window.location.href = "signin.html";
+                        }
+                    }
+                    
+                });
             })
                 .fail(res => {
-                    //TODO gestire errore
-                    console.log(res);
+                    $('.feedback').html('Username is not available')
                 });
         })
             .fail(res => {
-                //TODO gestire errore
-                console.log(res);
+                $('.feedback').html('Email is not available')
             });
         
 
