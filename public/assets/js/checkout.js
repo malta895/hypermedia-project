@@ -22,9 +22,9 @@ $(document).ready(function () {
         order.last_name = $(this).find('input[name=last_name]').val();
         order.addressStreetLine1 = $(this).find('input[name=address]').val();
         order.zip_code = $(this).find('input[name=zip_code]').val();
-        order.country = $(this).find('select[name=country]').val();
-        order.state = $(this).find('select[name=state]').val();
-        order.city = $(this).find('select[name=city]').val();
+        order.country = $(this).find('input[name=country]').val();
+        order.state = $(this).find('input[name=state]').val();
+        order.city = $(this).find('input[name=city]').val();
         json = JSON.stringify(order)
         sessionStorage.setItem('order', json)
         window.location.href= 'checkout-shipping.html'
