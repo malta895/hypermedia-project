@@ -1,7 +1,8 @@
 $(document).ready(function () {
+
+    //get personal info
     $.getJSON('/api/me', function (data) {
-        // /api/books GET ALL BOOKS
-        
+
         if (data.address) {
             $('input[name=address]').val();
             let a = data.address;
@@ -15,6 +16,7 @@ $(document).ready(function () {
             $('input[name=zip_code]').val(a.zip_code);
         }
     });
+
     $('#form-modify-address').on('submit', function(e){
         e.preventDefault();
         let formData = $(this).serialize();
@@ -34,17 +36,17 @@ $(document).ready(function () {
                     data: formData,
                     type: 'PUT',
                     contentType: 'application/x-www-form-urlencoded',
-                    success: function (response) {
+                    success: function (responsen) {
 
                         $('#modal-server-success').modal();
                     }
-                })
+                });
             }
 
         });
     });
     $('.modal-redirect').on('click', function (e) {
-        window.location.href='my-account.html'
+        window.location.href = 'my-account.html';
     });
 
 });

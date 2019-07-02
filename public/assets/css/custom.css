@@ -5919,3 +5919,12 @@ footer.navbar a:hover {
 .summary {
     word-wrap: break-word;
 }
+
+.form-error-text {
+    color: red;
+}
+
+.navbar-cart .dropdown-menu {
+    overflow-y: auto;
+    max-height: 600px;
+}
