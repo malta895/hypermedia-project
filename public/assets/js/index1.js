@@ -3,11 +3,49 @@ var currencies = {
     USD: '$'
 };
 
-function generateRouteFilter(offset ){
-    return '/api/books?limit=6&offset='+offset+'&';
+var filterObject = {
+    limit: 6,
+    offset: 0
+};
+
+function pushFilter(key, val) {
+    if (filterObject[key] === undefined) {
+        filterObject[key] = [val];
+        console.log(filterObject);
+        return true;
+    } else {
+        filterObject[key].push(val);
+        return true;
+    }
 }
 
-function generateFromData(data) {
+function popFilter(key) {
+    if (filterObject[key] === undefined)
+        return undefined;
+
+    if (filterObject[key].length) {
+        let res = filterObject[key].pop();
+        if (filterObject[key].length === 0)
+            delete filterObject[key];
+        return res;
+    } else {
+        delete filterObject[key];
+        return undefined;
+    }
+}
+
+function setFilter(key, val) {
+    filterObject[key] = val;
+}
+
+function deleteFilter(key, val) {
+    delete filterObject[key];
+}
+
+
+function renderData(data) {
+    //refresh
+    $('#products').empty();
     for (let i = 0; i < data.length; i++) {
         var id = data[i].book_id;
         var title = data[i].title;
@@ -15,7 +53,7 @@ function generateFromData(data) {
         var price = data[i].price;
         var picture = data[i].picture;
         var genre = data[i].genre;
-        var rating=data[i].average_rating;
+        var rating = data[i].average_rating;
         let d = '';
         for (let i = 1; i <= 5; i++) {
             if (i <= rating) {
@@ -45,24 +83,27 @@ function generateFromData(data) {
         elem += '</article>';
         elem += '</div>';
 
-
-        $("#products").append(elem);
-
+        $('#products').append(elem);
 
     }
-
 }
-function add(offset) {
+
+function retrieveData(offset){
+    console.log(filterObject);
+    if(offset !== undefined)
+        filterObject.offset = offset;
+    let count = 101; //TODO recuperare da server!
     $.ajax({
-        url: generateRouteFilter(offset),
+        url: '/api/books?' + $.param(filterObject, true),
         type: 'GET',
         success: function (data) {
-            generateFromData(data)
+            console.log(data);
+            renderData(data);
             $('.addCart').off();
             $('.addCart').click(function () {
 
-                id = $(this).attr('id');
-                addToCart(id)
+                let id = $(this).attr('id');
+                addToCart(id);
             });
             $(window).trigger("scroll");
         },
@@ -73,6 +114,9 @@ function add(offset) {
         }
     });
 }
+
+
+
 function addToCart(id) {
     $.ajax({
         url: '/api/cart/add/book/' + id,
@@ -112,165 +156,66 @@ function addToCart(id) {
             }
         },
         success: function (response) {
-
         }
-    });}
-
-var getUrlParameter = function getUrlParameter(sParam) {
-    var sPageURL = window.location.search.substring(1),
-        sURLVariables = sPageURL.split('&'),
-        sParameterName;
-
-    for (let i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
-
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
-        }
-    }
-    return undefined;
-};
-
-
-var offset=0;
-
-
-$(document).ready(function () {
-    let titleS='';
-    if (getUrlParameter('search')) {
-        titleS = 'title=' + getUrlParameter('search') + '&';
-    }
-
-
-    $.getJSON('/api/books?limit6&offset='+offset+'&' + titleS, function (data) {  // /api/books GET ALL BOOKS&%%
-        generateFromData(data);
-
-
-
-        var routeFilter = generateRouteFilter(offset);
-
-        $('.widget-genre input:checkbox').on('change',function () {
-            let value = $(this).val();
-            // console.log(value);
-            if ($(this).is(':checked')) {
-                routeFilter += 'genre=' + value + '&';
-
-            } else {
-                routeFilter=routeFilter.replace('genre=' + value + '&', '');
-            }
-
-            $.ajax({
-                url: routeFilter,
-                type: 'GET',
-                success: function (data) {
-                    $('#products').empty();
-                    generateFromData(data)
-                    $(window).trigger("scroll");
-                },
-                error: function (data) {
-                    $('#products').empty();
-                    $(window).trigger("scroll");
-                    $('#products').html('No Results!');
-                }
-            });
-        });
-
-        $('.widget-themes input:checkbox').on('change', function () {
-            let value = $(this).val();
-
-            if ($(this).is(':checked')) {
-
-                routeFilter += 'themes=' + value + '&';
-
-            } else if (!$(this).is(':checked')) {
-
-
-                routeFilter =routeFilter.replace('themes=' + value + '&', '');
-                console.log(routeFilter);
-            }
-            $.ajax({
-                url: routeFilter,
-                type: 'GET',
-                success: function (data) {
-                    $('#products').empty();
-                    generateFromData(data)
-                    $(window).trigger("scroll");
-                },
-                error: function (data) {
-                    $('#products').empty();
-                    $('#products').html('No Results!');
-                    $(window).trigger("scroll");
-                }
-            });
-        });
-
-
-        $('.search-button').on('click', function () {
-            search();
-        });
-        $('.search-input').keypress(function (e) {
-            if (e.which == 13) { //tasto invio
-                search();
-                return false;
-            }
-        });
-        function search() {
-            let value = $('.search-input').val();
-            let searchFilter = '';
-            if (value !== null) {
-                searchFilter += routeFilter;
-                searchFilter += 'title=' + value + '&';
-            }
-            $.ajax({
-                url: searchFilter,
-                type: 'GET',
-                success: function (data) {
-                    $('#products').empty();
-                    generateFromData(data);
-                },
-                error: function (data) {
-                    $('#products').empty();
-                    $('#products').html('No Results!');
-                }
-            });
-
-        }
-        $('.addCart').off();
-        $('.addCart').click(function () {
-
-            id = $(this).attr('id');
-            addToCart(id)
-        });
-
     });
-    $.getJSON('/api/themes', function (data) {
+}
 
-        for (i = 0; i < data.length; i++) {
+$(document).ready(function(){
+    retrieveData(0);
+
+
+        $.getJSON('/api/themes', function (data) {
+
+        for (let i = 0; i < data.length; i++) {
             var id = data[i].theme_id;
             var name = data[i].name;
             var elem = '';   
             let index = i + 1;
             elem += '<div class="checkbox">';
-            elem += '<input id="themes'+index+'" type="checkbox" value="'+id+'">';
-            elem += '<label for="themes' + index +'">' + name +'</label></div>';
+            elem += '<input id="themes'+id+'" type="checkbox" value="'+id+'">';
+            elem += '<label for="themes' + id +'">' + name +'</label></div>';
 
 
             $("#theme").append(elem);
 
+            //eventi su cambio
+            $('#themes' + id).change(function(){
+                if($(this).is(':checked')){
+                    pushFilter('themes', $(this).val());
+                } else {
+                    popFilter('themes');
+
+                }
+                retrieveData();
+            });
+
+
         }
     });
     $.getJSON('/api/genres', function (data) {
-        for (i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             var id = data[i].genre_id;
             var name = data[i].name;
             var elem = '';
             let index=i+1;
             elem += '<div class="checkbox">';
-            elem += '<input id="genre' + index +'" type="checkbox" value="' + id + '">';
-            elem += '<label for="genre' + index +'">' + name + '</label></div>';
+            elem += '<input id="genre' + id +'" type="checkbox" value="' + id + '">';
+            elem += '<label for="genre' + id +'">' + name + '</label></div>';
+
 
 
             $("#genre").append(elem);
+
+            //eventi su cambio
+            $('#genre' + id).change(function(){
+                if($(this).is(':checked')){
+                    pushFilter('genre', $(this).val());
+                } else {
+                    popFilter('genre');
+                }
+                retrieveData();
+            });
+
 
         }
     });
@@ -326,27 +271,10 @@ $(document).ready(function () {
         $.post('/api/user/logout', function (res) {
             console.log("Logout succesful!");
             sessionStorage.clear();
-            window.location.href = "pages/signin.html";
-
         })
             .fail(res => {
                 //TODO gestire errore
                 console.log(res);
             });
     });
-
-    // $(window).on("scroll", function () {
-    //     console.log('scroll');
-    //     var scrollHeight = $(document).height();
-    //     var scrollPosition = $(window).height() + $(window).scrollTop();
-    //     if ((scrollHeight - scrollPosition) / scrollHeight <=0.001) {
-    //         offset += 10;
-    //         add(offset);
-    //     }
-    // });
-
 });
-
-
-
-

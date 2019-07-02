@@ -5928,3 +5928,7 @@ footer.navbar a:hover {
     overflow-y: auto;
     max-height: 600px;
 }
+
+.pagination-wrapper {
+    margin-bottom:20px;
+}
