@@ -86,6 +86,10 @@ $(document).ready(function() {
                         type: 'PUT',
                         success: function(response) {
                             outerColumn.remove();
+                            if(!$('#cart tr').length){
+                                $('#empty-cart').removeClass('hidden');
+                                $('.shopping-cart-form').addClass('hidden');
+                            }
                             let total = 0;
                             let rows = $('#cart tr').each(function(){
                                 console.log(this);
@@ -133,8 +137,14 @@ $(document).ready(function() {
                 url: '/api/cart/setQuantity/book/' + bookId + '?quantity=' + newQuantity,
                 type: 'PUT',
                 success: function(response) {
-                    if(newQuantity <= 0)
+                    if(newQuantity <= 0){
                         outerColumn.remove();
+                        if(!$('#cart tr').length){
+                            $('#empty-cart').removeClass('hidden');
+                            $('.shopping-cart-form').addClass('hidden');
+                        }
+                    }
+
                     total = 0;
                     let rows = $('#cart tr').each(function(){
                         console.log(this);

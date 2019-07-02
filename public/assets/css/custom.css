@@ -5887,10 +5887,6 @@ footer.navbar a:hover {
     width: 100%;
 }
 
-footer .fa {
-    color: white;
-}
-
 .footer-credits {
     text-align: center;
 }
@@ -5916,3 +5912,7 @@ footer .fa {
     cursor: pointer;
 }
 /* end review stars */
+
+.footer-widget .fa {
+    display: inline;
+}
