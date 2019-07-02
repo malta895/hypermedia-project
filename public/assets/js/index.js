@@ -49,6 +49,7 @@ function generateFromData(data) {
 
 
     }
+
 }
 function add(offset) {
     $.ajax({
@@ -56,6 +57,12 @@ function add(offset) {
         type: 'GET',
         success: function (data) {
             generateFromData(data)
+            $('.addCart').off();
+            $('.addCart').click(function () {
+
+                id = $(this).attr('id');
+                addToCart(id)
+            });
             $(window).trigger("scroll");
         },
         error: function (data) {
@@ -65,7 +72,48 @@ function add(offset) {
         }
     });
 }
+function addToCart(id) {
+    $.ajax({
+        url: '/api/cart/add/book/' + id,
+        type: 'PUT',
+        statusCode: {
+            200: function () {
+                $.getJSON('/api/cart', function (data) {
 
+                    $(".navbar-cart > ul").empty();
+                    for (i = 0; i < data[0].books.length; i++) {
+                        console.log(data[0].books[i])
+                        book = data[0].books[i].book;
+                        var id = book.book_id;
+                        var title = book.title;
+                        var authors = book.authors;
+                        var price = book.price;
+                        var picture = book.picture;
+                        var genre = book.genres;
+                        var quantity = data[0].books[i].quantity;
+                        var elem = '';
+                        elem += '<li><div class="row"><div class="col-sm-3">';
+                        elem += '<img src="' + picture + '" class="img-responsive" alt="">';
+                        elem += '</div><div class="col-sm-9">';
+                        elem += '<h4><a href="single-product.html?id=' + id + '">' + title + '</a></h4>';
+                        elem += '<p>' + quantity + 'x - &euro;' + price + '</p>';
+                        elem += '<a href="#" class="remove"><i class="fa fa-times-circle"></i></a>';
+                        elem += '</div></div></li>';
+
+
+                        $(".navbar-cart > ul").append(elem);
+
+                    }
+                    elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="pages/cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
+                    $(".navbar-cart > ul").append(elem);
+
+                });
+            }
+        },
+        success: function (response) {
+
+        }
+    });}
 
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1),
@@ -97,51 +145,7 @@ $(document).ready(function () {
 
         generateFromData(data)
                
-        $('.addCart').click(function () {
-            console.log('remove');
-            id = $(this).attr('id');
-            $.ajax({
-                url: '/api/cart/add/book/'+id,
-                type: 'PUT',
-                statusCode: {
-                    200: function () {
-                        $.getJSON('/api/cart', function (data) {
-
-                            $(".navbar-cart > ul").empty();
-                            for (i = 0; i < data[0].books.length; i++) {
-                                console.log(data[0].books[i])
-                                book = data[0].books[i].book;
-                                var id = book.book_id;
-                                var title = book.title;
-                                var authors = book.authors;
-                                var price = book.price;
-                                var picture = book.picture;
-                                var genre = book.genres;
-                                var quantity = data[0].books[i].quantity;
-                                var elem = '';
-                                elem += '<li><div class="row"><div class="col-sm-3">';
-                                elem += '<img src="' + picture + '" class="img-responsive" alt="">';
-                                elem += '</div><div class="col-sm-9">';
-                                elem += '<h4><a href="single-product.html?id=' + id + '">' + title + '</a></h4>';
-                                elem += '<p>' + quantity + 'x - &euro;' + price + '</p>';
-                                elem += '<a href="#" class="remove"><i class="fa fa-times-circle"></i></a>';
-                                elem += '</div></div></li>';
-
-
-                                $(".navbar-cart > ul").append(elem);
-
-                            }
-                            elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="pages/cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
-                            $(".navbar-cart > ul").append(elem);
-
-                        });
-                    }
-                },
-                success: function (response) {
-
-                }
-            });
-        });
+        
 
 
         var routeFilter = generateRouteFilter(offset);
@@ -228,6 +232,7 @@ $(document).ready(function () {
                 success: function (data) {
                     $('#products').empty();
                     generateFromData(data)
+                    
                 },
                 error: function (data) {
                     $('#products').empty();
@@ -236,8 +241,12 @@ $(document).ready(function () {
             });
 
         }
+        $('.addCart').off();
+        $('.addCart').click(function () {
 
-
+            id = $(this).attr('id');
+            addToCart(id)
+        });
 
     });
     $.getJSON('/api/themes', function (data) {
