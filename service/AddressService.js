@@ -24,8 +24,11 @@ exports.addressDbSetup = function (database) {
                         table.string("province").notNullable();
                         table.string("country").notNullable();
                     })
-                        .then(resolve(tableName))
-                        .catch(reject(tableName));
+                        .then(() => resolve(tableName))
+                        .catch(err => {
+                            console.error(err);
+                            reject(tableName)
+                        });
                 } else {
                     console.log(`Table ${tableName} already exists, skipping...`);
                     resolve(tableName);

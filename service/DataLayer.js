@@ -51,7 +51,6 @@ exports.setupDataLayer = function (dbUrl) {
                     authorBookDbSetup, // dipende da author, book
                     eventDbSetup,//dipende da address, book
                     orderDbSetup//dipende da user, book, address
-                    // orderToBookDbSetup // dipende da order, book
                 ];
 
                 let p = Promise.resolve(); // creo una promise vuota
@@ -62,7 +61,7 @@ exports.setupDataLayer = function (dbUrl) {
                         .then(() => table(sqlDb)) // creo la tabella
                         .catch((tableName) => {
                             console.error(`Errore durante la creazione della tabella ${tableName}`);
-                            console.error("Cannot create some views, exiting...");
+                            console.error("Cannot create some tables, exiting...");
                             process.exit(1);
                         });
                 });
