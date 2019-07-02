@@ -5,6 +5,8 @@ $(document).ready(function () {
         $('.address').html(order.addressStreetLine1)
         $('.zipcity').html(order.zip_code + ' ' + order.city)
         $('.country').html(order.country)
+        $('.province').html(order.province)
+        $('.city').html(order.city)
         $('.payment_method').html(order.payment_method)
         $('.shipping_method').html(order.shipping_method)
         total = 0

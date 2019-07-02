@@ -1,4 +1,20 @@
-$(document).ready(function(){
+$(document).ready(function () {
+    $.getJSON('/api/me', function (data) {
+        // /api/books GET ALL BOOKS
+        
+        if (data.address) {
+            $('input[name=address]').val();
+            let a = data.address;
+            $('input[name=first_name]').val(a.first_name);
+            $('input[name=last_name]').val(a.last_name);
+            $('input[name=addressStreetLine1]').val(a.street_line1);
+            $('input[name=addressStreetLine2]').val(a.street_line2);
+            $('input[name=city]').val(a.city);
+            $('input[name=country]').val(a.country);
+            $('input[name=province]').val(a.province);
+            $('input[name=zip_code]').val(a.zip_code);
+        }
+    });
     $('#form-modify-address').on('submit', function(e){
         e.preventDefault();
         let formData = $(this).serialize();
