@@ -125,28 +125,28 @@ exports.userModifyAddressPUT = function(userId,first_name,last_name,addressStree
     return new Promise(function(resolve, reject) {
         let query = sqlDb('address');
 
-        if(first_name)
+
             query.update('first_name', first_name);
 
-        if(last_name)
+
             query.update('last_name', last_name);
 
-        if(addressStreetLine1)
+
             query.update('street_line1', addressStreetLine1);
 
-        if(addressStreetLine2)
-            query.update('street_line2', addressStreetLine2);
 
-        if(city)
+            query.update('street_line2', addressStreetLine2 || '');
+
+
             query.update('city', city);
 
-        if(zip_code)
-            query.update('zip_code', zip_code);
 
-        if(province)
+        query.update('zip_code', zip_code);
+
+
             query.update('province', province);
 
-        if(country)
+
             query.update('country', country);
 
         query.whereIn('address_id',

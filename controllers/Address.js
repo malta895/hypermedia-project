@@ -62,9 +62,9 @@ module.exports.userModifyAddressPUT = function userModifyAddressPUT (req, res, n
     let last_name = req.swagger.params['last_name'].value;
     let first_name = req.swagger.params['first_name'].value;
 
-    if(!(addressStreetLine1 || addressStreetLine2 || city
-         || zip_code || province || country || last_name || first_name)){
-        utils.writeJson(res, {message: "No parameter provided!"}, 400);
+    if(!(addressStreetLine1 && city
+         && zip_code && province && country && last_name && first_name )){
+        utils.writeJson(res, {message: "All required fields must be set!"}, 400);
         return;
     }
 
