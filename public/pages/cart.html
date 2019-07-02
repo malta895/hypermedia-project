@@ -184,10 +184,10 @@
         <!-- MODAL CONFIRM DELETE CART START -->
 
         <div class="modal fade" tabindex="-1" role="dialog" id ="modal-confirm-delete-cart">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
+                        <h5 class="modal-title"></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 
 
@@ -195,11 +195,11 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Modal body text goes here.</p>
+                        <p id="cart-modal-text">Do you really want to remove this item from the cart?</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Confirm</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
                     </div>
                 </div>
             </div>
@@ -207,6 +207,28 @@
 
         <!-- MODAL CONFIRM DELETE CART - END -->
 
+        <!-- MODAL SERVER ERROR START -->
+
+        <div class="modal fade" tabindex="-1" role="dialog" id ="modal-server-error">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>An error occurred while processing the request. Please try again. If the problem persists please contact us.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL SERVER ERROR - END -->
 
 
 
@@ -218,9 +240,12 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <article class="account-content">
-
-                            <form>
-                                <div class="products-order shopping-cart">
+                            <div id="empty-cart" class="hidden">
+                                <h2>Cart is Empty!</h2>
+                               <a href="/" class="btn btn-primary" >Continue shopping</a>
+                            </div>
+                            <form class="hidden shopping-cart-form">
+                                <div class="products-order shopping-cart ">
                                     <div class="table-responsive">
                                         <table class="table table-products">
                                             <thead>
@@ -239,7 +264,7 @@
                                         </table>
                                     </div>
                                     <a href="../index.html" class="btn btn-inverse">Continue Shopping</a>
-                                    <button type="button" class="btn btn-inverse update-cart" data-toggle="modal" data-target="modal-confirm-delete-cart">Empty Shopping Cart</a>
+                                    <button class="btn btn-inverse update-cart" data-toggle="modal" data-target="modal-confirm-delete-cart" id="button-empty-cart" data-toggle="modal" data-target="#modal-confirm-delete-cart">Empty Shopping Cart</button>
                                 </div>
 
                                 <div class="box">
