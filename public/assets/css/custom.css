@@ -5916,3 +5916,6 @@ footer.navbar a:hover {
 .footer-widget .fa {
     display: inline;
 }
+.summary {
+    word-wrap: break-word;
+}
