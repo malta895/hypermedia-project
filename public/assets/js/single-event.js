@@ -15,16 +15,23 @@ var getUrlParameter = function getUrlParameter(sParam) {
 
 $(window).on("load", function () {
     var id = getUrlParameter('id');
+    var street_line2 = ',';
     $.getJSON('/api/events/' + id, function (data) {  // GET BOOK BY ID /api/book/{bookId}    
         console.log(data);
         
             var event_id = data.event_id;
             var name = data.name;
             var id = data.id;
-            var date = data.date;
+        var date = data.date_time;
+        let dateObj = new Date(date);
+        let dateString = dateObj.toLocaleDateString();
+        let timeString = dateObj.toLocaleTimeString();
+        
+        date = dateString + ' ' + timeString;
             //LOCATION
-            var location = data.location;
-            var address = location.street_line1 + ',' + location.street_line2 + ',' + location.city;
+        var location = data.location;
+        if (location.street_line2 !== null) street_line2 = ','+location.street_line2+','
+        var address = location.street_line1 + street_line2 +location.country+','+location.province+location.city;
             //BOOK
             var book = data.book;
             var title = book.title;
@@ -37,10 +44,12 @@ $(window).on("load", function () {
             
             var elem = '';
 
-            $("#title").html('Presentation:'+title+'(Authors:'+a+')');
+            $("#title").html('Presentation:'+title);
             $("#date").html(date);
+            $("#authors").html(a);
             $("#where").html(address);
-            var img = '<div class="item"><img src="' + picture + '" id="img" class="img - responsive" alt=""></div>';
+            $("#name").html(name);
+            var img = '<div class="item"><img src="' + picture + '" id="img" class="img-responsive" alt=""></div>';
             $("#pic").append(img);
         
 

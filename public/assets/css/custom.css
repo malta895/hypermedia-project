@@ -5916,3 +5916,6 @@ footer .fa {
     cursor: pointer;
 }
 /* end review stars */
+.summary {
+    word-wrap: break-word;
+}

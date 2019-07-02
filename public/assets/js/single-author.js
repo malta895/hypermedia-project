@@ -27,7 +27,7 @@ $(window).on("load", function () {
             var elem = '';
             $("#name").html(name);   
             $("#bio").html(bio);               
-            var img = '<div class="item"><img src="' + picture + '" id="img" class="img - responsive" alt=""></div>';
+            var img = '<div class="item"><img src="' + picture + '" id="img" class="img-responsive" alt=""></div>';
             $("#pic").append(img);
         }
 
