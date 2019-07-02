@@ -125,24 +125,11 @@ exports.userModifyAddressPUT = function(userId,first_name,last_name,addressStree
     return new Promise(function(resolve, reject) {
         let query = sqlDb('address');
 
-        if(first_name && last_name){
-            query.update({
-                first_name: first_name,
-                last_name: last_name
-            });
-        } else {
-            query.update('first_name', function() {
-                this.from('user')
-                    .select('first_name')
-                    .where('user_id', userId);
-            });
+        if(first_name)
+            query.update('first_name', first_name);
 
-            query.update('last_name', function() {
-                this.from('user')
-                    .select('surname')
-                    .where('user_id', userId);
-            });
-        }
+        if(last_name)
+            query.update('last_name', last_name);
 
         if(addressStreetLine1)
             query.update('street_line1', addressStreetLine1);

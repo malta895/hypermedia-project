@@ -59,8 +59,8 @@ module.exports.userModifyAddressPUT = function userModifyAddressPUT (req, res, n
     var zip_code = req.swagger.params['zip_code'].value;
     var province = req.swagger.params['province'].value;
     var country = req.swagger.params['country'].value;
-    var last_name = req.swagger.params['last_name'].value;
-    var first_name = req.swagger.params['first_name'].value;
+    let last_name = req.swagger.params['last_name'].value;
+    let first_name = req.swagger.params['first_name'].value;
 
     if(!(addressStreetLine1 || addressStreetLine2 || city
          || zip_code || province || country || last_name || first_name)){
@@ -69,10 +69,6 @@ module.exports.userModifyAddressPUT = function userModifyAddressPUT (req, res, n
     }
 
     let userId = session.getUserId();
-
-    //se nome e cognome sono in sessione li aggiungo, onde evitare inutili subquery
-    let first_name, last_name;
-    let userData = session.getSecureParameter('userData');
 
     Address.userModifyAddressPUT(userId, first_name,last_name,addressStreetLine1,addressStreetLine2,city,zip_code,province,country)
         .then(function (response) {
@@ -98,6 +94,7 @@ module.exports.userModifyAddressPUT = function userModifyAddressPUT (req, res, n
             utils.writeJson(res, userData.address);
         })
         .catch(function (response) {
+            console.log(response);
             utils.writeJson(res, {message: "Internal Server Error!"}, response && response.errorCode || 500);
         });
 };
