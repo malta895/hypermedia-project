@@ -179,6 +179,18 @@ $(window).on("load",function () {
             e.preventDefault()
             addToCart($(this).attr('id'));
         });
+    }).fail(res => {
+        
+
+        switch (res.status) {
+            case 404:
+                $("#products").html('<div class="col-sm-3 col-xs-6"><p><b>There are no books related</b></p></div>');
+
+                break;
+        }
+
+        //TODO GESTIRE ERRORE
+
     });
 
 
