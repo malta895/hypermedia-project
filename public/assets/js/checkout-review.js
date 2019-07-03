@@ -40,7 +40,7 @@ $(document).ready(function () {
             formData.append('addressStreetLine1', order.addressStreetLine1);
             formData.append('city', order.city);
             formData.append('zip_code ', order.zip_code );
-            formData.append('province', order.state);
+            formData.append('province', order.province);
             formData.append('country', order.country);
             formData.append('payment_method', order.payment_method);
             formData.append('shipping_method', order.shipping_method);
