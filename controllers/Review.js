@@ -25,12 +25,12 @@ module.exports.bookAddReviewPOST = function bookAddReviewPOST (req, res, next) {
     var title = req.swagger.params['title'].value;
     var text = req.swagger.params['text'].value;
 
-    if(!session.userIdExists()){
+    if(!session.userIdExists(req)){
         utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
         return;
     }
 
-    let userId = session.getUserId();
+    let userId = session.getUserId(req);
 
     if(title)
         title = removeHtml(title);

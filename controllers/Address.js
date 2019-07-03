@@ -6,7 +6,7 @@ const utils = require('../utils/writer.js'),
 
 module.exports.userAddAddressPOST = function userAddAddressPOST (req, res, next) {
 
-    if(!session.userIdExists()){
+    if(!session.userIdExists(req)){
         utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
         return;
     }
@@ -20,9 +20,9 @@ module.exports.userAddAddressPOST = function userAddAddressPOST (req, res, next)
     var first_name = req.swagger.params['first_name'].value;
     var last_name = req.swagger.params['last_name'].value;
 
-    var userId = session.getUserId();
+    var userId = session.getUserId(req);
 
-    let userData = session.getSecureParameter('userData');
+    let userData = session.getSecureParameter(req,'userData');
 
     Address.userAddAddressPOST(userId,addressStreetLine1,city,zip_code,province,country,first_name,last_name,addressStreetLine2)
         .then(function (response) {
@@ -37,7 +37,7 @@ module.exports.userAddAddressPOST = function userAddAddressPOST (req, res, next)
                 country: country
             };
             console.log(userData);
-            session.setSecureParameter('userData', userData);
+            session.setSecureParameter(req,'userData', userData);
             utils.writeJson(res, response);
         })
         .catch(function (response) {
@@ -48,7 +48,7 @@ module.exports.userAddAddressPOST = function userAddAddressPOST (req, res, next)
 
 module.exports.userModifyAddressPUT = function userModifyAddressPUT (req, res, next) {
 
-    if(!session.userIdExists()){
+    if(!session.userIdExists(req)){
         utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
         return;
     }
@@ -68,7 +68,7 @@ module.exports.userModifyAddressPUT = function userModifyAddressPUT (req, res, n
         return;
     }
 
-    let userId = session.getUserId();
+    let userId = session.getUserId(req);
 
     Address.userModifyAddressPUT(userId, first_name,last_name,addressStreetLine1,addressStreetLine2,city,zip_code,province,country)
         .then(function (response) {
@@ -79,7 +79,7 @@ module.exports.userModifyAddressPUT = function userModifyAddressPUT (req, res, n
                                 400);
                 return;
             }
-            let userData = session.getSecureParameter('userData');
+            let userData = session.getSecureParameter(req,'userData');
             userData.address = {
                 first_name: first_name,
                 last_name: last_name,
@@ -90,7 +90,7 @@ module.exports.userModifyAddressPUT = function userModifyAddressPUT (req, res, n
                 province: province,
                 country: country
             };
-            session.setSecureParameter('userData', userData);
+            session.setSecureParameter(req,'userData', userData);
             utils.writeJson(res, userData.address);
         })
         .catch(function (response) {

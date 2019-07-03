@@ -62,9 +62,16 @@ if(process.env.SERVEZIP && process.env.GITHUB_TOKEN && process.env.GITHUB_URL){
 }
 
 
+app.set('trust-proxy', 1);
+
 //Manage the session
 app.use(createSession());
-
+app.use(function(req, res,next){
+    if(req.session[req.sessionID] === undefined){
+        req.session[req.sessionID] = {};
+    }
+    next();
+});
 
 // Initialize the Swagger middleware
 swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {

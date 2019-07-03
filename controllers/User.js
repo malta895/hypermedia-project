@@ -21,16 +21,16 @@ const emailValidator = require('email-validator');
 
 module.exports.userDeletePOST = function userDeletePOST (req, res, next) {
 
-    if(!session.userIdExists()){
+    if(!session.userIdExists(req)){
         utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
         return;
     }
 
-    let userId = session.getUserId();
+    let userId = session.getUserId(req);
 
     User.userDeletePOST(userId)
         .then(function (response) {
-            session.unsetUserId();
+            session.unsetUserId(req,);
             utils.writeJson(res, {message: "Succesful operation!"});
         })
         .catch(function (response) {
@@ -69,26 +69,26 @@ module.exports.userEmailAvailableGET = function userEmailAvailableGET (req, res,
 
 module.exports.userGetDetailsGET = function userGetDetailsGET (req, res, next) {
 
-    if(!session.userIdExists()){
+    if(!session.userIdExists(req)){
         utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
         return;
     }
 
-    // let userData = session.getSecureParameter('userData');
+    // let userData = session.getSecureParameter(req,'userData');
     // if(userData) { //se i dati dell'utente sono già in sessione li recupero
     //     console.log("Dati utente da sessione");
     //     utils.writeJson(res, userData);
     //     return;
     // }
 
-    let userId = session.getUserId();
+    let userId = session.getUserId(req);
 
     User.userGetDetailsGET(userId)
         .then(function (response) {
             console.log(response);
             console.log("Dati utente da db");
             utils.writeJson(res, response);
-            session.setSecureParameter('userData', response);
+            session.setSecureParameter(req,'userData', response);
         })
         .catch(function (response) {
             utils.writeJson(res, response, response && response.errorCode || 500);
@@ -99,9 +99,9 @@ module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
 
     //se l'utente è già loggato non può fare il login nuovamente
     //fermo tutto con return: la chiamata al db non è necessaria
-    if(session.userIdExists()){
+    if(session.userIdExists(req)){
         utils.writeJson(res, {error: "Already logged in!"}, 400);
-        console.log(session.getUserId());
+        console.log(session.getUserId(req));
         return;
     }
 
@@ -126,12 +126,12 @@ module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
                         if(isPasswordRight){ //password corretta, procedo con il salvataggio dell'userId in sessione
                             let userId = response[0].user_id;
 
-                            session.setUserId(userId);
+                            session.setUserId(req,userId);
 
                             // recupero i dati dell'utente e li metto in sessione;
                             User.userGetDetailsGET(userId)
                                 .then(response => {
-                                    session.setSecureParameter('userData', response);
+                                    session.setSecureParameter(req,'userData', response);
                                 })
                                 .catch(err => {
                                     console.log("Salvataggio dati utente in sessione fallito.");
@@ -164,7 +164,7 @@ module.exports.userLoginPOST = function userLoginPOST (req, res, next) {
 
 module.exports.userLogoutPOST = function userLogoutPOST (req, res, next) {
     try{
-        session.unsetUserId();
+        session.unsetUserId(req,);
         utils.writeJson(res, {message:"Succesful logout!"});
         console.log("User logged out!");
     } catch(e){
@@ -175,7 +175,7 @@ module.exports.userLogoutPOST = function userLogoutPOST (req, res, next) {
 
 module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
 
-    if(!session.userIdExists()){
+    if(!session.userIdExists(req)){
         utils.writeJson(res, {message: "You were not logged in!"}, 403);
         return;
     }
@@ -199,17 +199,17 @@ module.exports.userModifyPUT = function userModifyPUT (req, res, next) {
         return;
     }
 
-    let userId = session.getUserId();
+    let userId = session.getUserId(req);
 
     User.userModifyPUT(userId,username, email,
                            first_name, surname, birthDate)
             .then(function (response) {
-                let userData = session.getSecureParameter('userData');
+                let userData = session.getSecureParameter(req,'userData');
                 let currAddress = userData.address;
                 let updatedUserData = {};
                 updatedUserData = response[0];
                 updatedUserData.address = currAddress;
-                session.setSecureParameter('userData', updatedUserData);
+                session.setSecureParameter(req,'userData', updatedUserData);
                 utils.writeJson(res, response);
             })
         .catch(function (response) {
@@ -226,7 +226,7 @@ module.exports.userModifyPasswordPUT = function userModifyPasswordPUT (req, res,
     var new_password = req.swagger.params['new_password'].value;
     var confirm_new_password = req.swagger.params['confirm_new_password'].value;
 
-    if(!session.userIdExists()){
+    if(!session.userIdExists(req)){
         utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
         return;
     }
@@ -240,8 +240,8 @@ module.exports.userModifyPasswordPUT = function userModifyPasswordPUT (req, res,
     }
 
     //controllo che la password vecchia sia corretta
-    let username = session.getSecureParameter('userData').username;
-    let userId = session.getUserId();
+    let username = session.getSecureParameter(req,'userData').username;
+    let userId = session.getUserId(req);
     User.userLoginPOST(username, old_password)
         .then(response => {
             let hashedPassword = response[0].password;
@@ -312,7 +312,7 @@ module.exports.userRegisterPOST = function userRegisterPOST (req, res, next) {
     surname = removeHtml(surname);
     var birthDate = req.swagger.params['birthDate'].value;
 
-    if(session.userIdExists()){
+    if(session.userIdExists(req)){
         utils.writeJson(res, {message: "You must logout before registering!"}, 403);
         return;
     }

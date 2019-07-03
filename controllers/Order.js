@@ -8,12 +8,12 @@ const utils = require('../utils/writer.js'),
 module.exports.orderByIdGET = function orderByIdGET (req, res, next) {
     var orderId = req.swagger.params['orderId'].value;
 
-    if(!session.userIdExists()){
+    if(!session.userIdExists(req)){
         utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
         return;
     }
 
-    let userId = session.getUserId();
+    let userId = session.getUserId(req);
 
     Order.orderByIdGET(userId, orderId)
         .then(function (response) {
@@ -41,12 +41,12 @@ module.exports.orderPlacePOST = function orderPlacePOST (req, res, next) {
     var addressStreetLine2 = req.swagger.params['addressStreetLine2'].value;
 
 
-    if(!session.userIdExists()){
+    if(!session.userIdExists(req)){
         utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
         return;
     }
 
-    let userId = session.getUserId();
+    let userId = session.getUserId(req);
 
     Order.orderPlacePOST(userId,addressStreetLine1,city,zip_code,province,country,shipping_method,payment_method,first_name,last_name,addressStreetLine2)
         .then(function (response) {
@@ -69,12 +69,12 @@ module.exports.ordersGET = function ordersGET (req, res, next) {
     var offset = req.swagger.params['offset'].value;
     var limit = req.swagger.params['limit'].value;
 
-    if(!session.userIdExists()){
+    if(!session.userIdExists(req)){
         utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
         return;
     }
 
-    let userId = session.getUserId();
+    let userId = session.getUserId(req);
 
     Order.ordersGET(userId,offset,limit)
         .then(function (response) {

@@ -6,12 +6,12 @@ const utils = require('../utils/writer.js'),
 
 module.exports.cartEmptyDELETE = function cartEmptyDELETE (req, res, next) {
 
-    if(!session.userIdExists()){
+    if(!session.userIdExists(req)){
         utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
         return;
     }
 
-    let userId = session.getUserId();
+    let userId = session.getUserId(req);
 
     Cart.cartEmptyDELETE(userId)
         .then(function (response) {
@@ -29,12 +29,12 @@ module.exports.cartGET = function cartGET (req, res, next) {
     var limit = req.swagger.params['limit'].value;
     var offset = req.swagger.params['offset'].value;
 
-    if(!session.userIdExists()){
+    if(!session.userIdExists(req)){
         utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
         return;
     }
 
-    let userId = session.getUserId();
+    let userId = session.getUserId(req);
 
     Cart.cartGET(userId, limit, offset)
         .then(function (response) {
@@ -51,12 +51,12 @@ module.exports.cartRemoveDELETE = function cartRemoveDELETE (req, res, next) {
     var bookId = req.swagger.params['bookId'].value;
     var quantity = req.swagger.params['quantity'].value;
 
-    if(!session.userIdExists()){
+    if(!session.userIdExists(req)){
         utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
         return;
     }
 
-    let userId = session.getUserId();
+    let userId = session.getUserId(req);
 
     Cart.cartRemoveDELETE(userId, bookId,quantity)
         .then(function (response) {
@@ -78,12 +78,12 @@ module.exports.cartSetQuantityPUT = function cartSetQuantityPUT (req, res, next)
     var bookId = req.swagger.params['bookId'].value;
     var quantity = req.swagger.params['quantity'].value;
 
-    if(!session.userIdExists()){
+    if(!session.userIdExists(req)){
         utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
         return;
     }
 
-    let userId = session.getUserId();
+    let userId = session.getUserId(req);
 
     Cart.cartSetQuantityPUT(userId,bookId,quantity)
         .then(function (response) {
@@ -102,12 +102,12 @@ module.exports.cartUpdatePUT = function cartUpdatePUT (req, res, next) {
     var bookId = req.swagger.params['bookId'].value;
     var quantity = req.swagger.params['quantity'].value;
 
-    if(!session.userIdExists()){
+    if(!session.userIdExists(req)){
         utils.writeJson(res, {message: "You must login to perform this operation!"}, 403);
         return;
     }
 
-    let userId = session.getUserId();
+    let userId = session.getUserId(req);
 
     Cart.cartUpdatePUT(userId, bookId,quantity)
         .then(function (response) {
