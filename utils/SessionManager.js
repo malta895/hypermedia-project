@@ -36,7 +36,6 @@ exports.createSession = function(req, res, next) {
 
     currSession = session({
         genid: (req) => {
-            console.log('session'+ req.sessionID);
             return uuid();
         },
         // store: new FileStore(),
@@ -69,6 +68,7 @@ exports.getUserId = function(req){
 
 exports.userIdExists = function(req) {
     let sid = req.sessionID;
+    console.log('VERIFY ' + sid);
     if(currSession[req.sessionID] === undefined){
         currSession[req.sessionID] = {};
     }
@@ -112,7 +112,7 @@ exports.setParameter = function(req,key, value, isSecure) {
     if(isSecure)
         currSession[sid].secureParameters[key] = value;
     else
-        currSession[key] = value;
+        currSession[sid][key] = value;
 };
 
 exports.setSecureParameter = function(req,key, value) {
@@ -127,7 +127,7 @@ exports.unsetParameter = function(req,key, isSecure) {
     if(isSecure)
         delete currSession[sid].secureParameters[key];
     else
-        delete currSession[key];
+        delete currSession[sid][key];
 
 };
 
@@ -139,7 +139,7 @@ exports.getParameter = function (req,key, isSecure) {
     let sid = req.sessionID;
     if(isSecure)
         return currSession[sid].secureParameters[key];
-    return currSession[key];
+    return currSession[sid][key];
 };
 
 exports.getSecureParameter = function(req,key) {
