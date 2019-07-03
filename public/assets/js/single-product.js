@@ -37,7 +37,6 @@ $(window).on("load",function () {
 
             return (acc === '' ? '' : (acc + ', ')) + link;
         }, '');
-        console.log(authors);
         var price = book.price;
         var picture = book.picture;
         var genre = book.genres.join(', ');
@@ -56,7 +55,7 @@ $(window).on("load",function () {
 
         $("#title").html(title);
         $("#summary2").html('<span>Abstract</span>'+book.abstract);
-        $("#author").html("<span>Author</span>"+ authors);
+        $("#author").html("<span>Authors</span>"+ authors);
         $("#price").html(price +'\u20AC');
         $("#isbn").html("<span>ISBN</span>"+isbn);
         $("#genre").html("<span>Genre</span>" + genre);
@@ -66,6 +65,18 @@ $(window).on("load",function () {
         $('.addCart').click(function () {
             addToCart(id);
         });
+    });
+
+    $.getJSON('/api/books/' + id + '/events', function (data) {
+        var events = data.reduce(function (acc, currValue) {
+            let event_id = currValue.event_id;
+            let name = currValue.name;
+
+            let link = '<a href="single-event.html?id=' + event_id + '">' + name + '</a>'
+
+            return (acc === '' ? '' : (acc + ', ')) + link;
+        }, '');
+        if(events.length>0)$("#event").html("<span>Events</span>" + events);
     });
     //get review by book id
     $.getJSON('/api/books/'+ id +'/reviews', function (data) { //get similar_books by book_id
