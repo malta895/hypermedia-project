@@ -36,17 +36,20 @@ $(window).on("load", function () {
             var book = data.book;
             var title = book.title;
             var picture = book.picture;
-            var authors = book.authors;
-            a = '';
-            for (y = 0; y < authors.length; y++) {
-                a += authors[y].name;
-            }
+        var authors = book.authors.reduce(function (acc, currValue) {
+            let author_id = currValue.author_id;
+            let name = currValue.name;
+
+            let link = '<a href="single-author.html?id=' + author_id + '">' + name + '</a>'
+
+            return (acc === '' ? '' : (acc + ', ')) + link;
+        }, '');
             
             var elem = '';
 
-            $("#title").html('Presentation:'+title);
+        $("#title").html('Presentation:<a href="single-product.html?id=' + book.book_id + '">' + title + '</a>');
             $("#date").html(date);
-            $("#authors").html(a);
+            $("#authors").html(authors);
             $("#where").html(address);
             $("#name").html(name);
             var img = '<div class="item"><img src="' + picture + '" id="img" class="img-responsive" alt=""></div>';
