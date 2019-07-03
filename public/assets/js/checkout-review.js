@@ -44,13 +44,7 @@ $(document).ready(function () {
             formData.append('country', order.country);
             formData.append('payment_method', order.payment_method);
             formData.append('shipping_method', order.shipping_method);
-            order.province=order.state
-            console.log(order)
-            console.log(formData)
             //formData=formData.serialize(); 
-            $.post('/api/orders/create', order, function (data) {
-                window.location.href='../index.html'
-            }, 'application/x-www-form-urlencoded');
 
 
             $.ajax({
@@ -59,17 +53,17 @@ $(document).ready(function () {
                 type: 'POST',
                 contentType: 'application/x-www-form-urlencoded',
                 success: function (response) {
-                    
+                    location.href = '/index.html';
 
                 },
                 statusCode: {
                     200: function () {
-                        window.location.href = '../index.html'
+                        location.href = '/index.html';
                     }
                 }
             })
                 .fail(function () {
-
+                    
                 });
 
 
