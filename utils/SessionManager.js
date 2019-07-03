@@ -38,7 +38,7 @@ exports.createSession = function(req, res, next) {
         genid: (req) => {
             return uuid();
         },
-        // store: new FileStore(),
+        store: new FileStore(),
         name: "session_id",
         secret: tokenSecret,
         resave: false,
