@@ -121,15 +121,19 @@ $(window).on("load",function () {
         //TODO GESTIRE ERRORE
 
     });
-    var userId=JSON.parse(sessionStorage.getItem('userId')).userId;
-    $.getJSON('/api/user/'+userId+'/reviews', function (data) {
-        console.log(data)
-        for (i = 0; i < data.length;i++) {
-            if (data[i].book == id) {
-                $('.review').hide()
+    if (sessionStorage.getItem('userId')) {
+        var userId = JSON.parse(sessionStorage.getItem('userId')).userId;
+        $.getJSON('/api/user/' + userId + '/reviews', function (data) {
+            console.log(data)
+            for (i = 0; i < data.length; i++) {
+                if (data[i].book == id) {
+                    $('.review').hide()
+                }
             }
-        }
-    });
+        });
+
+    } 
+    
     $.getJSON('/api/books/' + id+'/related?limit=4', function (data) { //get similar_books by book_id
         console.log(data);
         for (let i = 0; i < data.length; i++) {
