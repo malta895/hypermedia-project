@@ -101,13 +101,16 @@ exports.setUserId = function(req,userId){
 
 /**
 * Set a parameter for the current session.
-* If isSecure is true, the parameter is destroyed at loguot
+* If isSecure is true, the parameter is destroyed at logout
 *
 **/
 exports.setParameter = function(req,key, value, isSecure) {
     let sid = req.sessionID;
     if(key === "userId")
         throw new Error("Cannot set user id with this method! Use setUserId() instead");
+
+    if(currSession[sid] === undefined)
+        currSession[sid] = {};
 
     if(isSecure)
         currSession[sid].secureParameters[key] = value;

@@ -87,8 +87,8 @@ module.exports.userGetDetailsGET = function userGetDetailsGET (req, res, next) {
         .then(function (response) {
             console.log(response);
             console.log("Dati utente da db");
-            utils.writeJson(res, response);
             session.setSecureParameter(req,'userData', response);
+            utils.writeJson(res, response);
         })
         .catch(function (response) {
             utils.writeJson(res, response, response && response.errorCode || 500);
