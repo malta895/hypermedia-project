@@ -62,7 +62,8 @@ if(process.env.SERVEZIP && process.env.GITHUB_TOKEN && process.env.GITHUB_URL){
 }
 
 
-app.set('trust-proxy', 1);
+app.set('trust proxy', 1); //così i cookie passano attraverso il proxy
+
 
 //Manage the session
 app.use(createSession());
