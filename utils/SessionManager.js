@@ -36,12 +36,10 @@ exports.createSession = function(req, res, next) {
 
     currSession = session({
         genid: (req) => {
-            console.log('genero sessione');
-            console.log(req);
             console.log('session'+ req.sessionID);
             return uuid();
         },
-        store: new FileStore(),
+        // store: new FileStore(),
         name: "session_id",
         secret: tokenSecret,
         resave: false,
