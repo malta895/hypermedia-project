@@ -1,3 +1,18 @@
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName;
+
+    for (let i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
+    return undefined;
+};
+
 var currencies = {
     EUR: '&euro;',
     USD: '$'
@@ -7,6 +22,45 @@ var filterObject = {
     limit: 6,
     offset: 0
 };
+
+var maxCount = 101;
+
+function nextPage(pageMax){
+    if(parseInt($('.pagination .active a').html()) >= pageMax)
+        return;
+
+    retrieveData(filterObject.offset + 6);
+
+    if($('.pagination .last-item').hasClass('active')){
+        //incremento tutto di uno
+        $('.pagination .page-item-number a').each(function(){
+            $(this).html(parseInt($(this).html()) + 1);
+        });
+    } else {
+        let currActive = $('.pagination .active');
+        currActive.next().addClass('active');
+        currActive.removeClass('active');
+    }
+}
+
+function prevPage(){
+    if(parseInt($('.pagination .active a').html()) <= 1)
+        return;
+
+    retrieveData(filterObject.offset - 6);
+
+    if($('.pagination .first-item').hasClass('active')){
+        //decremento tutto di uno
+        $('.pagination .page-item-number a').each(function(){
+            $(this).html(parseInt($(this).html()) - 1);
+        });
+    } else {
+        let currActive = $('.pagination .active');
+        currActive.prev().addClass('active');
+        currActive.removeClass('active');
+    }
+}
+
 
 function pushFilter(key, val) {
     if (filterObject[key] === undefined) {
@@ -70,7 +124,7 @@ function renderData(data) {
         elem += '<div class="col-sm-3">';
         elem += '<div class="product-overlay">';
         elem += '<div class="product-mask"></div>';
-        elem += '<a href="pages/single-product.html?id=' + id + '" class="product-permalink"></a><img src="' + picture + '" width="262.5" height="350" class="img-responsive" alt="">';
+        elem += '<a href="/pages/single-product.html?id=' + id + '" class="product-permalink"></a><img src="' + picture + '" width="262.5" height="350" class="img-responsive" alt="">';
         elem += '<img src="' + picture + '" class="img-responsive product-image-2" alt="" width="262.5" height="350"></div></div>';
         elem += '<div class="col-sm-9"><div class="product-body">';
         elem += '<h3>' + title + '</h3>';
@@ -99,6 +153,7 @@ function retrieveData(offset){
         success: function (data) {
             console.log(data);
             renderData(data);
+
             $('.addCart').off();
             $('.addCart').click(function () {
 
@@ -149,7 +204,7 @@ function addToCart(id) {
                         $(".navbar-cart > ul").append(elem);
 
                     }
-                    elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="pages/cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
+                    elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="/pages/cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="/pages/checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
                     $(".navbar-cart > ul").append(elem);
 
                 });
@@ -160,11 +215,47 @@ function addToCart(id) {
     });
 }
 
+function initPaging(){
+
+    let diff = parseInt($('.pagination .first-item a').html()) - 1;
+
+    $('.pagination .page-item-number a').each(function () {
+        let curr = parseInt($(this).html());
+        $(this).html(curr - diff);
+    });
+
+    $('.pagination .page-item-number').removeClass('active');
+    $('.pagination .first-item').addClass('active');
+    $('.pagination .first-item')[0].click();
+}
+
 $(document).ready(function(){
     retrieveData(0);
 
+    //pagination:
+    $('.pagination .prev-item').click(function(){
+        $('#scrolltop').click();
+        prevPage();
+    });
 
-        $.getJSON('/api/themes', function (data) {
+    $('.pagination .page-item-number').click(function(){
+        $('#scrolltop').click();
+        let pageNumber = parseInt($(this).find('a').html());
+        let newOffset = pageNumber * 6 - 6;
+        retrieveData(newOffset);
+        $('.page-item-number').removeClass('active');
+        $('.page-item-number').each(function(){
+            if(parseInt($(this).find('a').html()) === pageNumber)
+                $(this).addClass('active');
+        });
+    });
+
+    $('.pagination .next-item').click(function(){
+        $('#scrolltop').click();
+        nextPage(Math.ceil(maxCount / filterObject.limit));
+    });
+
+    $.getJSON('/api/themes', function (data) {
 
         for (let i = 0; i < data.length; i++) {
             var id = data[i].theme_id;
@@ -180,18 +271,20 @@ $(document).ready(function(){
 
             //eventi su cambio
             $('#themes' + id).change(function(){
+
                 if($(this).is(':checked')){
                     pushFilter('themes', $(this).val());
                 } else {
                     popFilter('themes');
-
                 }
-                retrieveData();
+                initPaging();
             });
 
 
         }
     });
+
+
     $.getJSON('/api/genres', function (data) {
         for (let i = 0; i < data.length; i++) {
             var id = data[i].genre_id;
@@ -208,12 +301,13 @@ $(document).ready(function(){
 
             //eventi su cambio
             $('#genre' + id).change(function(){
+
                 if($(this).is(':checked')){
                     pushFilter('genre', $(this).val());
                 } else {
                     popFilter('genre');
                 }
-                retrieveData();
+                initPaging();
             });
 
 
@@ -242,7 +336,7 @@ $(document).ready(function(){
                 elem += '<li><div class="row"><div class="col-sm-3">';
                 elem += '<img src="' + picture + '" class="img-responsive" alt="">';
                 elem += '</div><div class="col-sm-9">';
-                elem += '<h4><a href="pages/single-product.html?id=' + id + '">'+title+'</a></h4>';
+                elem += '<h4><a href="/pages/single-product.html?id=' + id + '">'+title+'</a></h4>';
                 elem += '<p>' + quantity + 'x - &euro;' + price + '</p>';
                 elem += '<a href="#" class="remove"><i class="fa fa-times-circle"></i></a>';
                 elem += '</div></div></li>';
@@ -251,7 +345,7 @@ $(document).ready(function(){
                 $(".navbar-cart > ul").append(elem);
 
             }
-            elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="pages/cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="pages/checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
+            elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="/pages/cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="/pages/checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
             $(".navbar-cart > ul").append(elem);
 
 
@@ -266,15 +360,40 @@ $(document).ready(function(){
 
         }
              );
+
+
+    function search(){
+        let searchText = $('.search-input').val();
+        if(searchText !== ''){
+            setFilter('title', searchText);
+        } else {
+            deleteFilter('title');
+        }
+        initPaging();
+    }
+
+    $('.search-button').on('click', function () {
+        search();
+    });
+    $('.search-input').keypress(function (e) {
+        if (e.which == 13) { //tasto invio
+            search();
+            return false;
+        }
+    });
+
     $('.logout').click(function (e) {
         e.preventDefault();
         $.post('/api/user/logout', function (res) {
             console.log("Logout succesful!");
             sessionStorage.clear();
+            location.reload();
         })
             .fail(res => {
                 //TODO gestire errore
                 console.log(res);
+
+
             });
     });
 });

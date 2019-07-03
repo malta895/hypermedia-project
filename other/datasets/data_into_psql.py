@@ -52,7 +52,7 @@ def insert_themes(cur):
 
 def db_connect():
     db_url = None
-    db_url = os.getenv('DATABASE_URL');
+    db_url = os.getenv('DATABASE_URL')
 
 #    db_url = os.getenv('DATABASE_URL')
     # db_url = 'postgres://postgres:root@localhost:5432/hypermedia'
@@ -140,16 +140,24 @@ def assign_theme(cur, book_id):
         cur.execute(query, data)
 
 print("INSERIMENTO...")
-for index, row in df.iterrows():
-    if row['book_id'] % 100 == 0:
-        db_conn.commit() # committo ogni 100 così posso interrompere senza perdere tutto
-        print("Progresso: " + str(row['book_id']))
 
-    if row['book_id'] > 5000:
+randDf = df.sample(n=df.shape[0])
+
+nIndex = 0
+
+for index, row in randDf.iterrows():
+    if nIndex % 100 == 0:
+        db_conn.commit() # committo ogni 100 così posso interrompere senza perdere tutto
+        print("Progresso: " + str(nIndex))
+
+    if nIndex > 100:
         break
 
 
-    if row['original_title'] == 'NaN':
+    if (type(row['original_title']) is not str) or row['original_title'] == 'NaN' or row['original_title'] is None or len(row['original_title']) > 37:
+        continue
+
+    if row['isbn'] is None or row['isbn'] == 'nan':
         continue
 
     image_path = row['image_url']
@@ -157,12 +165,15 @@ for index, row in df.iterrows():
     # scarico la versione large delle immagini
     image_path = re.sub(r'm?(/[0-9]+.jpg)', r'l\1', image_path)
 
+    if 'nophoto' in image_path:
+        continue
+
     publisher_n = randint(0, len(PUBLISHERS) - 1)
     publisher_id = PUBLISHERS[publisher_n][0]
 
     res = insert_book (
         cur,
-        row['book_id'],
+        nIndex,
         str(row['isbn']),
         row['original_title'],
         randint(8, 49),
@@ -173,8 +184,8 @@ for index, row in df.iterrows():
         continue
 
 
-    assign_genre(cur, row['book_id'])
-    assign_theme(cur, row['book_id'])
+    assign_genre(cur, nIndex)
+    assign_theme(cur, nIndex)
 
 
     authors_names = row['authors'].split(',')
@@ -183,8 +194,9 @@ for index, row in df.iterrows():
         insert_author(
             cur,
             author_name,
-            row['book_id']
+            nIndex
             )
+    nIndex += 1
 
 
 db_conn.commit()

@@ -1,27 +1,32 @@
 # TODO LIST:
 ## FRONTEND:
- * Aggiungere barra con offset su index, mostrare solo 15/20 libri per pagina
- * sistemare gestione degli errori in tutte le cose inserite da utente: review, login, signup, ordine
  * controllare la responsiveness
- * finire la pagina modify-address.html e relativi script
- * submit non fa redirect
- * empty cart
- * fare single author
  * fare suggested readings
- * ....
+ * aggiungere eventi a single products
+ * (in progress)Risolvere bug offset della home
+ * Descrizione dei libri dentro la pagina single product
+* Autori hanno un immagine a caso e non hanno la biografia
+*Event non esistono
+* Signup ha sopra a sinistra  puntini RISOLTO MA ALTRE PAGINE POTREBBERO AVERE LO STESSO PROBLEMA perfavore ale guardamele tutte attentamente da non loggato  (il problema è che manca uno script)
+* BestSeller vuoto
+* (facoltativo) impedire accesso a pagine che richiedono login ai non loggati (forse basta aggiungere una riga di redirect a multi-pages.js)
  
 ## BACKEND:
  * Creare un dataset completo: prendere solo 200/250 libri, creare 10 utenti, recensire la maggior parte dei libri con ciascun utente
  * creare un po di eventi random con alcuni dei libri (max 30 eventi)
- * i temi e generi devono essere sensati
  * recuperare immagini degli autori
  * controllare api inutili e sistemare tutte le risposte ed errori
- * unificare add e modify address
- * modify user
- * mettere vincolo su numero di stelle libro
- * controllare ordine doppio
+ * (facoltativo)mettere vincolo su numero di stelle libro
+ * (facoltativo)controllare ordine doppio
  
 ## DOCUMENTAZIONE:
- * fare tutta la documentazione backend in Markdown.
- * cominciare a fare screen di pagine finite
- * ...
+ * (quasi finito, mancano domande personali)fare tutta la documentazione backend in Markdown.
+ Design Document
+* (in progress)controllare e nel caso scrivere in inglese le parti in rosso
+* Fare screen per scenario
+* (in progress)Fare tutto il database design
+* fare un component dell'applicazione 
+
+Usability Document
+- tutto
+

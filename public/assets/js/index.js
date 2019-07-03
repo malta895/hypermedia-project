@@ -32,7 +32,7 @@ function generateFromData(data) {
         elem += '<div class="col-sm-3">';
         elem += '<div class="product-overlay">';
         elem += '<div class="product-mask"></div>';
-        elem += '<a href="pages/single-product.html?id=' + id + '" class="product-permalink"></a><img src="' + picture + '" width="262.5" height="350" class="img-responsive" alt="">';
+        elem += '<a href="/pages/single-product.html?id=' + id + '" class="product-permalink"></a><img src="' + picture + '" width="262.5" height="350" class="img-responsive" alt="">';
         elem += '<img src="' + picture + '" class="img-responsive product-image-2" alt="" width="262.5" height="350"></div></div>';
         elem += '<div class="col-sm-9"><div class="product-body">';
         elem += '<h3>' + title + '</h3>';
@@ -105,7 +105,7 @@ function addToCart(id) {
                         $(".navbar-cart > ul").append(elem);
 
                     }
-                    elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="pages/cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
+                    elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="/pages/cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="/pages/checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
                     $(".navbar-cart > ul").append(elem);
 
                 });
@@ -297,7 +297,7 @@ $(document).ready(function () {
                 elem += '<li><div class="row"><div class="col-sm-3">';
                 elem += '<img src="' + picture + '" class="img-responsive" alt="">';
                 elem += '</div><div class="col-sm-9">';
-                elem += '<h4><a href="pages/single-product.html?id=' + id + '">'+title+'</a></h4>';
+                elem += '<h4><a href="/pages/single-product.html?id=' + id + '">'+title+'</a></h4>';
                 elem += '<p>' + quantity + 'x - &euro;' + price + '</p>';
                 elem += '<a href="#" class="remove"><i class="fa fa-times-circle"></i></a>';
                 elem += '</div></div></li>';
@@ -306,7 +306,7 @@ $(document).ready(function () {
                 $(".navbar-cart > ul").append(elem);
 
             }
-            elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="pages/cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="pages/checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
+            elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="/pages/cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="/pages/checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
             $(".navbar-cart > ul").append(elem);
 
 
