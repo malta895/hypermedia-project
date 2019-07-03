@@ -1,10 +1,12 @@
 "use strict";
 
 let session = require('express-session');
+let crypto = require('crypto');
 
 const tokenSecret = process.env.TOKEN_SECRET;
 
 var currSession;
+
 
 
 exports.createSession = function(req, res, next) {
@@ -27,9 +29,11 @@ exports.createSession = function(req, res, next) {
     if(!tokenSecret)
         console.log("WARNING: tokenSecret is undefined! Ensure the env variable TOKEN_SECRET is set!");
 
+    let buffer=Buffer.alloc(256);
+
     currSession = session({
         name: "session_id",
-        secret: tokenSecret,
+        secret: crypto.randomFillSync(buffer,0,256).toString('hex'),
         resave: false,
         saveUninitialized: true,
         cookie: { secure: isSecure },
