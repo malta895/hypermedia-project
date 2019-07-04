@@ -34,7 +34,9 @@ $(window).on("load", function () {
         var address = location.street_line1 + street_line2 +location.country+','+location.province+location.city;
             //BOOK
             var book = data.book;
-            var title = book.title;
+        var title = book.title;
+        var genre = book.genres.join(', ');
+        var themes = book.themes.join(', ');
             var picture = book.picture;
         var authors = book.authors.reduce(function (acc, currValue) {
             let author_id = currValue.author_id;
@@ -47,11 +49,14 @@ $(window).on("load", function () {
 
             var elem = '';
 
-        $("#title").html('Presentation:<a href="single-product.html?id=' + book.book_id + '">' + title + '</a>');
+        $("#title").html('Presentation:'+name);
             $("#date").html(date);
             $("#authors").html(authors);
-            $("#where").html(address);
-            $("#name").html(name);
+        $("#where").html(address);
+        $("#genre").html(genre);
+        $("#theme").html( themes);
+        $("#name").html('<a href="single-product.html?id=' + book.book_id + '">' + title + '</a>');
+
             var img = '<div class="item"><img src="' + picture + '" id="img" class="img-responsive" alt=""></div>';
             $("#pic").append(img);
 

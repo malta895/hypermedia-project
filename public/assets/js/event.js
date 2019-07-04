@@ -5,6 +5,7 @@ $(document).ready(function () {
             var street_line2=','
             var id = data[i].event_id;
             var date = data[i].date_time;
+            var name=data[i].name
             var location = data[i].location;
             if (location.street_line2 !== null) street_line2 = ',' + location.street_line2 + ','
             var address = location.street_line1 + street_line2 + location.country + ',' + location.province + location.city;
@@ -24,13 +25,12 @@ $(document).ready(function () {
             let timeString = dateObj.toLocaleTimeString();
 
             date = dateString + ' ' + timeString;
-
             var elem = '';
             elem += '<div class="col-sm-12 col-xs-6"> <article class="product-item"> <div class="row"> <div class="col-sm-3"> <div class="product-overlay"> <div class="product-mask"></div>';
             elem += '<a href="single-event.html?id=' + id + '" class="product-permalink"></a>';
             elem += '<img src="'+picture+'" class="img-responsive" alt="">';
             elem += ' </div> </div> <div class="col-sm-9"> <div class="product-body">';
-            elem += '<h3>Presentation:'+title+' (Authors: '+authors+')</h3> <h4>Date:</h4> <p>'+date+'</p> <h4>Where:</h4> <p>'+address+'</p> <h4>Plot:</h4> <p>'+abstract+'</p>';
+            elem += '<h3>Presentation:<a href="single-event.html?id=' + id + '" >'+name+'</a></h3> <h4>Date:</h4> <p>' + date + '</p> <h4>Where:</h4> <p>' + address + '</p> <h4>Book presented:</h4> <h4><a href="single-product.html?id=' + book + '">' + title + '</a></h4>';
             elem += ' </div> </div> </div> </article> </div>';
 
             $("#events").append(elem);
