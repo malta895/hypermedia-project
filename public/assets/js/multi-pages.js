@@ -15,9 +15,9 @@ $(document).ready(function () {
 
 */
     $.getJSON('/api/me', function (data) {
-        $('.logout').html('Logout')
-        $('.signin').hide()
-        $('.signup').hide()
+        $('.logout').html('Logout');
+        $('.signin').hide();
+        $('.signup').hide();
 
         $('.myaccount').html(data.first_name + ' ' + data.surname);
         sessionStorage.setItem('user', JSON.stringify(data));
@@ -25,10 +25,10 @@ $(document).ready(function () {
 
             $(".navbar-cart > ul").remove();
             if (data.length > 0) {
-                ul = $('<ul class="dropdown-menu"></ul>');
+                let ul = $('<ul class="dropdown-menu"></ul>');
                 $(".navbar-cart").append(ul);
                 for (i = 0; i < data[0].books.length; i++) {
-                    console.log(data[0].books[i])
+                    console.log(data[0].books[i]);
 
                     book = data[0].books[i].book;
                     var id = book.book_id;
@@ -49,19 +49,11 @@ $(document).ready(function () {
 
 
                     $(".navbar-cart > ul").append(elem);
-                    
+
                 }
                 elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="/pages/checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
                 $(".navbar-cart > ul").append(elem);
-                
-                
             }
-            
-
-
-
-
-
 
         });
 
@@ -105,8 +97,6 @@ $(document).ready(function () {
                 console.log(res);
             })
     });
-        
-        
 
 
 });

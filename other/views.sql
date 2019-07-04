@@ -81,6 +81,7 @@ SELECT o.order_id,
 "user".user_id,
 o.payment_method,
 o.shipping_method,
+o.order_date,
 to_jsonb(ad.*) AS shipment_address,
 sum(b.price * cb.quantity::double precision) AS total_amount,
 jsonb_agg(jsonb_build_object('book', b.*, 'quantity', cb.quantity)) AS books
