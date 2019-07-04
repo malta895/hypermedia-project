@@ -141,18 +141,34 @@ def assign_theme(cur, book_id):
 
 print("INSERIMENTO...")
 
-randDf = df.sample(n=df.shape[0])
+#randDf = df.sample(n=df.shape[0])
 
 nIndex = 0
 
-for index, row in randDf.iterrows():
-    if nIndex % 100 == 0:
+sortedDf = df.sort_values(by='work_ratings_count', ascending=False)
+
+def is_author_in(a_names, authors):
+    for n in a_names:
+        if n in authors:
+            return True
+    return False
+
+
+for index, row in sortedDf.iterrows():
+    if nIndex % 40 == 0:
         db_conn.commit() # committo ogni 100 così posso interrompere senza perdere tutto
         print("Progresso: " + str(nIndex))
 
-    if nIndex > 100:
+    if nIndex >= 400:
         break
 
+    if not is_author_in(['Rowling', 'Suzanne Collins', 'George R.R. Martin', 'Tolkien', 'Paolini', 'Dan Brown'], row['authors']):
+        continue
+
+    authors_names = row['authors'].split(',')
+
+    if len(authors_names) > 4:
+        continue
 
     if (type(row['original_title']) is not str) or row['original_title'] == 'NaN' or row['original_title'] is None or len(row['original_title']) > 37:
         continue
@@ -188,7 +204,7 @@ for index, row in randDf.iterrows():
     assign_theme(cur, nIndex)
 
 
-    authors_names = row['authors'].split(',')
+
 
     for author_name in authors_names:
         insert_author(

@@ -707,3 +707,6 @@ dmypy.json
 
 # Ignore the zip of the repo
 app.zip
+
+#Ignore sessions
+sessions/
