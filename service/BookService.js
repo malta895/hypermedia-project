@@ -96,7 +96,8 @@ and date_part('month', "order".order_date) = date_part('month', ?::date)
 group by book, cart_book.quantity
 order by sum(quantity) desc) as bestsellers
 on book_id = book
-`, [month_date])
+limit ?
+`, [month_date, (limit ? limit : 3)])
                 .then(response => {
                     resolve(response.rows);
                 })
@@ -116,7 +117,8 @@ and date_part('month', "order".order_date) = date_part('month', CURRENT_DATE)
 group by book, cart_book.quantity
 order by sum(quantity) desc) as bestsellers
 on book_id = book
-`)
+limit ?
+`, [limit ? limit : 3])
                 .then(response => {
                     resolve(response.rows);
                 })
