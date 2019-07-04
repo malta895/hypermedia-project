@@ -30,11 +30,11 @@ is a private repository and, upon request, we will give access to the
 instructors.
 ## Specification
 ### Web Architecture
-Describe here, with a diagram, the components of your web application and how
+**Describe here, with a diagram, the components of your web application and how
 they interact. Highlight which parts belong to the application layer, data layer
-or presentation layer. How did you ensure that HTML is not rendered server side?
+or presentation layer. How did you ensure that HTML is not rendered server side?**
 
-TODO inserire immagine [](components.png)
+![Component Diagram](components.png "Component Diagram")
 
 Our web application serves statically the folder containing the html pages and other assets such as scripts, images and style sheets; all the other data is produced by the backend in JSON format, then is retrieved and rendered on the pages by the client JavaScript code. By following this pattern we are sure that HTML code is never rendered server-side.
 
@@ -58,7 +58,7 @@ All the URIs follow the same naming convention (for example, all requests regard
 
 #### OpenAPI Resource models
 
-Describe here synthetically, which models you have introduced for resources.
+**Describe here synthetically, which models you have introduced for resources.**
 
 - **User**: Contains relevant information about a user registered to the application.
 - **Cart**: List of items that a User is willing to buy. Contains the list of Book instances and the total amount
@@ -75,13 +75,18 @@ Describe here synthetically, which models you have introduced for resources.
 - **Order**: An Order made by a user. Contains relevant informations such shipping address, total price and payment method.
 
 ### Data model
-Describe with an ER diagram the model used in the data layer of your web
-application. How these map to the OpenAPI data model?
+**Describe with an ER diagram the model used in the data layer of your web
+application. How these map to the OpenAPI data model?**
+
+![ER Diagram](ER.png "ER Diagram")
+
+All of the entities in the diagram above are mapped to their counterparts in the API specification. Of course in the database we added relation tables for the 1-N and N-N relations.
+
 ## Implementation
 ### Tools used
 
-Describe here which tools, languages and frameworks did you use for the backend
-of the application.
+**Describe here which tools, languages and frameworks did you use for the backend
+of the application.**
 
 We used Swagger framework to generate the OpenAPI specs and code skeleton of our web server. 
 The backend is written in JavaScript on NodeJS version 10.6.
