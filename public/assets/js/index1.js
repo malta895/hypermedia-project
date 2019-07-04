@@ -333,6 +333,8 @@ $(document).ready(function(){
     $.getJSON('/api/me', function (data) {
         $('.logout').html('Logout');
         $('.signin').hide();
+        $('.signup').hide();
+
         $('.myaccount').html(data.first_name + ' ' + data.surname);
         sessionStorage.setItem('user', JSON.stringify(data));
         $.getJSON('/api/cart', function (data) {
@@ -377,6 +379,7 @@ $(document).ready(function(){
             $('.logout').hide();
             $('.myaccount').hide();
             $('.signin').html('Sign in');
+            $('.signup').html('Sign up')
             $(".navbar-cart").hide();
 
         }
