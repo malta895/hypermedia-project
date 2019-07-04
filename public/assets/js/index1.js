@@ -185,6 +185,10 @@ function addToCart(id) {
         type: 'PUT',
         statusCode: {
             200: function () {
+                $('#cart-modal-text').html('Book added to cart!')
+                $('#modal-alert .btn-primary').hide()
+                $('#modal-alert .btn-secondary').html('Continue shopping')
+                $('#modal-alert').modal();
                 $.getJSON('/api/cart', function (data) {
 
                     $(".navbar-cart > ul").empty();

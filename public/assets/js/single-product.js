@@ -28,6 +28,7 @@ $(window).on("load",function () {
     $.getJSON('/api/books/'+id, function (book) {  // GET BOOK BY ID /api/book/{bookId}
         console.log(book);
         var id = book.book_id;
+        
         var title = book.title;
         var isbn = book.isbn;
         var rating = book.average_rating;
@@ -64,8 +65,9 @@ $(window).on("load",function () {
         $("#theme").html("<span>Themes</span>" + themes);
         var img = '<div class="item"><img src="' + picture + '" id="img" class="img-responsive" alt=""></div>';
         $("#product-carousel").append(img);
-        $('.addCart').off();
+        
         $('.addCart').click(function () {
+            console.log(id)
             if (!sessionStorage.userId) {
                 $('#cart-modal-text').html('Signin to purchase new books!')
                 $('#modal-alert .btn-primary').html('Signin')
@@ -177,7 +179,7 @@ $(window).on("load",function () {
             elem += '<h3>' + title + '</h3>';
             elem += '<div class="product-rating">'+d+'</div>';
             elem += '<span class="price"><ins><span class="amount">' + currencies.EUR + price + '</span></ins></span>';
-            elem += '<div class="buttons"><a href="" id="'+id+'" class="btn btn-primary btn-sm add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a></div>';
+            elem += '<div class="buttons"><a href="" id="'+id+'" class="btn btn-primary btn-sm add-to-cart-related"><i class="fa fa-shopping-cart"></i>Add to cart</a></div>';
             elem += '</div>';
             elem += '</div>';
             elem += '</div>';
@@ -185,8 +187,8 @@ $(window).on("load",function () {
             elem += '</div>';
             $("#products").append(elem);
         }
-        $('.addCart').off();
-        $('.add-to-cart').click(function (e) {
+        
+        $('.add-to-cart-related').click(function (e) {
             e.preventDefault()
             if (!sessionStorage.userId) {
                 $('#cart-modal-text').html('Signin to purchase new books!')
@@ -299,6 +301,10 @@ function addToCart(id) {
         },
         statusCode: {
             200: function () {
+                $('#cart-modal-text').html('Book added to cart!')
+                $('#modal-alert .btn-primary').hide()
+                $('#modal-alert .btn-secondary').html('Continue shopping')
+                $('#modal-alert').modal();
                 $.getJSON('/api/cart', function (data) {
                     console.log(data);// /api/cart GET CART
                     $(".navbar-cart > ul").empty();
