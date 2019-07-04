@@ -20,8 +20,8 @@ $(document).ready(function () {
 
                 console.log(res.responseText);
 
-                if(location.includes('bookhub-ctm.herokuapp.com')) {
-                    location = location.startsWith('https') ? '/' : 'https://bookhub-ctm.herokuapp.com/';
+                if(location.protocol === 'http:' && location.hostname === '"bookhub-ctm.herokuapp.com"') {
+                    location.href = 'https://bookhub-ctm.herokuapp.com/';
                 } else {
                     location.href = '/index.html';
                 }
