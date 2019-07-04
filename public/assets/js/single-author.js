@@ -25,10 +25,9 @@ $(window).on("load", function () {
             var picture = data[i].picture;
             var bio = data[i].biography;
             var elem = '';
-            $("#name").html(name);   
-            $("#bio").html(bio);               
-            var img = '<div class="item"><img src="' + picture + '" id="img" class="img-responsive" alt=""></div>';
-            $("#pic").append(img);
+            $("#name").html(name);
+            $("#bio").html(bio);
+            $("#pic img").attr('src', img);
         }
 
 
@@ -40,14 +39,14 @@ $(window).on("load", function () {
     });
     $.getJSON('/api/books?authors=' + id, function (data) {  // GET AUTHOR BY ID   
         console.log(data);
-        for (i = 0; i < data.length; i++) {
-            $('#products').html()
+        for (let i = 0; i < data.length; i++) {
+            $('#products').html();
             var id = data[i].book_id;
             var title = data[i].title;
             var surname = data[i].surname;
             var picture = data[i].picture;
             var price = data[i].price;
-            var rating = data[i].average_rating
+            var rating = data[i].average_rating;
             let d = '';
             for (let i = 1; i <= 5; i++) {
                 if (i <= rating) {
