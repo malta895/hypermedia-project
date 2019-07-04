@@ -2,10 +2,10 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 11.3
--- Dumped by pg_dump version 11.3
+-- Dumped from database version 11.2
+-- Dumped by pg_dump version 11.2
 
--- Started on 2019-07-04 17:11:04 CEST
+-- Started on 2019-07-04 18:56:47 CEST
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -14,12 +14,11 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
-SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 7 (class 2615 OID 49411)
+-- TOC entry 5 (class 2615 OID 41554)
 -- Name: public; Type: SCHEMA; Schema: -; Owner: -
 --
 
@@ -27,7 +26,7 @@ CREATE SCHEMA public;
 
 
 --
--- TOC entry 233 (class 1255 OID 49446)
+-- TOC entry 233 (class 1255 OID 41555)
 -- Name: create_cart(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -40,7 +39,7 @@ END;$$;
 
 
 --
--- TOC entry 234 (class 1255 OID 49537)
+-- TOC entry 234 (class 1255 OID 41556)
 -- Name: delete_cart_zero_quantity(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -53,7 +52,7 @@ END$$;
 
 
 --
--- TOC entry 235 (class 1255 OID 49599)
+-- TOC entry 235 (class 1255 OID 41557)
 -- Name: update_average_rating_new(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -71,7 +70,7 @@ $$;
 
 
 --
--- TOC entry 236 (class 1255 OID 49608)
+-- TOC entry 236 (class 1255 OID 41558)
 -- Name: update_average_rating_old(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -89,7 +88,7 @@ $$;
 
 
 --
--- TOC entry 237 (class 1255 OID 49703)
+-- TOC entry 237 (class 1255 OID 41559)
 -- Name: update_cart_on_order(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -112,7 +111,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- TOC entry 197 (class 1259 OID 49415)
+-- TOC entry 196 (class 1259 OID 41560)
 -- Name: address; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -130,7 +129,7 @@ CREATE TABLE public.address (
 
 
 --
--- TOC entry 196 (class 1259 OID 49413)
+-- TOC entry 197 (class 1259 OID 41566)
 -- Name: address_address_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -144,8 +143,8 @@ CREATE SEQUENCE public.address_address_id_seq
 
 
 --
--- TOC entry 3179 (class 0 OID 0)
--- Dependencies: 196
+-- TOC entry 3422 (class 0 OID 0)
+-- Dependencies: 197
 -- Name: address_address_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -153,7 +152,7 @@ ALTER SEQUENCE public.address_address_id_seq OWNED BY public.address.address_id;
 
 
 --
--- TOC entry 221 (class 1259 OID 49628)
+-- TOC entry 198 (class 1259 OID 41568)
 -- Name: author; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -166,7 +165,7 @@ CREATE TABLE public.author (
 
 
 --
--- TOC entry 220 (class 1259 OID 49626)
+-- TOC entry 199 (class 1259 OID 41574)
 -- Name: author_author_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -180,8 +179,8 @@ CREATE SEQUENCE public.author_author_id_seq
 
 
 --
--- TOC entry 3180 (class 0 OID 0)
--- Dependencies: 220
+-- TOC entry 3423 (class 0 OID 0)
+-- Dependencies: 199
 -- Name: author_author_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -189,7 +188,7 @@ ALTER SEQUENCE public.author_author_id_seq OWNED BY public.author.author_id;
 
 
 --
--- TOC entry 223 (class 1259 OID 49639)
+-- TOC entry 200 (class 1259 OID 41576)
 -- Name: author_book; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -201,7 +200,7 @@ CREATE TABLE public.author_book (
 
 
 --
--- TOC entry 222 (class 1259 OID 49637)
+-- TOC entry 201 (class 1259 OID 41579)
 -- Name: author_book_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -215,8 +214,8 @@ CREATE SEQUENCE public.author_book_id_seq
 
 
 --
--- TOC entry 3181 (class 0 OID 0)
--- Dependencies: 222
+-- TOC entry 3424 (class 0 OID 0)
+-- Dependencies: 201
 -- Name: author_book_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -224,7 +223,7 @@ ALTER SEQUENCE public.author_book_id_seq OWNED BY public.author_book.id;
 
 
 --
--- TOC entry 228 (class 1259 OID 54628)
+-- TOC entry 228 (class 1259 OID 41892)
 -- Name: author_essential; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -236,7 +235,7 @@ CREATE VIEW public.author_essential AS
 
 
 --
--- TOC entry 207 (class 1259 OID 49483)
+-- TOC entry 202 (class 1259 OID 41585)
 -- Name: book; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -257,7 +256,7 @@ CREATE TABLE public.book (
 
 
 --
--- TOC entry 206 (class 1259 OID 49481)
+-- TOC entry 203 (class 1259 OID 41594)
 -- Name: book_book_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -271,8 +270,8 @@ CREATE SEQUENCE public.book_book_id_seq
 
 
 --
--- TOC entry 3182 (class 0 OID 0)
--- Dependencies: 206
+-- TOC entry 3425 (class 0 OID 0)
+-- Dependencies: 203
 -- Name: book_book_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -280,7 +279,7 @@ ALTER SEQUENCE public.book_book_id_seq OWNED BY public.book.book_id;
 
 
 --
--- TOC entry 231 (class 1259 OID 54640)
+-- TOC entry 231 (class 1259 OID 41904)
 -- Name: book_essentials; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -302,7 +301,7 @@ SELECT
 
 
 --
--- TOC entry 213 (class 1259 OID 49541)
+-- TOC entry 204 (class 1259 OID 41600)
 -- Name: book_genre; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -314,7 +313,7 @@ CREATE TABLE public.book_genre (
 
 
 --
--- TOC entry 212 (class 1259 OID 49539)
+-- TOC entry 205 (class 1259 OID 41603)
 -- Name: book_genre_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -328,8 +327,8 @@ CREATE SEQUENCE public.book_genre_id_seq
 
 
 --
--- TOC entry 3183 (class 0 OID 0)
--- Dependencies: 212
+-- TOC entry 3426 (class 0 OID 0)
+-- Dependencies: 205
 -- Name: book_genre_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -337,7 +336,7 @@ ALTER SEQUENCE public.book_genre_id_seq OWNED BY public.book_genre.id;
 
 
 --
--- TOC entry 215 (class 1259 OID 49561)
+-- TOC entry 206 (class 1259 OID 41605)
 -- Name: book_theme; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -349,7 +348,7 @@ CREATE TABLE public.book_theme (
 
 
 --
--- TOC entry 214 (class 1259 OID 49559)
+-- TOC entry 207 (class 1259 OID 41608)
 -- Name: book_theme_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -363,8 +362,8 @@ CREATE SEQUENCE public.book_theme_id_seq
 
 
 --
--- TOC entry 3184 (class 0 OID 0)
--- Dependencies: 214
+-- TOC entry 3427 (class 0 OID 0)
+-- Dependencies: 207
 -- Name: book_theme_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -372,7 +371,7 @@ ALTER SEQUENCE public.book_theme_id_seq OWNED BY public.book_theme.id;
 
 
 --
--- TOC entry 209 (class 1259 OID 49504)
+-- TOC entry 208 (class 1259 OID 41610)
 -- Name: cart; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -384,7 +383,7 @@ CREATE TABLE public.cart (
 
 
 --
--- TOC entry 211 (class 1259 OID 49518)
+-- TOC entry 209 (class 1259 OID 41614)
 -- Name: cart_book; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -397,7 +396,7 @@ CREATE TABLE public.cart_book (
 
 
 --
--- TOC entry 210 (class 1259 OID 49516)
+-- TOC entry 210 (class 1259 OID 41618)
 -- Name: cart_book_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -411,7 +410,7 @@ CREATE SEQUENCE public.cart_book_id_seq
 
 
 --
--- TOC entry 3185 (class 0 OID 0)
+-- TOC entry 3428 (class 0 OID 0)
 -- Dependencies: 210
 -- Name: cart_book_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
@@ -420,7 +419,7 @@ ALTER SEQUENCE public.cart_book_id_seq OWNED BY public.cart_book.id;
 
 
 --
--- TOC entry 208 (class 1259 OID 49502)
+-- TOC entry 211 (class 1259 OID 41620)
 -- Name: cart_cart_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -434,8 +433,8 @@ CREATE SEQUENCE public.cart_cart_id_seq
 
 
 --
--- TOC entry 3186 (class 0 OID 0)
--- Dependencies: 208
+-- TOC entry 3429 (class 0 OID 0)
+-- Dependencies: 211
 -- Name: cart_cart_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -443,7 +442,7 @@ ALTER SEQUENCE public.cart_cart_id_seq OWNED BY public.cart.cart_id;
 
 
 --
--- TOC entry 225 (class 1259 OID 49659)
+-- TOC entry 212 (class 1259 OID 41622)
 -- Name: event; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -457,7 +456,7 @@ CREATE TABLE public.event (
 
 
 --
--- TOC entry 224 (class 1259 OID 49657)
+-- TOC entry 213 (class 1259 OID 41625)
 -- Name: event_event_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -471,8 +470,8 @@ CREATE SEQUENCE public.event_event_id_seq
 
 
 --
--- TOC entry 3187 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 3430 (class 0 OID 0)
+-- Dependencies: 213
 -- Name: event_event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -480,7 +479,7 @@ ALTER SEQUENCE public.event_event_id_seq OWNED BY public.event.event_id;
 
 
 --
--- TOC entry 199 (class 1259 OID 49426)
+-- TOC entry 214 (class 1259 OID 41627)
 -- Name: genre; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -492,7 +491,7 @@ CREATE TABLE public.genre (
 
 
 --
--- TOC entry 198 (class 1259 OID 49424)
+-- TOC entry 215 (class 1259 OID 41633)
 -- Name: genre_genre_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -506,8 +505,8 @@ CREATE SEQUENCE public.genre_genre_id_seq
 
 
 --
--- TOC entry 3188 (class 0 OID 0)
--- Dependencies: 198
+-- TOC entry 3431 (class 0 OID 0)
+-- Dependencies: 215
 -- Name: genre_genre_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -515,7 +514,7 @@ ALTER SEQUENCE public.genre_genre_id_seq OWNED BY public.genre.genre_id;
 
 
 --
--- TOC entry 227 (class 1259 OID 49677)
+-- TOC entry 216 (class 1259 OID 41635)
 -- Name: order; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -533,7 +532,7 @@ CREATE TABLE public."order" (
 
 
 --
--- TOC entry 232 (class 1259 OID 54645)
+-- TOC entry 232 (class 1259 OID 41909)
 -- Name: order_essentials; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -549,7 +548,7 @@ SELECT
 
 
 --
--- TOC entry 226 (class 1259 OID 49675)
+-- TOC entry 217 (class 1259 OID 41647)
 -- Name: order_order_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -563,8 +562,8 @@ CREATE SEQUENCE public.order_order_id_seq
 
 
 --
--- TOC entry 3189 (class 0 OID 0)
--- Dependencies: 226
+-- TOC entry 3432 (class 0 OID 0)
+-- Dependencies: 217
 -- Name: order_order_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -572,7 +571,7 @@ ALTER SEQUENCE public.order_order_id_seq OWNED BY public."order".order_id;
 
 
 --
--- TOC entry 205 (class 1259 OID 49470)
+-- TOC entry 218 (class 1259 OID 41649)
 -- Name: publisher; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -584,7 +583,7 @@ CREATE TABLE public.publisher (
 
 
 --
--- TOC entry 229 (class 1259 OID 54632)
+-- TOC entry 229 (class 1259 OID 41896)
 -- Name: publisher_complete; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -597,7 +596,7 @@ CREATE VIEW public.publisher_complete AS
 
 
 --
--- TOC entry 230 (class 1259 OID 54636)
+-- TOC entry 230 (class 1259 OID 41900)
 -- Name: publisher_essential; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -608,7 +607,7 @@ CREATE VIEW public.publisher_essential AS
 
 
 --
--- TOC entry 204 (class 1259 OID 49468)
+-- TOC entry 219 (class 1259 OID 41660)
 -- Name: publisher_publisher_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -622,8 +621,8 @@ CREATE SEQUENCE public.publisher_publisher_id_seq
 
 
 --
--- TOC entry 3190 (class 0 OID 0)
--- Dependencies: 204
+-- TOC entry 3433 (class 0 OID 0)
+-- Dependencies: 219
 -- Name: publisher_publisher_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -631,7 +630,7 @@ ALTER SEQUENCE public.publisher_publisher_id_seq OWNED BY public.publisher.publi
 
 
 --
--- TOC entry 219 (class 1259 OID 49602)
+-- TOC entry 220 (class 1259 OID 41662)
 -- Name: review; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -647,7 +646,7 @@ CREATE TABLE public.review (
 
 
 --
--- TOC entry 218 (class 1259 OID 49600)
+-- TOC entry 221 (class 1259 OID 41668)
 -- Name: review_review_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -661,8 +660,8 @@ CREATE SEQUENCE public.review_review_id_seq
 
 
 --
--- TOC entry 3191 (class 0 OID 0)
--- Dependencies: 218
+-- TOC entry 3434 (class 0 OID 0)
+-- Dependencies: 221
 -- Name: review_review_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -670,7 +669,7 @@ ALTER SEQUENCE public.review_review_id_seq OWNED BY public.review.review_id;
 
 
 --
--- TOC entry 217 (class 1259 OID 49581)
+-- TOC entry 222 (class 1259 OID 41670)
 -- Name: similar_book; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -682,7 +681,7 @@ CREATE TABLE public.similar_book (
 
 
 --
--- TOC entry 216 (class 1259 OID 49579)
+-- TOC entry 223 (class 1259 OID 41673)
 -- Name: similar_book_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -696,8 +695,8 @@ CREATE SEQUENCE public.similar_book_id_seq
 
 
 --
--- TOC entry 3192 (class 0 OID 0)
--- Dependencies: 216
+-- TOC entry 3435 (class 0 OID 0)
+-- Dependencies: 223
 -- Name: similar_book_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -705,7 +704,7 @@ ALTER SEQUENCE public.similar_book_id_seq OWNED BY public.similar_book.id;
 
 
 --
--- TOC entry 201 (class 1259 OID 49437)
+-- TOC entry 224 (class 1259 OID 41675)
 -- Name: theme; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -717,7 +716,7 @@ CREATE TABLE public.theme (
 
 
 --
--- TOC entry 200 (class 1259 OID 49435)
+-- TOC entry 225 (class 1259 OID 41681)
 -- Name: theme_theme_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -731,8 +730,8 @@ CREATE SEQUENCE public.theme_theme_id_seq
 
 
 --
--- TOC entry 3193 (class 0 OID 0)
--- Dependencies: 200
+-- TOC entry 3436 (class 0 OID 0)
+-- Dependencies: 225
 -- Name: theme_theme_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -740,7 +739,7 @@ ALTER SEQUENCE public.theme_theme_id_seq OWNED BY public.theme.theme_id;
 
 
 --
--- TOC entry 203 (class 1259 OID 49449)
+-- TOC entry 226 (class 1259 OID 41683)
 -- Name: user; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -758,7 +757,7 @@ CREATE TABLE public."user" (
 
 
 --
--- TOC entry 202 (class 1259 OID 49447)
+-- TOC entry 227 (class 1259 OID 41689)
 -- Name: user_user_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -772,8 +771,8 @@ CREATE SEQUENCE public.user_user_id_seq
 
 
 --
--- TOC entry 3194 (class 0 OID 0)
--- Dependencies: 202
+-- TOC entry 3437 (class 0 OID 0)
+-- Dependencies: 227
 -- Name: user_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -781,7 +780,7 @@ ALTER SEQUENCE public.user_user_id_seq OWNED BY public."user".user_id;
 
 
 --
--- TOC entry 2917 (class 2604 OID 49418)
+-- TOC entry 3160 (class 2604 OID 41691)
 -- Name: address address_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -789,7 +788,7 @@ ALTER TABLE ONLY public.address ALTER COLUMN address_id SET DEFAULT nextval('pub
 
 
 --
--- TOC entry 2934 (class 2604 OID 49631)
+-- TOC entry 3161 (class 2604 OID 41692)
 -- Name: author author_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -797,7 +796,7 @@ ALTER TABLE ONLY public.author ALTER COLUMN author_id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 2935 (class 2604 OID 49642)
+-- TOC entry 3162 (class 2604 OID 41693)
 -- Name: author_book id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -805,7 +804,7 @@ ALTER TABLE ONLY public.author_book ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 2922 (class 2604 OID 49486)
+-- TOC entry 3165 (class 2604 OID 41694)
 -- Name: book book_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -813,7 +812,7 @@ ALTER TABLE ONLY public.book ALTER COLUMN book_id SET DEFAULT nextval('public.bo
 
 
 --
--- TOC entry 2930 (class 2604 OID 49544)
+-- TOC entry 3167 (class 2604 OID 41695)
 -- Name: book_genre id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -821,7 +820,7 @@ ALTER TABLE ONLY public.book_genre ALTER COLUMN id SET DEFAULT nextval('public.b
 
 
 --
--- TOC entry 2931 (class 2604 OID 49564)
+-- TOC entry 3168 (class 2604 OID 41696)
 -- Name: book_theme id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -829,7 +828,7 @@ ALTER TABLE ONLY public.book_theme ALTER COLUMN id SET DEFAULT nextval('public.b
 
 
 --
--- TOC entry 2926 (class 2604 OID 49507)
+-- TOC entry 3170 (class 2604 OID 41697)
 -- Name: cart cart_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -837,7 +836,7 @@ ALTER TABLE ONLY public.cart ALTER COLUMN cart_id SET DEFAULT nextval('public.ca
 
 
 --
--- TOC entry 2928 (class 2604 OID 49521)
+-- TOC entry 3172 (class 2604 OID 41698)
 -- Name: cart_book id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -845,7 +844,7 @@ ALTER TABLE ONLY public.cart_book ALTER COLUMN id SET DEFAULT nextval('public.ca
 
 
 --
--- TOC entry 2936 (class 2604 OID 49662)
+-- TOC entry 3173 (class 2604 OID 41699)
 -- Name: event event_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -853,7 +852,7 @@ ALTER TABLE ONLY public.event ALTER COLUMN event_id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 2918 (class 2604 OID 49429)
+-- TOC entry 3174 (class 2604 OID 41700)
 -- Name: genre genre_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -861,7 +860,7 @@ ALTER TABLE ONLY public.genre ALTER COLUMN genre_id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 2937 (class 2604 OID 49680)
+-- TOC entry 3175 (class 2604 OID 41701)
 -- Name: order order_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -869,7 +868,7 @@ ALTER TABLE ONLY public."order" ALTER COLUMN order_id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 2921 (class 2604 OID 49473)
+-- TOC entry 3178 (class 2604 OID 41702)
 -- Name: publisher publisher_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -877,7 +876,7 @@ ALTER TABLE ONLY public.publisher ALTER COLUMN publisher_id SET DEFAULT nextval(
 
 
 --
--- TOC entry 2933 (class 2604 OID 49605)
+-- TOC entry 3179 (class 2604 OID 41703)
 -- Name: review review_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -885,7 +884,7 @@ ALTER TABLE ONLY public.review ALTER COLUMN review_id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 2932 (class 2604 OID 49584)
+-- TOC entry 3180 (class 2604 OID 41704)
 -- Name: similar_book id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -893,7 +892,7 @@ ALTER TABLE ONLY public.similar_book ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- TOC entry 2919 (class 2604 OID 49440)
+-- TOC entry 3181 (class 2604 OID 41705)
 -- Name: theme theme_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -901,7 +900,7 @@ ALTER TABLE ONLY public.theme ALTER COLUMN theme_id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 2920 (class 2604 OID 49452)
+-- TOC entry 3182 (class 2604 OID 41706)
 -- Name: user user_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -909,8 +908,8 @@ ALTER TABLE ONLY public."user" ALTER COLUMN user_id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 3143 (class 0 OID 49415)
--- Dependencies: 197
+-- TOC entry 3385 (class 0 OID 41560)
+-- Dependencies: 196
 -- Data for Name: address; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -922,38 +921,41 @@ INSERT INTO public.address (address_id, first_name, last_name, street_line1, str
 
 
 --
--- TOC entry 3167 (class 0 OID 49628)
--- Dependencies: 221
+-- TOC entry 3387 (class 0 OID 41568)
+-- Dependencies: 198
 -- Data for Name: author; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1874, 'Suzanne Collins', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1875, 'J.R.R. Tolkien', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1876, 'Dan Brown', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1877, 'J.K. Rowling', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1878, ' Mary GrandPré', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1879, 'George R.R. Martin', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1880, 'Christopher Paolini', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1881, 'Robert Galbraith', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1882, ' J.K. Rowling', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1883, ' Christopher Tolkien', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1884, ' Ted Nasmith', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1885, 'Chuck Dixon', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1886, ' J.R.R. Tolkien', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1887, ' David Wenzel', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1888, ' Sean Deming', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1889, 'Kennilworthy Whisp', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1890, ' Gary Gianni', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1891, 'Ben Avery', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1892, ' Mike S. Miller', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1893, ' George R.R. Martin', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1894, ' Elio M. García Jr.', NULL, NULL);
-INSERT INTO public.author (author_id, name, biography, picture) VALUES (1895, ' Linda Antonsson', NULL, NULL);
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1895, ' Linda Antonsson', 'Elio Miguel García Jr. (born May 6, 1978) and Linda Maria Antonsson (born November 18, 1974) are authors known for their contributions and expertise in the A Song of Ice and Fire series by George R. R. Martin, co-writing in 2014 with Martin The World of Ice & Fire, a companion book for the series. They are also the founders of the fansite Westeros.org, one of the earliest fan websites for A Song of Ice and Fire.', 'https://cust-images.grenadine.co/grenadine/image/upload/c_fill,f_jpg,g_face,h_1472,w_1472/v0/Worldcon75/LindaAntonsson_1553.jpg');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1894, ' Elio M. García Jr.', 'Elio Miguel García Jr. (born May 6, 1978) and Linda Maria Antonsson (born November 18, 1974) are authors known for their contributions and expertise in the A Song of Ice and Fire series by George R. R. Martin, co-writing in 2014 with Martin The World of Ice & Fire, a companion book for the series. They are also the founders of the fansite Westeros.org, one of the earliest fan websites for A Song of Ice and Fire.', 'https://www.worldswithoutend.com/authors/ElioMGarciaJr.jpg');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1891, 'Ben Avery', 'Avery was originally a presbyterian minister at Bartholomew Close, London, but quit the ministry in 1720, in consequence of the Salters'' Hall controversy on subscription, 1719. He practised as a physician, and was treasurer of Guy''s Hospital. He retained the confidence of his presbyterian brethren, and acted for several years as secretary to the dissenting deputies, organised 1732, for the protection of the rights and redress of the grievances of the three denominations. He was a trustee of Dr. Williams''s Library, 1728–64, and his portrait hangs in the library. He died 23 July 1764.', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Oswald_T._Avery_portrait_1937.jpg/220px-Oswald_T._Avery_portrait_1937.jpg');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1890, ' Gary Gianni', 'Gary Gianni (born 1954) is an American comics artist best known for his eight years illustrating the syndicated newspaper comic Prince Valiant.
+
+After Gianni graduated from the Chicago Academy of Fine Arts in 1976, he worked for the Chicago Tribune as an illustrator and network television news as a courtroom sketch artist.', 'https://www.jimkeefe.com/blog/wp-content/uploads/2012/04/P4150010.jpg');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1877, 'J.K. Rowling', 'Joanne Rowling CH, OBE, FRSL, FRCPE, FRSE (/ˈroʊlɪŋ/ "rolling"; born 31 July 1965), better known by her pen names J. K. Rowling and Robert Galbraith, is a British novelist, screenwriter, producer, and philanthropist. She is best known for writing the Harry Potter fantasy series, which has won multiple awards and sold more than 500 million copies, becoming the best-selling book series in history. The Harry Potter books have also been the basis for the popular film series of the same name, over which Rowling had overall approval on the scripts and was a producer on the final films.', 'https://upload.wikimedia.org/wikipedia/commons/5/5d/J._K._Rowling_2010.jpg');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1876, 'Dan Brown', 'Daniel Gerhard Brown (born June 22, 1964) is an American author best known for his thriller novels, including the Robert Langdon novels Angels & Demons (2000), The Da Vinci Code (2003), The Lost Symbol (2009), Inferno (2013) and Origin (2017). His novels are treasure hunts that usually take place over a period of 24 hours.[2] They feature recurring themes of cryptography, art, and conspiracy theories. His books have been translated into 57 languages and, as of 2012, have sold over 200 million copies. Three of them, Angels & Demons (2000), The Da Vinci Code (2003) and Inferno (2013) have been adapted into films.', 'https://upload.wikimedia.org/wikipedia/commons/8/8b/Dan_Brown_bookjacket_cropped.jpg');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1875, 'J.R.R. Tolkien', 'John Ronald Reuel Tolkien CBE FRSL (/ruːl ˈtɒlkiːn/ ROOL TOL-keen;[a] 3 January 1892 – 2 September 1973) was an English writer, poet, philologist, and academic, who is best known as the author of the classic high fantasy works The Hobbit, The Lord of the Rings, and The Silmarillion.
+
+He served as the Rawlinson and Bosworth Professor of Anglo-Saxon and Fellow of Pembroke College, Oxford, from 1925 to 1945 and Merton Professor of English Language and Literature and Fellow of Merton College, Oxford, from 1945 to 1959.[3] He was at one time a close friend of C. S. Lewis—they were both members of the informal literary discussion group known as the Inklings. Tolkien was appointed a Commander of the Order of the British Empire by Queen Elizabeth II on 28 March 1972.', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Tolkien_1916-2.jpg/220px-Tolkien_1916-2.jpg');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1874, 'Suzanne Collins', 'Suzanne Collins (born August 10, 1962) is an American television writer and author. She is known as the author of The New York Times best-selling series The Underland Chronicles and The Hunger Games trilogy.', 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Suzanne_Collins_David_Shankbone_2010.jpg/220px-Suzanne_Collins_David_Shankbone_2010.jpg');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1892, ' Mike S. Miller', 'Mike S. Miller (born 1971) is an American comic book illustrator and writer, who has done work published by companies including Malibu Comics, Marvel Comics, DC Comics, and Image Comics, as well as self-published work under the imprint Alias Enterprises. Some of his better known work is on DC''s Injustice: Gods Among Us series.', 'https://i1.wp.com/thefreedomforge.com/tff/wp-content/uploads/2018/02/msm.png?resize=363%2C480');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1878, ' Mary GrandPré', 'Mary GrandPré (born February 13, 1954) is an American illustrator best known for her cover and chapter illustrations of the Harry Potter books in their U.S. editions published by Scholastic. She received a Caldecott Honor citation in 2015 for illustrating Barb Rosenstock''s The Noisy Paint Box: The Colors and Sounds of Kandinsky''s Abstract Art. GrandPré, who creates her artwork with paint and pastels, has illustrated more than twenty books and has appeared in gallery exhibitions and periodicals such as The New Yorker, Atlantic Monthly, and The Wall Street Journal.', 'https://upload.wikimedia.org/wikipedia/commons/8/89/Mary_GrandPr%C3%A9%2C_2011.jpg');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1879, 'George R.R. Martin', 'George Raymond Richard Martin (born George Raymond Martin, September 20, 1948), also known as GRRM, is an American novelist and short story writer in the fantasy, horror, and science fiction genres, screenwriter, and television producer. He is best known for his series of epic fantasy novels, A Song of Ice and Fire, which was adapted into the HBO series Game of Thrones (2011–2019).', 'https://si.wsj.net/public/resources/images/B3-CJ972_WOLFE_FR_20181115130206.jpg');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1881, 'Robert Galbraith', 'Joanne Rowling CH, OBE, FRSL, FRCPE, FRSE (/ˈroʊlɪŋ/ "rolling"; born 31 July 1965), better known by her pen names J. K. Rowling and Robert Galbraith, is a British novelist, screenwriter, producer, and philanthropist. She is best known for writing the Harry Potter fantasy series, which has won multiple awards and sold more than 500 million copies, becoming the best-selling book series in history. The Harry Potter books have also been the basis for the popular film series of the same name, over which Rowling had overall approval on the scripts  and was a producer on the final films.', 'https://images-na.ssl-images-amazon.com/images/S/amzn-author-media-prod/n6qh79ch54gempmqujvt43o2u0._UX250_.jpg');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1888, ' Sean Deming', NULL, 'https://aforismi.meglio.it/img/frasi/ignoto.jpg');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1880, 'Christopher Paolini', 'Christopher James Paolini (born November 17, 1983 in Los Angeles, California) is an American author. He is the author of The Inheritance Cycle, which consists of the books Eragon, Eldest, Brisingr, and Inheritance. He lives in Paradise Valley, Montana, where he wrote his first book.', 'http://www.nelcastellodicarta.it/libri/libri-bambini-ragazzi-classici-moderni/foto/christopher-paolini.jpg');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1887, ' David Wenzel', 'David T. Wenzel (/ˈwɛnzəl/; born November 22, 1950) is an illustrator and children''s book artist. He is best known for his graphic novel adaptation of J.R.R. Tolkien''s The Hobbit.', 'https://www.newhaven.edu/_resources/images/faculty-staff-headshots/david-wenzel.png');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1889, 'Kennilworthy Whisp', 'Kennilworthy Whisp was an author and Quidditch expert, known for having written a number of Quidditch-related works, including Quidditch Through the Ages. Whisp resided in Nottinghamshire in England, and divided his time between his home and wherever the Wigtown Wanderers were playing. His hobbies included playing backgammon, vegetarian cookery, and collecting vintage broomsticks. Despite liking vegetarian cookery, he was not a vegetarian.', 'https://aforismi.meglio.it/img/frasi/ignoto.jpg');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1885, 'Chuck Dixon', 'Charles Dixon (born April 14, 1954) is an American comic book writer, best known for his work on the Marvel Comics character the Punisher and on the DC Comics characters Batman, Nightwing, and Robin in the 1990s and early 2000s.', 'https://static.comicvine.com/uploads/scale_small/10/100647/2876509-dixon.jpg');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1884, ' Ted Nasmith', 'Ted Nasmith (born 1956) is a Canadian artist, illustrator and architectural renderer. He is best known as an illustrator of J. R. R. Tolkien''s works — The Hobbit, The Lord of the Rings and The Silmarillion.
+
+Nasmith was born in Goderich, Ontario, Canada. As the son of a Royal Canadian Air Force officer, Nasmith''s childhood was characterized by a series of moves, chiefly when his father was stationed in eastern France when Ted was 2 years old, until the family returned to Ontario 3 years later. By the time Nasmith became a teenager, they had settled in Don Mills, a suburb of Toronto (he now resides in nearby Newmarket.)', 'https://upload.wikimedia.org/wikipedia/commons/3/30/TedNasmith.jpg');
+INSERT INTO public.author (author_id, name, biography, picture) VALUES (1883, ' Christopher Tolkien', 'Christopher John Reuel Tolkien (born 21 November 1924) is the third son of the author J. R. R. Tolkien (1892–1973), and the editor of much of his father''s posthumously published work. He drew the original maps for his father''s The Lord of the Rings, which he signed C. J. R. T.', 'https://i2.wp.com/www.jrrtolkien.it/wp-content/uploads/2012/07/Christopher-Tolkien.jpg');
 
 
 --
--- TOC entry 3169 (class 0 OID 49639)
--- Dependencies: 223
+-- TOC entry 3389 (class 0 OID 41576)
+-- Dependencies: 200
 -- Data for Name: author_book; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -981,7 +983,6 @@ INSERT INTO public.author_book (id, book, author) VALUES (2277, 18, 1879);
 INSERT INTO public.author_book (id, book, author) VALUES (2278, 19, 1876);
 INSERT INTO public.author_book (id, book, author) VALUES (2279, 20, 1876);
 INSERT INTO public.author_book (id, book, author) VALUES (2280, 21, 1881);
-INSERT INTO public.author_book (id, book, author) VALUES (2281, 21, 1882);
 INSERT INTO public.author_book (id, book, author) VALUES (2282, 22, 1877);
 INSERT INTO public.author_book (id, book, author) VALUES (2283, 23, 1880);
 INSERT INTO public.author_book (id, book, author) VALUES (2284, 24, 1877);
@@ -991,13 +992,10 @@ INSERT INTO public.author_book (id, book, author) VALUES (2287, 26, 1883);
 INSERT INTO public.author_book (id, book, author) VALUES (2288, 26, 1884);
 INSERT INTO public.author_book (id, book, author) VALUES (2289, 27, 1874);
 INSERT INTO public.author_book (id, book, author) VALUES (2290, 28, 1885);
-INSERT INTO public.author_book (id, book, author) VALUES (2291, 28, 1886);
 INSERT INTO public.author_book (id, book, author) VALUES (2292, 28, 1887);
 INSERT INTO public.author_book (id, book, author) VALUES (2293, 28, 1888);
 INSERT INTO public.author_book (id, book, author) VALUES (2294, 29, 1881);
-INSERT INTO public.author_book (id, book, author) VALUES (2295, 29, 1882);
 INSERT INTO public.author_book (id, book, author) VALUES (2296, 30, 1889);
-INSERT INTO public.author_book (id, book, author) VALUES (2297, 30, 1882);
 INSERT INTO public.author_book (id, book, author) VALUES (2298, 31, 1875);
 INSERT INTO public.author_book (id, book, author) VALUES (2299, 32, 1879);
 INSERT INTO public.author_book (id, book, author) VALUES (2300, 33, 1874);
@@ -1007,15 +1005,19 @@ INSERT INTO public.author_book (id, book, author) VALUES (2303, 35, 1890);
 INSERT INTO public.author_book (id, book, author) VALUES (2304, 36, 1874);
 INSERT INTO public.author_book (id, book, author) VALUES (2305, 37, 1891);
 INSERT INTO public.author_book (id, book, author) VALUES (2306, 37, 1892);
-INSERT INTO public.author_book (id, book, author) VALUES (2307, 37, 1893);
 INSERT INTO public.author_book (id, book, author) VALUES (2308, 38, 1879);
 INSERT INTO public.author_book (id, book, author) VALUES (2309, 38, 1894);
 INSERT INTO public.author_book (id, book, author) VALUES (2310, 38, 1895);
+INSERT INTO public.author_book (id, book, author) VALUES (2307, 37, 1879);
+INSERT INTO public.author_book (id, book, author) VALUES (2281, 21, 1877);
+INSERT INTO public.author_book (id, book, author) VALUES (2295, 29, 1877);
+INSERT INTO public.author_book (id, book, author) VALUES (2297, 30, 1877);
+INSERT INTO public.author_book (id, book, author) VALUES (2291, 28, 1875);
 
 
 --
--- TOC entry 3153 (class 0 OID 49483)
--- Dependencies: 207
+-- TOC entry 3391 (class 0 OID 41585)
+-- Dependencies: 202
 -- Data for Name: book; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -1061,8 +1063,8 @@ INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, a
 
 
 --
--- TOC entry 3159 (class 0 OID 49541)
--- Dependencies: 213
+-- TOC entry 3393 (class 0 OID 41600)
+-- Dependencies: 204
 -- Data for Name: book_genre; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -1145,8 +1147,8 @@ INSERT INTO public.book_genre (id, book, genre) VALUES (3357, 38, 503);
 
 
 --
--- TOC entry 3161 (class 0 OID 49561)
--- Dependencies: 215
+-- TOC entry 3395 (class 0 OID 41605)
+-- Dependencies: 206
 -- Data for Name: book_theme; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -1223,8 +1225,8 @@ INSERT INTO public.book_theme (id, book, theme) VALUES (3416, 38, 546);
 
 
 --
--- TOC entry 3155 (class 0 OID 49504)
--- Dependencies: 209
+-- TOC entry 3397 (class 0 OID 41610)
+-- Dependencies: 208
 -- Data for Name: cart; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -1240,24 +1242,24 @@ INSERT INTO public.cart (cart_id, "user", ordered) VALUES (9, 5, false);
 
 
 --
--- TOC entry 3157 (class 0 OID 49518)
--- Dependencies: 211
+-- TOC entry 3398 (class 0 OID 41614)
+-- Dependencies: 209
 -- Data for Name: cart_book; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- TOC entry 3171 (class 0 OID 49659)
--- Dependencies: 225
+-- TOC entry 3401 (class 0 OID 41622)
+-- Dependencies: 212
 -- Data for Name: event; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- TOC entry 3145 (class 0 OID 49426)
--- Dependencies: 199
+-- TOC entry 3403 (class 0 OID 41627)
+-- Dependencies: 214
 -- Data for Name: genre; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -1275,8 +1277,8 @@ INSERT INTO public.genre (genre_id, name, description) VALUES (506, 'Religious',
 
 
 --
--- TOC entry 3173 (class 0 OID 49677)
--- Dependencies: 227
+-- TOC entry 3405 (class 0 OID 41635)
+-- Dependencies: 216
 -- Data for Name: order; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -1287,8 +1289,8 @@ INSERT INTO public."order" (order_id, user_id, shipment_address, shipping_method
 
 
 --
--- TOC entry 3151 (class 0 OID 49470)
--- Dependencies: 205
+-- TOC entry 3407 (class 0 OID 41649)
+-- Dependencies: 218
 -- Data for Name: publisher; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -1302,24 +1304,24 @@ INSERT INTO public.publisher (publisher_id, hq_location, name) VALUES (322, NULL
 
 
 --
--- TOC entry 3165 (class 0 OID 49602)
--- Dependencies: 219
+-- TOC entry 3409 (class 0 OID 41662)
+-- Dependencies: 220
 -- Data for Name: review; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- TOC entry 3163 (class 0 OID 49581)
--- Dependencies: 217
+-- TOC entry 3411 (class 0 OID 41670)
+-- Dependencies: 222
 -- Data for Name: similar_book; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
 
 --
--- TOC entry 3147 (class 0 OID 49437)
--- Dependencies: 201
+-- TOC entry 3413 (class 0 OID 41675)
+-- Dependencies: 224
 -- Data for Name: theme; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -1338,8 +1340,8 @@ INSERT INTO public.theme (theme_id, name, description) VALUES (552, 'War', NULL)
 
 
 --
--- TOC entry 3149 (class 0 OID 49449)
--- Dependencies: 203
+-- TOC entry 3415 (class 0 OID 41683)
+-- Dependencies: 226
 -- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -1351,8 +1353,8 @@ INSERT INTO public."user" (user_id, username, password, email, first_name, surna
 
 
 --
--- TOC entry 3195 (class 0 OID 0)
--- Dependencies: 196
+-- TOC entry 3438 (class 0 OID 0)
+-- Dependencies: 197
 -- Name: address_address_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -1360,8 +1362,8 @@ SELECT pg_catalog.setval('public.address_address_id_seq', 10, true);
 
 
 --
--- TOC entry 3196 (class 0 OID 0)
--- Dependencies: 220
+-- TOC entry 3439 (class 0 OID 0)
+-- Dependencies: 199
 -- Name: author_author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -1369,8 +1371,8 @@ SELECT pg_catalog.setval('public.author_author_id_seq', 1895, true);
 
 
 --
--- TOC entry 3197 (class 0 OID 0)
--- Dependencies: 222
+-- TOC entry 3440 (class 0 OID 0)
+-- Dependencies: 201
 -- Name: author_book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -1378,8 +1380,8 @@ SELECT pg_catalog.setval('public.author_book_id_seq', 2310, true);
 
 
 --
--- TOC entry 3198 (class 0 OID 0)
--- Dependencies: 206
+-- TOC entry 3441 (class 0 OID 0)
+-- Dependencies: 203
 -- Name: book_book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -1387,8 +1389,8 @@ SELECT pg_catalog.setval('public.book_book_id_seq', 1, false);
 
 
 --
--- TOC entry 3199 (class 0 OID 0)
--- Dependencies: 212
+-- TOC entry 3442 (class 0 OID 0)
+-- Dependencies: 205
 -- Name: book_genre_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -1396,8 +1398,8 @@ SELECT pg_catalog.setval('public.book_genre_id_seq', 3357, true);
 
 
 --
--- TOC entry 3200 (class 0 OID 0)
--- Dependencies: 214
+-- TOC entry 3443 (class 0 OID 0)
+-- Dependencies: 207
 -- Name: book_theme_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -1405,7 +1407,7 @@ SELECT pg_catalog.setval('public.book_theme_id_seq', 3416, true);
 
 
 --
--- TOC entry 3201 (class 0 OID 0)
+-- TOC entry 3444 (class 0 OID 0)
 -- Dependencies: 210
 -- Name: cart_book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
@@ -1414,8 +1416,8 @@ SELECT pg_catalog.setval('public.cart_book_id_seq', 40, true);
 
 
 --
--- TOC entry 3202 (class 0 OID 0)
--- Dependencies: 208
+-- TOC entry 3445 (class 0 OID 0)
+-- Dependencies: 211
 -- Name: cart_cart_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -1423,8 +1425,8 @@ SELECT pg_catalog.setval('public.cart_cart_id_seq', 9, true);
 
 
 --
--- TOC entry 3203 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 3446 (class 0 OID 0)
+-- Dependencies: 213
 -- Name: event_event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -1432,8 +1434,8 @@ SELECT pg_catalog.setval('public.event_event_id_seq', 1, true);
 
 
 --
--- TOC entry 3204 (class 0 OID 0)
--- Dependencies: 198
+-- TOC entry 3447 (class 0 OID 0)
+-- Dependencies: 215
 -- Name: genre_genre_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -1441,8 +1443,8 @@ SELECT pg_catalog.setval('public.genre_genre_id_seq', 506, true);
 
 
 --
--- TOC entry 3205 (class 0 OID 0)
--- Dependencies: 226
+-- TOC entry 3448 (class 0 OID 0)
+-- Dependencies: 217
 -- Name: order_order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -1450,8 +1452,8 @@ SELECT pg_catalog.setval('public.order_order_id_seq', 4, true);
 
 
 --
--- TOC entry 3206 (class 0 OID 0)
--- Dependencies: 204
+-- TOC entry 3449 (class 0 OID 0)
+-- Dependencies: 219
 -- Name: publisher_publisher_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -1459,8 +1461,8 @@ SELECT pg_catalog.setval('public.publisher_publisher_id_seq', 322, true);
 
 
 --
--- TOC entry 3207 (class 0 OID 0)
--- Dependencies: 218
+-- TOC entry 3450 (class 0 OID 0)
+-- Dependencies: 221
 -- Name: review_review_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -1468,8 +1470,8 @@ SELECT pg_catalog.setval('public.review_review_id_seq', 1, false);
 
 
 --
--- TOC entry 3208 (class 0 OID 0)
--- Dependencies: 216
+-- TOC entry 3451 (class 0 OID 0)
+-- Dependencies: 223
 -- Name: similar_book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -1477,8 +1479,8 @@ SELECT pg_catalog.setval('public.similar_book_id_seq', 1, true);
 
 
 --
--- TOC entry 3209 (class 0 OID 0)
--- Dependencies: 200
+-- TOC entry 3452 (class 0 OID 0)
+-- Dependencies: 225
 -- Name: theme_theme_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -1486,8 +1488,8 @@ SELECT pg_catalog.setval('public.theme_theme_id_seq', 552, true);
 
 
 --
--- TOC entry 3210 (class 0 OID 0)
--- Dependencies: 202
+-- TOC entry 3453 (class 0 OID 0)
+-- Dependencies: 227
 -- Name: user_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -1495,7 +1497,7 @@ SELECT pg_catalog.setval('public.user_user_id_seq', 5, true);
 
 
 --
--- TOC entry 2941 (class 2606 OID 49423)
+-- TOC entry 3184 (class 2606 OID 41708)
 -- Name: address address_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1504,7 +1506,7 @@ ALTER TABLE ONLY public.address
 
 
 --
--- TOC entry 2983 (class 2606 OID 49644)
+-- TOC entry 3188 (class 2606 OID 41710)
 -- Name: author_book author_book_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1513,7 +1515,7 @@ ALTER TABLE ONLY public.author_book
 
 
 --
--- TOC entry 2981 (class 2606 OID 49636)
+-- TOC entry 3186 (class 2606 OID 41712)
 -- Name: author author_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1522,7 +1524,7 @@ ALTER TABLE ONLY public.author
 
 
 --
--- TOC entry 2973 (class 2606 OID 49598)
+-- TOC entry 3222 (class 2606 OID 41714)
 -- Name: similar_book book1_book2_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1531,7 +1533,7 @@ ALTER TABLE ONLY public.similar_book
 
 
 --
--- TOC entry 2985 (class 2606 OID 49656)
+-- TOC entry 3190 (class 2606 OID 41716)
 -- Name: author_book book_author_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1540,7 +1542,7 @@ ALTER TABLE ONLY public.author_book
 
 
 --
--- TOC entry 2965 (class 2606 OID 49546)
+-- TOC entry 3196 (class 2606 OID 41718)
 -- Name: book_genre book_genre_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1549,7 +1551,7 @@ ALTER TABLE ONLY public.book_genre
 
 
 --
--- TOC entry 2967 (class 2606 OID 49558)
+-- TOC entry 3198 (class 2606 OID 41720)
 -- Name: book_genre book_genre_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1558,7 +1560,7 @@ ALTER TABLE ONLY public.book_genre
 
 
 --
--- TOC entry 2955 (class 2606 OID 49496)
+-- TOC entry 3192 (class 2606 OID 41722)
 -- Name: book book_isbn_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1567,7 +1569,7 @@ ALTER TABLE ONLY public.book
 
 
 --
--- TOC entry 2957 (class 2606 OID 49494)
+-- TOC entry 3194 (class 2606 OID 41724)
 -- Name: book book_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1576,7 +1578,7 @@ ALTER TABLE ONLY public.book
 
 
 --
--- TOC entry 2969 (class 2606 OID 49566)
+-- TOC entry 3200 (class 2606 OID 41726)
 -- Name: book_theme book_theme_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1585,7 +1587,7 @@ ALTER TABLE ONLY public.book_theme
 
 
 --
--- TOC entry 2971 (class 2606 OID 49578)
+-- TOC entry 3202 (class 2606 OID 41728)
 -- Name: book_theme book_theme_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1594,7 +1596,7 @@ ALTER TABLE ONLY public.book_theme
 
 
 --
--- TOC entry 2961 (class 2606 OID 49524)
+-- TOC entry 3206 (class 2606 OID 41730)
 -- Name: cart_book cart_book_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1603,7 +1605,7 @@ ALTER TABLE ONLY public.cart_book
 
 
 --
--- TOC entry 2963 (class 2606 OID 49536)
+-- TOC entry 3208 (class 2606 OID 41732)
 -- Name: cart_book cart_book_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1612,7 +1614,7 @@ ALTER TABLE ONLY public.cart_book
 
 
 --
--- TOC entry 2959 (class 2606 OID 49510)
+-- TOC entry 3204 (class 2606 OID 41734)
 -- Name: cart cart_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1621,7 +1623,7 @@ ALTER TABLE ONLY public.cart
 
 
 --
--- TOC entry 2987 (class 2606 OID 49664)
+-- TOC entry 3210 (class 2606 OID 41736)
 -- Name: event event_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1630,7 +1632,7 @@ ALTER TABLE ONLY public.event
 
 
 --
--- TOC entry 2943 (class 2606 OID 49434)
+-- TOC entry 3212 (class 2606 OID 41738)
 -- Name: genre genre_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1639,7 +1641,7 @@ ALTER TABLE ONLY public.genre
 
 
 --
--- TOC entry 2989 (class 2606 OID 49687)
+-- TOC entry 3214 (class 2606 OID 41740)
 -- Name: order order_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1648,7 +1650,7 @@ ALTER TABLE ONLY public."order"
 
 
 --
--- TOC entry 2953 (class 2606 OID 49475)
+-- TOC entry 3216 (class 2606 OID 41742)
 -- Name: publisher publisher_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1657,7 +1659,7 @@ ALTER TABLE ONLY public.publisher
 
 
 --
--- TOC entry 2977 (class 2606 OID 49611)
+-- TOC entry 3218 (class 2606 OID 41744)
 -- Name: review review_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1666,7 +1668,7 @@ ALTER TABLE ONLY public.review
 
 
 --
--- TOC entry 2975 (class 2606 OID 49586)
+-- TOC entry 3224 (class 2606 OID 41746)
 -- Name: similar_book similar_book_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1675,7 +1677,7 @@ ALTER TABLE ONLY public.similar_book
 
 
 --
--- TOC entry 2945 (class 2606 OID 49445)
+-- TOC entry 3226 (class 2606 OID 41748)
 -- Name: theme theme_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1684,7 +1686,7 @@ ALTER TABLE ONLY public.theme
 
 
 --
--- TOC entry 2979 (class 2606 OID 49623)
+-- TOC entry 3220 (class 2606 OID 41750)
 -- Name: review user_book_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1693,7 +1695,7 @@ ALTER TABLE ONLY public.review
 
 
 --
--- TOC entry 2947 (class 2606 OID 49461)
+-- TOC entry 3228 (class 2606 OID 41752)
 -- Name: user user_email_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1702,7 +1704,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- TOC entry 2949 (class 2606 OID 49457)
+-- TOC entry 3230 (class 2606 OID 41754)
 -- Name: user user_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1711,7 +1713,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- TOC entry 2951 (class 2606 OID 49459)
+-- TOC entry 3232 (class 2606 OID 41756)
 -- Name: user user_username_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1720,7 +1722,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- TOC entry 3140 (class 2618 OID 54643)
+-- TOC entry 3383 (class 2618 OID 41907)
 -- Name: book_essentials _RETURN; Type: RULE; Schema: public; Owner: -
 --
 
@@ -1750,7 +1752,7 @@ CREATE OR REPLACE VIEW public.book_essentials AS
 
 
 --
--- TOC entry 3141 (class 2618 OID 54648)
+-- TOC entry 3384 (class 2618 OID 41912)
 -- Name: order_essentials _RETURN; Type: RULE; Schema: public; Owner: -
 --
 
@@ -1772,7 +1774,7 @@ CREATE OR REPLACE VIEW public.order_essentials AS
 
 
 --
--- TOC entry 3011 (class 2620 OID 49467)
+-- TOC entry 3258 (class 2620 OID 41759)
 -- Name: user create_cart_trig; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1780,7 +1782,7 @@ CREATE TRIGGER create_cart_trig AFTER INSERT ON public."user" FOR EACH ROW EXECU
 
 
 --
--- TOC entry 3012 (class 2620 OID 49538)
+-- TOC entry 3254 (class 2620 OID 41760)
 -- Name: cart_book delete_on_zero_quantity; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1788,7 +1790,7 @@ CREATE TRIGGER delete_on_zero_quantity AFTER UPDATE OF quantity ON public.cart_b
 
 
 --
--- TOC entry 3014 (class 2620 OID 49625)
+-- TOC entry 3256 (class 2620 OID 41761)
 -- Name: review update_avg_rating_d; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1796,7 +1798,7 @@ CREATE TRIGGER update_avg_rating_d AFTER DELETE ON public.review FOR EACH ROW EX
 
 
 --
--- TOC entry 3013 (class 2620 OID 49624)
+-- TOC entry 3257 (class 2620 OID 41762)
 -- Name: review update_avg_rating_iu; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1804,7 +1806,7 @@ CREATE TRIGGER update_avg_rating_iu AFTER INSERT OR UPDATE OF rating ON public.r
 
 
 --
--- TOC entry 3015 (class 2620 OID 49704)
+-- TOC entry 3255 (class 2620 OID 41763)
 -- Name: order update_cart_after_insert; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1812,7 +1814,7 @@ CREATE TRIGGER update_cart_after_insert AFTER INSERT ON public."order" FOR EACH 
 
 
 --
--- TOC entry 3005 (class 2606 OID 49650)
+-- TOC entry 3233 (class 2606 OID 41764)
 -- Name: author_book author_book_author_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1821,7 +1823,7 @@ ALTER TABLE ONLY public.author_book
 
 
 --
--- TOC entry 3004 (class 2606 OID 49645)
+-- TOC entry 3234 (class 2606 OID 41769)
 -- Name: author_book author_book_book_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1830,7 +1832,7 @@ ALTER TABLE ONLY public.author_book
 
 
 --
--- TOC entry 2996 (class 2606 OID 49547)
+-- TOC entry 3236 (class 2606 OID 41774)
 -- Name: book_genre book_genre_book_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1839,7 +1841,7 @@ ALTER TABLE ONLY public.book_genre
 
 
 --
--- TOC entry 2997 (class 2606 OID 49552)
+-- TOC entry 3237 (class 2606 OID 41779)
 -- Name: book_genre book_genre_genre_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1848,7 +1850,7 @@ ALTER TABLE ONLY public.book_genre
 
 
 --
--- TOC entry 2992 (class 2606 OID 49497)
+-- TOC entry 3235 (class 2606 OID 41784)
 -- Name: book book_publisher_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1857,7 +1859,7 @@ ALTER TABLE ONLY public.book
 
 
 --
--- TOC entry 2998 (class 2606 OID 49567)
+-- TOC entry 3238 (class 2606 OID 41789)
 -- Name: book_theme book_theme_book_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1866,7 +1868,7 @@ ALTER TABLE ONLY public.book_theme
 
 
 --
--- TOC entry 2999 (class 2606 OID 49572)
+-- TOC entry 3239 (class 2606 OID 41794)
 -- Name: book_theme book_theme_theme_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1875,7 +1877,7 @@ ALTER TABLE ONLY public.book_theme
 
 
 --
--- TOC entry 2995 (class 2606 OID 49530)
+-- TOC entry 3241 (class 2606 OID 41799)
 -- Name: cart_book cart_book_book_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1884,7 +1886,7 @@ ALTER TABLE ONLY public.cart_book
 
 
 --
--- TOC entry 2994 (class 2606 OID 49525)
+-- TOC entry 3242 (class 2606 OID 41804)
 -- Name: cart_book cart_book_cart_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1893,7 +1895,7 @@ ALTER TABLE ONLY public.cart_book
 
 
 --
--- TOC entry 2993 (class 2606 OID 49511)
+-- TOC entry 3240 (class 2606 OID 41809)
 -- Name: cart cart_user_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1902,7 +1904,7 @@ ALTER TABLE ONLY public.cart
 
 
 --
--- TOC entry 3007 (class 2606 OID 49670)
+-- TOC entry 3243 (class 2606 OID 41814)
 -- Name: event event_book_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1911,7 +1913,7 @@ ALTER TABLE ONLY public.event
 
 
 --
--- TOC entry 3006 (class 2606 OID 49665)
+-- TOC entry 3244 (class 2606 OID 41819)
 -- Name: event event_location_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1920,7 +1922,7 @@ ALTER TABLE ONLY public.event
 
 
 --
--- TOC entry 3010 (class 2606 OID 49698)
+-- TOC entry 3245 (class 2606 OID 41824)
 -- Name: order order_cart_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1929,7 +1931,7 @@ ALTER TABLE ONLY public."order"
 
 
 --
--- TOC entry 3009 (class 2606 OID 49693)
+-- TOC entry 3246 (class 2606 OID 41829)
 -- Name: order order_shipment_address_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1938,7 +1940,7 @@ ALTER TABLE ONLY public."order"
 
 
 --
--- TOC entry 3008 (class 2606 OID 49688)
+-- TOC entry 3247 (class 2606 OID 41834)
 -- Name: order order_user_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1947,7 +1949,7 @@ ALTER TABLE ONLY public."order"
 
 
 --
--- TOC entry 2991 (class 2606 OID 49476)
+-- TOC entry 3248 (class 2606 OID 41839)
 -- Name: publisher publisher_hq_location_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1956,7 +1958,7 @@ ALTER TABLE ONLY public.publisher
 
 
 --
--- TOC entry 3003 (class 2606 OID 49617)
+-- TOC entry 3249 (class 2606 OID 41844)
 -- Name: review review_book_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1965,7 +1967,7 @@ ALTER TABLE ONLY public.review
 
 
 --
--- TOC entry 3002 (class 2606 OID 49612)
+-- TOC entry 3250 (class 2606 OID 41849)
 -- Name: review review_user_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1974,7 +1976,7 @@ ALTER TABLE ONLY public.review
 
 
 --
--- TOC entry 3000 (class 2606 OID 49587)
+-- TOC entry 3251 (class 2606 OID 41854)
 -- Name: similar_book similar_book_book1_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1983,7 +1985,7 @@ ALTER TABLE ONLY public.similar_book
 
 
 --
--- TOC entry 3001 (class 2606 OID 49592)
+-- TOC entry 3252 (class 2606 OID 41859)
 -- Name: similar_book similar_book_book2_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1992,7 +1994,7 @@ ALTER TABLE ONLY public.similar_book
 
 
 --
--- TOC entry 2990 (class 2606 OID 49462)
+-- TOC entry 3253 (class 2606 OID 41864)
 -- Name: user user_address_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2000,7 +2002,7 @@ ALTER TABLE ONLY public."user"
     ADD CONSTRAINT user_address_foreign FOREIGN KEY (address) REFERENCES public.address(address_id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 
--- Completed on 2019-07-04 17:11:04 CEST
+-- Completed on 2019-07-04 18:56:48 CEST
 
 --
 -- PostgreSQL database dump complete
