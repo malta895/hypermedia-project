@@ -1,5 +1,10 @@
 $(document).ready(function () {
-
+    $('#modal-alert .btn-primary').click(function () {
+        window.location.href = 'signin.html'
+    });
+    $('#modal-alert .close').click(function () {
+        window.location.href = 'signin.html'
+    });
     $('.signup-form-wrapper > form').on('submit', function(e){
         e.preventDefault();
 
@@ -25,11 +30,13 @@ $(document).ready(function () {
                     data: formData,
                     contentType: 'application/x-www-form-urlencoded',
                     success: function (data) {
-                        window.location.href = "signin.html";
+                        
                     },
                     statusCode: {
-                        200: function(){
-                           window.location.href = "signin.html";
+                        200: function () {
+                            $('#modal-text').html('User registered successfully!')
+                            $('#modal-alert .btn-primary').html('Signin & Shop new books')
+                            $('#modal-alert').modal();                           
                         }
                     }
                     
