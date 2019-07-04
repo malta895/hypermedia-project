@@ -45,6 +45,27 @@
 </head>
 
 <body>
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-alert">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="cart-modal-text"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- ==========================
         SCROLL TOP - START
@@ -211,40 +232,11 @@
                     </div>
                 </article>
 
-                <div class="releated-products">
+                <div class="related-products">
                     <h2>Works: </h2>
                     <div class="row grid" id="products">
 
-                        <!-- PRODUCT 
-                        <div class="col-sm-3 col-xs-6">
-                            <article class="product-item">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <div class="product-overlay">
-                                            <div class="product-mask"></div>
-                                            <a href="single-product.html" class="product-permalink"></a>
-                                            <img src="../assets/images/products/product-1.jpg" class="img-responsive" alt="">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <div class="product-body">
-                                            <h3>Lorem ipsum dolor sit amet consectetur</h3>
-                                            <span class="price">
-                                                <del><span class="amount">$36.00</span></del>
-                                                <ins><span class="amount">$30.00</span></ins>
-                                            </span>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut feugiat mauris eget magna egestas porta. Curabitur sagittis sagittis neque rutrum congue. Donec lobortis dui sagittis, ultrices nunc ornare, ultricies elit. Curabitur tristique felis pulvinar nibh porta. </p>
-                                            <div class="buttons buttons-simple">
-                                                <a href=""><i class="fa fa-exchange"></i></a>
-                                                <a href=""><i class="fa fa-shopping-cart"></i></a>
-                                                <a href=""><i class="fa fa-heart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                        END -->
+
 
 
                     </div>
@@ -276,7 +268,7 @@
                             <h4>Information</h4>
                             <ul class="list-unstyled">
                                 <li><a href="faq.html">FAQ</a></li>
-                                
+
                             </ul>
                         </div>
                     </div>
