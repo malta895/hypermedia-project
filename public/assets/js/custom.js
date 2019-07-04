@@ -1,3 +1,11 @@
+if(sessionStorage.getItem('userId')){
+    if($('body').hasClass('no-logged-in'))
+        location.href = '/';
+} else {
+    if($('body').hasClass('redirect-not-logged-in'))
+        location.href = '/pages/404.html';
+}
+
 $(document).ready(function(){
     if(location.protocol === 'http:' && location.hostname === "bookhub-ctm.herokuapp.com") {
         location.href = 'https://'+location.hostname+location.pathname;
