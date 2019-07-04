@@ -83,23 +83,53 @@ exports.similarBooksDbSetup = function(database) {
  **/
 exports.bestsellerGET = function(month_date,offset,limit) {
     return new Promise(function(resolve, reject) {
-        let query = sqlDb('book_essentials')
-            .join('cart_book', 'book_id', 'book')
-            .join('cart', 'cart_book.cart', 'cart_id')
-            .join('order', 'order.cart', 'cart_id')
-            .where('ordered', true);
-        if(month_date)
-            query.whereRaw("date_part('month', \"order\".order_date) = date_part('month', ?\:\:date)", [month_date]);
-        else
-            query.whereRaw("date_part('month', \"order\".order_date) = date_part('month', CURRENT_DATE)");
-            query.orderByRaw("quantity DESC")
-            .limit(limit ? limit : 3) //se non viene specificato mostra i 3 più venduti
-            .then(rows => {
-                resolve(rows);
-            })
-            .catch(err => reject(err));
+
+        if(month_date){
+            sqlDb.raw(`
+select distinct book_essentials.* from book_essentials join
+(select distinct book, sum(quantity) as quantity
+from "cart_book"
+inner join "cart" on "cart_book"."cart" = "cart_id" 
+inner join "order" on "order"."cart" = "cart_id" 
+where "ordered" = true 
+and date_part('month', "order".order_date) = date_part('month', ?::date)
+group by book, cart_book.quantity
+order by sum(quantity) desc) as bestsellers
+on book_id = book
+`, [month_date])
+                .then(response => {
+                    resolve(response.rows);
+                })
+                .catch(err => {
+                    console.error(err);
+                    reject(err);
+                });
+        } else {
+            sqlDb.raw(`
+select distinct book_essentials.* from book_essentials join
+(select distinct book, sum(quantity) as quantity
+from "cart_book"
+inner join "cart" on "cart_book"."cart" = "cart_id" 
+inner join "order" on "order"."cart" = "cart_id" 
+where "ordered" = true 
+and date_part('month', "order".order_date) = date_part('month', CURRENT_DATE)
+group by book, cart_book.quantity
+order by sum(quantity) desc) as bestsellers
+on book_id = book
+`)
+                .then(response => {
+                    resolve(response.rows);
+                })
+                .catch(err => {
+                    console.error(err);
+                    reject(err);
+                });
+        }
+
     });
 };
+
+
 
 
 

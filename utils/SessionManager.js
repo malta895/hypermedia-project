@@ -119,7 +119,7 @@ exports.setParameter = function(req,key, value, isSecure) {
 };
 
 exports.setSecureParameter = function(req,key, value) {
-    exports.setParameter(key, value, true);
+    exports.setParameter(req, key, value, true);
 };
 
 exports.unsetParameter = function(req,key, isSecure) {
