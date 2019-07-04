@@ -142,7 +142,8 @@ function renderData(data) {
     }
 }
 
-function retrieveData(offset){
+function retrieveData(offset) {
+    
     console.log(filterObject);
     if(offset !== undefined)
         filterObject.offset = offset;
@@ -156,9 +157,15 @@ function retrieveData(offset){
 
             $('.addCart').off();
             $('.addCart').click(function () {
-
-                let id = $(this).attr('id');
-                addToCart(id);
+                if (!sessionStorage.userId) {
+                    $('#cart-modal-text').html('Signin to purchase new books!')
+                    $('#modal-alert .btn-primary').html('Signin')
+                    $('#modal-alert').modal();
+                } else {
+                    let id = $(this).attr('id');
+                    addToCart(id);
+                }
+                
             });
             $(window).trigger("scroll");
         },
@@ -178,6 +185,10 @@ function addToCart(id) {
         type: 'PUT',
         statusCode: {
             200: function () {
+                $('#cart-modal-text').html('Book added to cart!')
+                $('#modal-alert .btn-primary').hide()
+                $('#modal-alert .btn-secondary').html('Continue shopping')
+                $('#modal-alert').modal();
                 $.getJSON('/api/cart', function (data) {
 
                     $(".navbar-cart > ul").empty();
@@ -254,7 +265,9 @@ $(document).ready(function(){
         $('#scrolltop').click();
         nextPage(Math.ceil(maxCount / filterObject.limit));
     });
-
+    $('#modal-alert .btn-primary').click(function () {
+        window.location.href='pages/signin.html'
+    });
     $.getJSON('/api/themes', function (data) {
 
         for (let i = 0; i < data.length; i++) {

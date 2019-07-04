@@ -49,52 +49,64 @@ $(document).ready(function () {
 
         //add event listener to the buttons
 
-
+        $('#modal-alert .btn-primary').click(function () {
+            window.location.href = 'signin.html'
+        });
         $('.addCart').click(function () {
-            console.log('remove');
-            id = $(this).attr('id');
-            $.ajax({
-                url: '/api/cart/add/book/' + id,
-                type: 'PUT',
-                statusCode: {
-                    200: function () {
-                        $.getJSON('/api/cart', function (data) {
+            if (!sessionStorage.userId) {
+                $('#cart-modal-text').html('Signin to purchase new books!')
+                $('#modal-alert .btn-primary').html('Signin')
+                $('#modal-alert').modal();
+            } else {
+                id = $(this).attr('id');
+                $.ajax({
+                    url: '/api/cart/add/book/' + id,
+                    type: 'PUT',
+                    statusCode: {
+                        200: function () {
+                            $('#cart-modal-text').html('Book added to cart!')
+                            $('#modal-alert .btn-primary').hide()
+                            $('#modal-alert .btn-secondary').html('Continue shopping')
+                            $('#modal-alert').modal();
+                            $.getJSON('/api/cart', function (data) {
 
-                            $(".navbar-cart > ul").empty();
-                            for (i = 0; i < data[0].books.length; i++) {
-                                console.log(data[0].books[i])
-                                book = data[0].books[i].book;
-                                var id = book.book_id;
-                                var title = book.title;
-                                var authors = book.authors;
-                                var price = book.price;
-                                var picture = book.picture;
-                                var genre = book.genres;
-                                var quantity = data[0].books[i].quantity;
-                                var elem = '';
-                                elem += '<li><div class="row"><div class="col-sm-3">';
-                                elem += '<img src="' + picture + '" class="img-responsive" alt="">';
-                                elem += '</div><div class="col-sm-9">';
-                                elem += '<h4><a href="single-product.html?id=' + id + '">' + title + '</a></h4>';
-                                elem += '<p>' + quantity + 'x - &euro;' + price + '</p>';
-                                elem += '<a href="#" class="remove"><i class="fa fa-times-circle"></i></a>';
-                                elem += '</div></div></li>';
+                                $(".navbar-cart > ul").empty();
+                                for (i = 0; i < data[0].books.length; i++) {
+                                    console.log(data[0].books[i])
+                                    book = data[0].books[i].book;
+                                    var id = book.book_id;
+                                    var title = book.title;
+                                    var authors = book.authors;
+                                    var price = book.price;
+                                    var picture = book.picture;
+                                    var genre = book.genres;
+                                    var quantity = data[0].books[i].quantity;
+                                    var elem = '';
+                                    elem += '<li><div class="row"><div class="col-sm-3">';
+                                    elem += '<img src="' + picture + '" class="img-responsive" alt="">';
+                                    elem += '</div><div class="col-sm-9">';
+                                    elem += '<h4><a href="single-product.html?id=' + id + '">' + title + '</a></h4>';
+                                    elem += '<p>' + quantity + 'x - &euro;' + price + '</p>';
+                                    elem += '<a href="#" class="remove"><i class="fa fa-times-circle"></i></a>';
+                                    elem += '</div></div></li>';
 
 
+                                    $(".navbar-cart > ul").append(elem);
+
+                                }
+                                elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="/pages/checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
                                 $(".navbar-cart > ul").append(elem);
 
-                            }
-                            elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="/pages/checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
-                            $(".navbar-cart > ul").append(elem);
+                            });
+                        }
+                    },
+                    success: function (response) {
+                        console.log(response)// /api/cart GET CART
 
-                        });
                     }
-                },
-                success: function (response) {
-                    console.log(response)// /api/cart GET CART
-
-                }
-            });
+                });
+            }
+            
         });
 
 
