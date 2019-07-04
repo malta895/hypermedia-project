@@ -2,10 +2,13 @@ $(document).ready(function () {
     $.getJSON('/api/events', function (data) {  // /api/books GET ALL EVENTS
 
         for (let i = 0; i < data.length; i++) {
+            var street_line2=','
             var id = data[i].event_id;
             var date = data[i].date_time;
             var location = data[i].location;
-            var address = location.street_line1 + ',' + location.street_line2 + ',' + location.city;
+            if (location.street_line2 !== null) street_line2 = ',' + location.street_line2 + ','
+            var address = location.street_line1 + street_line2 + location.country + ',' + location.province + location.city;
+            
 
             var book = data[i].book;
             var title = book.title;
