@@ -16,9 +16,10 @@ var getUrlParameter = function getUrlParameter(sParam) {
 
 $(window).on("load", function () {
     var id = getUrlParameter('id');
-    $.getJSON('/api/authors/' + id, function (data) {  // GET AUTHOR BY ID   
+    $.getJSON('/api/authors/' + id, function (data) {  // GET AUTHOR BY ID
+        console.log('AUTHOR:');
         console.log(data);
-        for (i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             var id = data[i].id;
             var name = data[i].name;
             var surname = data[i].surname;
@@ -27,7 +28,7 @@ $(window).on("load", function () {
             var elem = '';
             $("#name").html(name);
             $("#bio").html(bio);
-            $("#pic img").attr('src', img);
+            $("#pic img").attr('src', picture);
         }
 
 
@@ -40,6 +41,7 @@ $(window).on("load", function () {
     $.getJSON('/api/books?authors=' + id, function (data) {  // GET AUTHOR BY ID   
         console.log(data);
         for (let i = 0; i < data.length; i++) {
+            console.log(data);
             $('#products').html();
             var id = data[i].book_id;
             var title = data[i].title;
