@@ -307,7 +307,10 @@ function addToCart(id) {
                 $('#modal-alert').modal();
                 $.getJSON('/api/cart', function (data) {
                     console.log(data);// /api/cart GET CART
-                    $(".navbar-cart > ul").empty();
+                    $(".navbar-cart > ul").remove();
+
+                    ul = $('<ul class="dropdown-menu"></ul>');
+                    $(".navbar-cart").append(ul);
                     for (i = 0; i < data[0].books.length; i++) {
                         console.log(data[0].books[i])
                         book = data[0].books[i].book;

@@ -77,7 +77,10 @@ $(document).ready(function () {
                             $('#modal-alert').modal();
                             $.getJSON('/api/cart', function (data) {
 
-                                $(".navbar-cart > ul").empty();
+                                $(".navbar-cart > ul").remove();
+                                
+                                    ul = $('<ul class="dropdown-menu"></ul>');
+                                    $(".navbar-cart").append(ul);
                                 for (i = 0; i < data[0].books.length; i++) {
                                     console.log(data[0].books[i])
                                     book = data[0].books[i].book;
@@ -103,6 +106,7 @@ $(document).ready(function () {
                                 }
                                 elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="/pages/checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
                                 $(".navbar-cart > ul").append(elem);
+                                
 
                             });
                         }
