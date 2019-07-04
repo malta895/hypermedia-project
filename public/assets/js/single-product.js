@@ -22,7 +22,9 @@ var getUrlParameter = function getUrlParameter(sParam) {
 };
 var id = getUrlParameter('id');
 $(window).on("load",function () {
-
+    $('#modal-alert .btn-primary').click(function () {
+        window.location.href = 'signin.html'
+    });
     $.getJSON('/api/books/'+id, function (book) {  // GET BOOK BY ID /api/book/{bookId}
         console.log(book);
         var id = book.book_id;
@@ -62,8 +64,16 @@ $(window).on("load",function () {
         $("#theme").html("<span>Themes</span>" + themes);
         var img = '<div class="item"><img src="' + picture + '" id="img" class="img-responsive" alt=""></div>';
         $("#product-carousel").append(img);
+        $('.addCart').off();
         $('.addCart').click(function () {
-            addToCart(id);
+            if (!sessionStorage.userId) {
+                $('#cart-modal-text').html('Signin to purchase new books!')
+                $('#modal-alert .btn-primary').html('Signin')
+                $('#modal-alert').modal();
+            } else {
+                addToCart(id);
+            }
+            
         });
     });
 
@@ -175,9 +185,17 @@ $(window).on("load",function () {
             elem += '</div>';
             $("#products").append(elem);
         }
+        $('.addCart').off();
         $('.add-to-cart').click(function (e) {
             e.preventDefault()
-            addToCart($(this).attr('id'));
+            if (!sessionStorage.userId) {
+                $('#cart-modal-text').html('Signin to purchase new books!')
+                $('#modal-alert .btn-primary').html('Signin')
+                $('#modal-alert').modal();
+            } else {
+                addToCart($(this).attr('id'));
+            }
+            
         });
     }).fail(res => {
         

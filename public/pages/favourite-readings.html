@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -44,7 +44,27 @@
 </head>
 
 <body>
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-alert">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 
+
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="cart-modal-text"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- ==========================
         SCROLL TOP - START
     =========================== -->
@@ -104,10 +124,7 @@
                         </li>
                         <li class="dropdown navbar-cart hidden-xs">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="300" data-close-others="true"><i class="fa fa-shopping-cart"></i></a>
-                            <ul class="dropdown-menu">
-
-
-                            </ul>
+                            <ul class="dropdown-menu"></ul>
                         </li>
                         <li class="dropdown navbar-search hidden-xs">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i></a>
@@ -145,8 +162,8 @@
             </div>
         </div>
         <!-- ==========================
-    	HEADER - END 
-    =========================== -->
+            HEADER - END
+        =========================== -->
         <!-- ==========================
             PRODUCTS - START
         =========================== -->
@@ -193,7 +210,7 @@
                             <h4>Information</h4>
                             <ul class="list-unstyled">
                                 <li><a href="faq.html">FAQ</a></li>
-                                
+
                             </ul>
                         </div>
                     </div>
@@ -206,13 +223,12 @@
                         </p>
                     </div>
                 </div>
-                </div>
             </div>
-        </footer>
-        <!-- ==========================
-            FOOTER - END
-        =========================== -->
-
+    </div>
+    </footer>
+    <!-- ==========================
+        FOOTER - END
+    =========================== -->
     </div> <!-- PAGE - END -->
     <!-- ==========================
         JS
