@@ -92,7 +92,7 @@ $(document).ready(function () {
         $.post('/api/user/logout', function (res) {
             console.log("Logout succesful!")
             sessionStorage.clear();
-            window.location.href = "signin.html"
+            location.reload();
 
         })
             .fail(res => {
