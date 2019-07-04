@@ -2,9 +2,16 @@ var currencies = {
     EUR: '&euro;',
     USD: '$'
 };
+var date = new Date()
+var day = date.getDate();
+if (day<10) day = '0' + day;
+var monthIndex = date.getMonth() + 1;
+var year = date.getFullYear();
 $(document).ready(function () {
-    $.getJSON('/api/books/monthBestseller?month_date=2019-06-01', function (data) {  // /api/books GET ALL EVENTS
+    $.getJSON('/api/books/monthBestseller?month_date=' + year + '-0' + monthIndex+'-'+day, function (data) {  // /api/books GET ALL EVENTS
 
+
+        console.log(day + ' ' + monthIndex + ' ' + year)
          for (i = 0; i < data.length; i++) {
             var id = data[i].book_id;
             var title = data[i].title;
