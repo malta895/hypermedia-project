@@ -17,9 +17,16 @@ $(document).ready(function () {
             if(res.userId){
                 console.log("Succesful Login! Redirecting to Home page..."); +
                     sessionStorage.setItem('userId', JSON.stringify(res));
-                
+
                 console.log(res.responseText);
-                location.href = '/index.html';
+
+                if(location.includes('bookhub-ctm.herokuapp.com')) {
+                    location = location.startsWith('https') ? '/' : 'https://bookhub-ctm.herokuapp.com/';
+                } else {
+                    location.href = '/index.html';
+                }
+
+
             }
 
 
