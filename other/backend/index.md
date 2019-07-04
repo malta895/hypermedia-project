@@ -155,12 +155,12 @@ We took inspiration from OneDrive RESTful APIs for the endpoints URI naming conv
 
 
 ### Learning outcome
-What was the most important thing all the members have learned while developing
+**What was the most important thing all the members have learned while developing
 this part of the project, what questions remained unanswered, how you will use
-what you've learned in your everyday life?
+what you've learned in your everyday life?**
 
-Luca: In this course I learned to use technologies I have never used before: NodeJS, Swagger and PostgreSQL. The will certainly be useful in my future career as software engineer.
+Luca: In this course I have learnt to use technologies I have never used before: NodeJS, Swagger and PostgreSQL. I have never implemented a REST API from scratch, in this project I have learnt, not only to implement it, but also to do so with technologies I have never used. In particular, it was the first time I used NodeJS on back-end, and PostgreSQL to handle the Database. These learning outcomes will certainly be of use for my career as a software engineer(in particular if I will choose to work as a fullstack engineeer).
 
-Alessandro: In this course I learned how a website can be more accessible and useful to an user. I also enriched my knowledge in the technologies used in front-end development.
+Alessandro: In this course I have learnt how a website can be more accessible and useful to an user. I also enriched my knowledge in the technologies used in front-end development. In particular, I discovered the potentialities of bootstrap and how easy it is to make a responsive website with such a powerful library. 
 
-Marco: I learnt many new things on JavaScript, Jquery and bootstrap. These technologies are widely used in web development industry, so for sure they will be of help on my future informatic career.
+Marco: I have learnt many new things on JavaScript, Jquery and Bootstrap. I have used, for the majority of the project, JQuery and I have handled the events and the ajax calls that should link the client to the front-end. As a web developer,I 'll try to use my enhanced knowledge with Jquery in my everyday working life.
