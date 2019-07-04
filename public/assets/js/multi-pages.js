@@ -20,7 +20,7 @@ $(document).ready(function () {
         $('.myaccount').html(data.first_name + ' ' + data.surname);
         sessionStorage.setItem('user', JSON.stringify(data));
         $.getJSON('/api/cart', function (data) {
-            
+
             $(".navbar-cart > ul").empty();
             if (data.length > 0) {
                 for (i = 0; i < data[0].books.length; i++) {
@@ -63,14 +63,16 @@ $(document).ready(function () {
 
     })
         .fail(function (res) {
+            //NON LOGGATO
+
+            $('.only-logged').addClass('hidden');
+
             $('.logout').hide()
             $('.myaccount').hide()
             $('.signin').html('Sign in')
             $('.review').hide()
             $(".navbar-cart").hide();
 
-
-        
     }
     );
     $('.navbar-search button').on('click', function () {

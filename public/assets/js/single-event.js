@@ -16,9 +16,9 @@ var getUrlParameter = function getUrlParameter(sParam) {
 $(window).on("load", function () {
     var id = getUrlParameter('id');
     var street_line2 = ',';
-    $.getJSON('/api/events/' + id, function (data) {  // GET BOOK BY ID /api/book/{bookId}    
+    $.getJSON('/api/events/' + id, function (data) {  // GET BOOK BY ID /api/book/{bookId}
         console.log(data);
-        
+
             var event_id = data.event_id;
             var name = data.name;
             var id = data.id;
@@ -26,7 +26,7 @@ $(window).on("load", function () {
         let dateObj = new Date(date);
         let dateString = dateObj.toLocaleDateString();
         let timeString = dateObj.toLocaleTimeString();
-        
+
         date = dateString + ' ' + timeString;
             //LOCATION
         var location = data.location;
@@ -44,7 +44,7 @@ $(window).on("load", function () {
 
             return (acc === '' ? '' : (acc + ', ')) + link;
         }, '');
-            
+
             var elem = '';
 
         $("#title").html('Presentation:<a href="single-product.html?id=' + book.book_id + '">' + title + '</a>');
@@ -54,7 +54,7 @@ $(window).on("load", function () {
             $("#name").html(name);
             var img = '<div class="item"><img src="' + picture + '" id="img" class="img-responsive" alt=""></div>';
             $("#pic").append(img);
-        
+
 
 
 
