@@ -56,8 +56,8 @@
     <div id="page-wrapper">
         <!-- PAGE - START -->
         <!-- ==========================
-        HEADER - START
-    =========================== -->
+            HEADER - START
+        =========================== -->
         <div class="top-header hidden-xs">
             <div class="container">
                 <div class="row">
@@ -65,7 +65,6 @@
                     </div>
                     <div class="col-sm-7 text-right">
                         <ul class="list-inline links">
-
                             <li><a href="/pages/my-account.html" class="myaccount"></a></li>
                             <li><a href="#" class="logout"></a></li>
                             <li><a href="/pages/signin.html" class="signin"></a></li>
@@ -93,15 +92,18 @@
                         <li class="dropdown">
                             <a href="event.html">Events</a>
                         </li>
-                        <li class="dropdown megamenu hidden-md hidden-lg hidden-xl">
+                        <li class="dropdown">
+                            <a href="best-seller.html">Bestsellers</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="favourite-readings.html">Suggested<span class="hidden-xs"><br></span> readings</a>
+                        </li>
+                        <li class="dropdown megamenu hidden-md hidden-lg hidden-xl only-logged">
                             <a href="cart.html">Cart</a>
                         </li>
                         <li class="dropdown navbar-cart hidden-xs">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="300" data-close-others="true"><i class="fa fa-shopping-cart"></i></a>
                             <ul class="dropdown-menu">
-
-                                
-
                             </ul>
                         </li>
                         <li class="dropdown navbar-search hidden-xs">
@@ -123,8 +125,24 @@
                 </div>
             </div>
         </header>
+        <div class="top-header hidden-sm hidden-md hidden-lg hidden-xl">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-5">
+                    </div>
+                    <div class="col-sm-7 text-right">
+                        <ul class="list-inline links">
+                            <li><a href="/pages/my-account.html" class="myaccount"></a></li>
+                            <li><a href="#" class="logout"></a></li>
+                            <li><a href="/pages/signin.html" class="signin"></a></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- ==========================
-    HEADER - END
+    	HEADER - END 
     =========================== -->
         <!-- ==========================
     	ESHOP - START 
@@ -138,16 +156,12 @@
                         <div class="row">
                             <div class="col-sm-3">
                                 <ul class="nav nav-tabs" role="tablist">
-                                    <li role="presentation" class=""><a href="#faq-1" role="tab" data-toggle="tab" aria-controls="faq-1" aria-expanded="false">Popular Questions</a></li>
-                                    <li role="presentation" class="active"><a href="#faq-2" role="tab" data-toggle="tab" aria-controls="faq-2" aria-expanded="true">Shipping</a></li>
-                                    <li role="presentation" class=""><a href="#faq-3" role="tab" data-toggle="tab" aria-controls="faq-3" aria-expanded="false">Reclamation</a></li>
-                                    <li role="presentation" class=""><a href="#faq-4" role="tab" data-toggle="tab" aria-controls="faq-4" aria-expanded="false">Category 4</a></li>
-                                    <li role="presentation" class=""><a href="#faq-5" role="tab" data-toggle="tab" aria-controls="faq-5" aria-expanded="false">Category 5</a></li>
+                                    <li role="presentation" class="active"><a href="#faq-1" role="tab" data-toggle="tab" aria-controls="faq-1" aria-expanded="false">Popular Questions</a></li>
                                 </ul>
                             </div>
                             <div class="col-sm-9">
                                 <div class="tab-content">
-                                    <div role="tabpanel" class="tab-pane" id="faq-1">
+                                    <div role="tabpanel" class="tab-pane active in" id="faq-1">
 
                                         <div class="panel-group" id="faq-1-accordion" role="tablist" aria-multiselectable="true">
 
@@ -218,106 +232,6 @@
 
                                         </div>
 
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane active in" id="faq-2">
-
-                                        <div class="panel-group" id="faq-2-accordion" role="tablist" aria-multiselectable="true">
-
-                                            <!-- QUESTION - START -->
-                                            <div class="panel panel-primary">
-                                                <div class="panel-heading" role="tab">
-                                                    <h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#faq-2-accordion" href="#faq-2-q-1" aria-expanded="true" aria-controls="faq-2-q-1">Question #1</a></h4>
-                                                </div>
-                                                <div id="faq-2-q-1" class="panel-collapse collapse in" role="tabpanel">
-                                                    <div class="panel-body">
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Suspendisse aliquet imperdiet commodo. Aenean vel lacinia elit. Class aptent taciti sociosqu ad litora torquent per.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- QUESTION - END -->
-
-                                            <!-- QUESTION - START -->
-                                            <div class="panel panel-primary">
-                                                <div class="panel-heading" role="tab">
-                                                    <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse" data-parent="#faq-2-accordion" href="#faq-2-q-2" aria-expanded="false" aria-controls="faq-2-q-2">Question #2</a></h4>
-                                                </div>
-                                                <div id="faq-2-q-2" class="panel-collapse collapse" role="tabpanel">
-                                                    <div class="panel-body">
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Suspendisse aliquet imperdiet commodo. Aenean vel lacinia elit. Class aptent taciti sociosqu ad litora torquent per.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- QUESTION - END -->
-
-                                            <!-- QUESTION - START -->
-                                            <div class="panel panel-primary">
-                                                <div class="panel-heading" role="tab">
-                                                    <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse" data-parent="#faq-2-accordion" href="#faq-2-q-3" aria-expanded="false" aria-controls="faq-2-q-3">Question #3</a></h4>
-                                                </div>
-                                                <div id="faq-2-q-3" class="panel-collapse collapse" role="tabpanel">
-                                                    <div class="panel-body">
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Suspendisse aliquet imperdiet commodo. Aenean vel lacinia elit. Class aptent taciti sociosqu ad litora torquent per.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- QUESTION - END -->
-
-                                            <!-- QUESTION - START -->
-                                            <div class="panel panel-primary">
-                                                <div class="panel-heading" role="tab">
-                                                    <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse" data-parent="#faq-2-accordion" href="#faq-2-q-4" aria-expanded="false" aria-controls="faq-2-q-4">Question #4</a></h4>
-                                                </div>
-                                                <div id="faq-2-q-4" class="panel-collapse collapse" role="tabpanel">
-                                                    <div class="panel-body">
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Suspendisse aliquet imperdiet commodo. Aenean vel lacinia elit. Class aptent taciti sociosqu ad litora torquent per.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- QUESTION - END -->
-
-                                        </div>
-
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="faq-3">
-
-                                        <div class="panel-group" id="faq-3-accordion" role="tablist" aria-multiselectable="true">
-
-                                            <!-- QUESTION - START -->
-                                            <div class="panel panel-primary">
-                                                <div class="panel-heading" role="tab">
-                                                    <h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#faq-3-accordion" href="#faq-3-q-1" aria-expanded="true" aria-controls="faq-3-q-1">Lorem ipsum Question #1</a></h4>
-                                                </div>
-                                                <div id="faq-3-q-1" class="panel-collapse collapse in" role="tabpanel">
-                                                    <div class="panel-body">
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Suspendisse aliquet imperdiet commodo. Aenean vel lacinia elit. Class aptent taciti sociosqu ad litora torquent per.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- QUESTION - END -->
-
-                                            <!-- QUESTION - START -->
-                                            <div class="panel panel-primary">
-                                                <div class="panel-heading" role="tab">
-                                                    <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse" data-parent="#faq-3-accordion" href="#faq-3-q-2" aria-expanded="false" aria-controls="faq-3-q-2">Question #2</a></h4>
-                                                </div>
-                                                <div id="faq-3-q-2" class="panel-collapse collapse" role="tabpanel">
-                                                    <div class="panel-body">
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Suspendisse aliquet imperdiet commodo. Aenean vel lacinia elit. Class aptent taciti sociosqu ad litora torquent per.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- QUESTION - END -->
-
-                                        </div>
-
-                                    </div>
-
-                                    <div role="tabpanel" class="tab-pane" id="faq-4">
-                                        Category 4 - Empty
-                                    </div>
-
-                                    <div role="tabpanel" class="tab-pane" id="faq-5">
-                                        Category 5 - Empty
                                     </div>
 
                                 </div>
