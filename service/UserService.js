@@ -262,7 +262,8 @@ exports.userRegisterPOST = function(username,password,email,first_name,surname,b
                 email: email,
                 first_name: first_name,
                 surname: surname,
-                birth_date: birthDate
+                birth_date: birthDate,
+                time_registered: new Date()
             })
             .returning('user_id')
             .then( rows => {

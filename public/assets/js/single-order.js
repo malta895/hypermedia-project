@@ -37,6 +37,11 @@ $(document).ready(function () {
         $('#shipping_method').html(order.shipping_method);
         $('#total').html('&euro;'+order.total_amount);
 
+        //DETTAGLI
+        $('#order-id').html(order.order_id);
+        $('#order-time').html(new Date(order.order_date).toLocaleDateString() + ' ' +
+                              new Date(order.order_date).toLocaleTimeString());
+
         //LISTA LIBRI
         for (var k = 0; k < order.books.length; k++) {
             let book = order.books[k].book;

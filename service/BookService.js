@@ -97,7 +97,7 @@ group by book, cart_book.quantity
 order by sum(quantity) desc) as bestsellers
 on book_id = book
 limit ?
-`, [month_date, (limit ? limit : 3)])
+`, [month_date, (limit ? limit : 5)])
                 .then(response => {
                     resolve(response.rows);
                 })
@@ -118,7 +118,7 @@ group by book, cart_book.quantity
 order by sum(quantity) desc) as bestsellers
 on book_id = book
 limit ?
-`, [limit ? limit : 3])
+`, [limit ? limit : 5])
                 .then(response => {
                     resolve(response.rows);
                 })
