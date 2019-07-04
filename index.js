@@ -54,13 +54,12 @@ if(process.env.SERVEZIP && process.env.GITHUB_TOKEN && process.env.GITHUB_URL){
     downloadRepoZip()
         .then(() =>{
             console.info('Repo Zip saved! Serving it on /backend/app.zip');
-            app.use('/backend/app.zip', express.static('app.zip'));
         })
         .catch(err => console.error(err));
 } else {
     console.log("The zip of the repo will not be downloaded");
 }
-
+app.use('/backend/app.zip', express.static('app.zip'));
 
 app.set('trust proxy', 1); //così i cookie passano attraverso il proxy
 
