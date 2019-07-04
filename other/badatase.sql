@@ -5,7 +5,7 @@
 -- Dumped from database version 11.2
 -- Dumped by pg_dump version 11.2
 
--- Started on 2019-07-04 18:56:47 CEST
+-- Started on 2019-07-04 22:56:38 CEST
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -26,7 +26,7 @@ CREATE SCHEMA public;
 
 
 --
--- TOC entry 233 (class 1255 OID 41555)
+-- TOC entry 246 (class 1255 OID 41555)
 -- Name: create_cart(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -39,7 +39,7 @@ END;$$;
 
 
 --
--- TOC entry 234 (class 1255 OID 41556)
+-- TOC entry 247 (class 1255 OID 41556)
 -- Name: delete_cart_zero_quantity(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -52,7 +52,7 @@ END$$;
 
 
 --
--- TOC entry 235 (class 1255 OID 41557)
+-- TOC entry 248 (class 1255 OID 41557)
 -- Name: update_average_rating_new(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -70,7 +70,7 @@ $$;
 
 
 --
--- TOC entry 236 (class 1255 OID 41558)
+-- TOC entry 249 (class 1255 OID 41558)
 -- Name: update_average_rating_old(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -88,7 +88,7 @@ $$;
 
 
 --
--- TOC entry 237 (class 1255 OID 41559)
+-- TOC entry 233 (class 1255 OID 41559)
 -- Name: update_cart_on_order(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -223,7 +223,7 @@ ALTER SEQUENCE public.author_book_id_seq OWNED BY public.author_book.id;
 
 
 --
--- TOC entry 228 (class 1259 OID 41892)
+-- TOC entry 228 (class 1259 OID 41960)
 -- Name: author_essential; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -279,7 +279,7 @@ ALTER SEQUENCE public.book_book_id_seq OWNED BY public.book.book_id;
 
 
 --
--- TOC entry 231 (class 1259 OID 41904)
+-- TOC entry 231 (class 1259 OID 41972)
 -- Name: book_essentials; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -532,7 +532,7 @@ CREATE TABLE public."order" (
 
 
 --
--- TOC entry 232 (class 1259 OID 41909)
+-- TOC entry 232 (class 1259 OID 41977)
 -- Name: order_essentials; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -542,6 +542,7 @@ SELECT
     NULL::integer AS user_id,
     NULL::text AS payment_method,
     NULL::text AS shipping_method,
+    NULL::timestamp with time zone AS order_date,
     NULL::jsonb AS shipment_address,
     NULL::double precision AS total_amount,
     NULL::jsonb AS books;
@@ -583,7 +584,7 @@ CREATE TABLE public.publisher (
 
 
 --
--- TOC entry 229 (class 1259 OID 41896)
+-- TOC entry 229 (class 1259 OID 41964)
 -- Name: publisher_complete; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -596,7 +597,7 @@ CREATE VIEW public.publisher_complete AS
 
 
 --
--- TOC entry 230 (class 1259 OID 41900)
+-- TOC entry 230 (class 1259 OID 41968)
 -- Name: publisher_essential; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -918,6 +919,7 @@ INSERT INTO public.address (address_id, first_name, last_name, street_line1, str
 INSERT INTO public.address (address_id, first_name, last_name, street_line1, street_line2, city, zip_code, province, country) VALUES (8, 'LUCA', 'MALTAGLIATI', '', NULL, 'TAVERNERIO', '22038', 'CO', 'ITALY');
 INSERT INTO public.address (address_id, first_name, last_name, street_line1, street_line2, city, zip_code, province, country) VALUES (9, 'LUCA', 'MALTAGLIATI', '', NULL, 'TAVERNERIO', '22038', 'CO', 'ITALY');
 INSERT INTO public.address (address_id, first_name, last_name, street_line1, street_line2, city, zip_code, province, country) VALUES (10, 'LUCA', 'MALTAGLIATI', '', NULL, 'TAVERNERIO', '22038', 'CO', 'ITALY');
+INSERT INTO public.address (address_id, first_name, last_name, street_line1, street_line2, city, zip_code, province, country) VALUES (11, 'Mondadori', 'Milan', 'Mondadori, Duomo Milan', NULL, 'Milan', '20019', 'MI', 'ITALY');
 
 
 --
@@ -1021,45 +1023,89 @@ INSERT INTO public.author_book (id, book, author) VALUES (2291, 28, 1875);
 -- Data for Name: book; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (0, '439023483', 'The Hunger Games', 19, NULL, 'https://images.gr-assets.com/books/1447303603l/2767052.jpg', 'Lorem ipsum', NULL, 'Available', 319, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (1, '618260307', 'The Hobbit or There and Back Again', 12, NULL, 'https://images.gr-assets.com/books/1372847500l/5907.jpg', 'Lorem ipsum', NULL, 'Available', 320, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (2, '1416524797', 'Angels & Demons ', 40, NULL, 'https://images.gr-assets.com/books/1303390735l/960.jpg', 'Lorem ipsum', NULL, 'Available', 321, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (3, '439023491', 'Catching Fire', 33, NULL, 'https://images.gr-assets.com/books/1358273780l/6148028.jpg', 'Lorem ipsum', NULL, 'Available', 322, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (4, '439023513', 'Mockingjay', 36, NULL, 'https://images.gr-assets.com/books/1358275419l/7260188.jpg', 'Lorem ipsum', NULL, 'Available', 317, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (5, '439139600', 'Harry Potter and the Goblet of Fire', 23, NULL, 'https://images.gr-assets.com/books/1361482611l/6.jpg', 'Lorem ipsum', NULL, 'Available', 317, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (6, '545010225', 'Harry Potter and the Deathly Hallows', 23, NULL, 'https://images.gr-assets.com/books/1474171184l/136251.jpg', 'Lorem ipsum', NULL, 'Available', 319, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (7, '618346252', ' The Fellowship of the Ring', 24, NULL, 'https://images.gr-assets.com/books/1298411339l/34.jpg', 'Lorem ipsum', NULL, 'Available', 317, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (8, '307277674', 'The Da Vinci Code', 44, NULL, 'https://images.gr-assets.com/books/1303252999l/968.jpg', 'Lorem ipsum', NULL, 'Available', 322, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (9, '553588486', 'A Game of Thrones', 12, NULL, 'https://images.gr-assets.com/books/1436732693l/13496.jpg', 'Lorem ipsum', NULL, 'Available', 319, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (10, '375826696', 'Eragon', 49, NULL, 'https://images.gr-assets.com/books/1366212852l/113436.jpg', 'Lorem ipsum', NULL, 'Available', 317, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (11, '553381695', 'A Clash of Kings', 45, NULL, 'https://images.gr-assets.com/books/1358254974l/10572.jpg', 'Lorem ipsum', NULL, 'Available', 322, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (12, '618346260', 'The Two Towers', 42, NULL, 'https://images.gr-assets.com/books/1298415523l/15241.jpg', 'Lorem ipsum', NULL, 'Available', 322, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (13, '055357342X', 'A Storm of Swords', 48, NULL, 'https://images.gr-assets.com/books/1497931121l/62291.jpg', 'Lorem ipsum', NULL, 'Available', 316, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (14, '345339738', 'The Return of the King', 15, NULL, 'https://images.gr-assets.com/books/1389977161l/18512.jpg', 'Lorem ipsum', NULL, 'Available', 320, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (15, '055358202X', 'A Feast for Crows', 13, NULL, 'https://images.gr-assets.com/books/1429538615l/13497.jpg', 'Lorem ipsum', NULL, 'Available', 316, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (16, '552151696', 'Digital Fortress', 46, NULL, 'https://images.gr-assets.com/books/1360095966l/11125.jpg', 'Lorem ipsum', NULL, 'Available', 318, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (17, '618640150', 'The Lord of the Rings', 9, NULL, 'https://images.gr-assets.com/books/1411114164l/33.jpg', 'Lorem ipsum', NULL, 'Available', 319, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (18, 'nan', 'A Dance with Dragons', 49, NULL, 'https://images.gr-assets.com/books/1327885335l/10664113.jpg', 'Lorem ipsum', NULL, 'Available', 319, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (19, '385504225', 'The Lost Symbol', 22, NULL, 'https://images.gr-assets.com/books/1358274396l/6411961.jpg', 'Lorem ipsum', NULL, 'Available', 321, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (20, '385537859', 'Inferno', 10, NULL, 'https://images.gr-assets.com/books/1397093185l/17212231.jpg', 'Lorem ipsum', NULL, 'Available', 316, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (21, '316206849', 'The Cuckoo''s Calling', 42, NULL, 'https://images.gr-assets.com/books/1358716559l/16160797.jpg', 'Lorem ipsum', NULL, 'Available', 319, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (22, '747599874', 'The Tales of Beedle the Bard', 31, NULL, 'https://images.gr-assets.com/books/1373467575l/3950967.jpg', 'Lorem ipsum', NULL, 'Available', 320, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (23, '375840400', 'Eldest', 43, NULL, 'https://images.gr-assets.com/books/1387119654l/45978.jpg', 'Lorem ipsum', NULL, 'Available', 322, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (24, '316228532', 'The Casual Vacancy', 10, NULL, 'https://images.gr-assets.com/books/1358266832l/13497818.jpg', 'Lorem ipsum', NULL, 'Available', 321, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (25, '545044251', 'Complete Harry Potter Boxed Set', 30, NULL, 'https://images.gr-assets.com/books/1392579059l/862041.jpg', 'Lorem ipsum', NULL, 'Available', 321, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (26, '618391118', 'The Silmarillion', 21, NULL, 'https://images.gr-assets.com/books/1336502583l/7332.jpg', 'Lorem ipsum', NULL, 'Available', 318, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (27, '545265355', 'The Hunger Games Box Set', 30, NULL, 'https://images.gr-assets.com/books/1360094673l/7938275.jpg', 'Lorem ipsum', NULL, 'Available', 320, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (28, '345368584', 'The Hobbit', 34, NULL, 'https://images.gr-assets.com/books/1374681632l/659469.jpg', 'Lorem ipsum', NULL, 'Available', 319, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (29, '316206873', 'The Silkworm', 23, NULL, 'https://images.gr-assets.com/books/1392577290l/18214414.jpg', 'Lorem ipsum', NULL, 'Available', 319, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (30, '439321611', 'Quidditch Through the Ages', 48, NULL, 'https://images.gr-assets.com/books/1369689506l/111450.jpg', 'Lorem ipsum', NULL, 'Available', 321, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (31, '345538374', 'The Hobbit and The Lord of the Rings', 31, NULL, 'https://images.gr-assets.com/books/1346072396l/30.jpg', 'Lorem ipsum', NULL, 'Available', 320, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (32, '1780484259', 'A Song of Ice and Fire', 16, NULL, 'https://images.gr-assets.com/books/1339340118l/12177850.jpg', 'Lorem ipsum', NULL, 'Available', 320, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (33, '043979143X', 'Gregor and the Code of Claw', 46, NULL, 'https://images.gr-assets.com/books/1365854331l/537070.jpg', 'Lorem ipsum', NULL, 'Available', 319, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (34, '439650763', 'Gregor and the Prophecy of Bane', 34, NULL, 'https://images.gr-assets.com/books/1337457481l/385742.jpg', 'Lorem ipsum', NULL, 'Available', 316, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (35, '345533488', 'A Knight of the Seven Kingdoms', 20, NULL, 'https://images.gr-assets.com/books/1423281810l/18635622.jpg', 'Lorem ipsum', NULL, 'Available', 318, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (36, '439791464', 'Gregor and the Marks of Secret', 29, NULL, 'https://images.gr-assets.com/books/1397854344l/319644.jpg', 'Lorem ipsum', NULL, 'Available', 316, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (37, '097640110X', 'The Hedge Knight', 28, NULL, 'https://images.gr-assets.com/books/1443806558l/13501.jpg', 'Lorem ipsum', NULL, 'Available', 322, NULL);
-INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (38, '553805444', 'The World of Ice and Fire', 44, NULL, 'https://images.gr-assets.com/books/1400360220l/17345242.jpg', 'Lorem ipsum', NULL, 'Available', 318, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (0, '439023483', 'The Hunger Games', 19, NULL, 'https://images.gr-assets.com/books/1447303603l/2767052.jpg', 'The Hunger Games is a trilogy of young adult dystopian novels written by American novelist Suzanne Collins. The series is set in The Hunger Games universe, and follows young Katniss Everdeen.
+
+The novels in the trilogy are titled The Hunger Games (2008), Catching Fire (2009), and Mockingjay (2010). The novels have all been developed into films starring Jennifer Lawrence, with the film adaptation of Mockingjay split into two parts. The first two books in the series were both New York Times best sellers, and Mockingjay topped all US bestseller lists upon its release.[1][2] By the time the film adaptation of The Hunger Games was released in 2012, the publisher had reported over 26 million Hunger Games trilogy books in print, including movie tie-in books.[3]
+
+The Hunger Games universe is a dystopia set in Panem, a North American country consisting of the wealthy Capitol and 12 districts in varying states of poverty. Every year, children from the districts are selected via lottery to participate in a compulsory televised battle royale death match called The Hunger Games.', NULL, 'Available', 319, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (4, '439023513', 'Mockingjay', 36, NULL, 'https://images.gr-assets.com/books/1358275419l/7260188.jpg', 'Mockingjay is a 2010 science fiction novel by American author Suzanne Collins. It is the last installment of The Hunger Games, following 2008''s The Hunger Games and 2009''s Catching Fire. The book continues the story of Katniss Everdeen, who agrees to unify the districts of Panem in a rebellion against the tyrannical Capitol.
+
+The hardcover and audiobook editions of Mockingjay were published by Scholastic on August 24, 2010, six days after the ebook edition went on sale. The book sold 450,000 copies in the first week of release, exceeding the publisher''s expectations. It received a generally positive reaction from critics. The novel was adapted into two films. The first part was released on November 21, 2014, while the second part was released on November 20, 2015.', NULL, 'Available', 317, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (11, '553381695', 'A Clash of Kings', 45, NULL, 'https://images.gr-assets.com/books/1358254974l/10572.jpg', 'A Clash of Kings is the second novel in A Song of Ice and Fire, an epic fantasy series by American author George R. R. Martin expected to consist of seven volumes. It was first published on 16 November 1998 in the United Kingdom, although the first United States edition did not follow until February 2, 1999[2] Like its predecessor, A Game of Thrones, it won the Locus Award (in 1999) for Best Novel and was nominated for the Nebula Award (also in 1999) for best novel. In May 2005 Meisha Merlin released a limited edition of the novel, fully illustrated by John Howe.
+
+The novel has been adapted for television by HBO as the second season of the TV series Game of Thrones.', NULL, 'Available', 322, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (12, '618346260', 'The Two Towers', 42, NULL, 'https://images.gr-assets.com/books/1298415523l/15241.jpg', 'The Two Towers is the second volume of J. R. R. Tolkien''s high fantasy novel The Lord of the Rings. It is preceded by The Fellowship of the Ring and followed by The Return of the King.', NULL, 'Available', 322, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (14, '345339738', 'The Return of the King', 15, NULL, 'https://images.gr-assets.com/books/1389977161l/18512.jpg', 'The Return of the King is the third and final volume of J. R. R. Tolkien''s The Lord of the Rings, following The Fellowship of the Ring and The Two Towers. The story begins in the kingdom of Gondor, which is soon to be attacked by the Dark Lord Sauron.
+
+', NULL, 'Available', 320, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (18, '216023788', 'A Dance with Dragons', 49, NULL, 'https://images.gr-assets.com/books/1327885335l/10664113.jpg', 'A Dance with Dragons is the fifth novel, of seven planned, in the epic fantasy series A Song of Ice and Fire by American author George R. R. Martin. In some areas, the paperback edition was published in two parts, titled Dreams and Dust and After the Feast. It was the first novel in the series to be published following the commencement of the HBO series adaptation, Game of Thrones, and runs to 1,040 pages with a word count of almost 415,000.', NULL, 'Available', 319, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (21, '316206849', 'The Cuckoo''s Calling', 42, NULL, 'https://images.gr-assets.com/books/1358716559l/16160797.jpg', 'The Cuckoo''s Calling is a 2013 crime fiction novel by J. K. Rowling, published under the pseudonym Robert Galbraith. It is the first novel in the Cormoran Strike series of detective novels and was followed by The Silkworm in 2014, Career of Evil in 2015, and Lethal White in 2018.', NULL, 'Available', 319, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (25, '545044251', 'Complete Harry Potter Boxed Set', 30, NULL, 'https://images.gr-assets.com/books/1392579059l/862041.jpg', 'The complete collection of the Harry Potter saga.', NULL, 'Available', 321, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (27, '545265355', 'The Hunger Games Box Set', 30, NULL, 'https://images.gr-assets.com/books/1360094673l/7938275.jpg', 'The complete collection of the Hunger Game saga.', NULL, 'Available', 320, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (29, '316206873', 'The Silkworm', 23, NULL, 'https://images.gr-assets.com/books/1392577290l/18214414.jpg', 'The Silkworm is a 2014 crime fiction novel by J. K. Rowling, published under the pseudonym Robert Galbraith. It is the second novel in the Cormoran Strike series of detective novels and was followed by Career of Evil in 2015 and Lethal White in 2018.', NULL, 'Available', 319, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (30, '439321611', 'Quidditch Through the Ages', 48, NULL, 'https://images.gr-assets.com/books/1369689506l/111450.jpg', 'Quidditch Through the Ages is a 2001 book written by British author J. K. Rowling using the pseudonym of Kennilworthy Whisp about Quidditch in the Harry Potter universe. It purports to be the Hogwarts library''s copy of the non-fiction book of the same name mentioned in several novels of the Harry Potter series.', NULL, 'Available', 321, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (31, '345538374', 'The Hobbit and The Lord of the Rings', 31, NULL, 'https://images.gr-assets.com/books/1346072396l/30.jpg', 'The collection of the complete The Lord Of The Ring Saga and The Hobbit.', NULL, 'Available', 320, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (34, '439650763', 'Gregor and the Prophecy of Bane', 34, NULL, 'https://images.gr-assets.com/books/1337457481l/385742.jpg', 'Gregor and the Prophecy of Bane is the second book in Suzanne Collins''s children''s novel series The Underland Chronicles. Published in 2004, the novel contains elements of high fantasy. The novel focuses on a prophecy mentioned at the end of Gregor the Overlander which the Underlanders believe requires the protagonist Gregor to hunt down and kill an evil white rat known as the "Bane". It is told in third person.', NULL, 'Available', 316, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (36, '439791464', 'Gregor and the Marks of Secret', 29, NULL, 'https://images.gr-assets.com/books/1397854344l/319644.jpg', 'Gregor and the Marks of Secret is a high fantasy/epic fantasy novel, the fourth book in the critically acclaimed The Underland Chronicles by Suzanne Collins. It picks up soon after the end of Gregor and the Curse of the Warmbloods.', NULL, 'Available', 316, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (1, '618260307', 'The Hobbit or There and Back Again', 12, NULL, 'https://images.gr-assets.com/books/1372847500l/5907.jpg', 'The Hobbit, or There and Back Again is a children''s fantasy novel by English author J. R. R. Tolkien. It was published on 21 September 1937 to wide critical acclaim, being nominated for the Carnegie Medal and awarded a prize from the New York Herald Tribune for best juvenile fiction. The book remains popular and is recognized as a classic in children''s literature.
+
+The Hobbit is set within Tolkien''s fictional universe and follows the quest of home-loving hobbit Bilbo Baggins to win a share of the treasure guarded by Smaug the dragon. Bilbo''s journey takes him from light-hearted, rural surroundings into more sinister territory.', NULL, 'Available', 320, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (2, '1416524797', 'Angels & Demons ', 40, NULL, 'https://images.gr-assets.com/books/1303390735l/960.jpg', 'Angels & Demons is a 2000 bestselling mystery-thriller novel written by American author Dan Brown and published by Pocket Books and then by Corgi Books. The novel introduces the character Robert Langdon, who recurs as the protagonist of Brown''s subsequent novels. Angels & Demons shares many stylistic literary elements with its sequels, such as conspiracies of secret societies, a single-day time frame, and the Catholic Church. Ancient history, architecture, and symbology are also heavily referenced throughout the book.', NULL, 'Available', 321, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (3, '439023491', 'Catching Fire', 33, NULL, 'https://images.gr-assets.com/books/1358273780l/6148028.jpg', 'Catching Fire is a 2009 science fiction young adult novel by the American novelist Suzanne Collins, the second book in The Hunger Games trilogy. As the sequel to the 2008 bestseller The Hunger Games, it continues the story of Katniss Everdeen and the post-apocalyptic nation of Panem. Following the events of the previous novel, a rebellion against the oppressive Capitol has begun, and Katniss and fellow tribute Peeta Mellark are forced to return to the arena in a special edition of the Hunger Games.
+
+The book was first published on September 1, 2009, by Scholastic, in hardcover, and was later released in ebook and audiobook format. Catching Fire received mostly positive reviews, with reviewers praising Collins'' prose, the book''s ending, and the development of Katniss''s character. According to critics, major themes of the novel include survival, authoritarianism, rebellion and interdependence versus independence. The book has sold more than 19 million copies in the U.S. alone.', NULL, 'Available', 322, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (5, '439139600', 'Harry Potter and the Goblet of Fire', 23, NULL, 'https://images.gr-assets.com/books/1361482611l/6.jpg', 'Harry Potter and the Goblet of Fire is a fantasy book written by British author J. K. Rowling and the fourth novel in the Harry Potter series. It follows Harry Potter, a wizard in his fourth year at Hogwarts School of Witchcraft and Wizardry and the mystery surrounding the entry of Harry''s name into the Triwizard Tournament, in which he is forced to compete.
+
+The book was published in the United Kingdom by Bloomsbury and in the United States by Scholastic; in both countries the release date was 8 July 2000, the first time a book in the series was published in both countries at the same time. The novel won a Hugo Award, the only Harry Potter novel to do so, in 2001. The book was adapted into a film, which was released worldwide on 18 November 2005, and a video game by Electronic Arts.', NULL, 'Available', 317, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (6, '545010225', 'Harry Potter and the Deathly Hallows', 23, NULL, 'https://images.gr-assets.com/books/1474171184l/136251.jpg', 'Harry Potter and the Deathly Hallows is a fantasy novel written by British author J. K. Rowling and the seventh and final novel of the Harry Potter series. The book was released on 21 July 2007, ending the series that began in 1997 with the publication of Harry Potter and the Philosopher''s Stone. It was published in the United Kingdom by Bloomsbury Publishing, in the United States by Scholastic, and in Canada by Raincoast Books. The novel chronicles the events directly following Harry Potter and the Half-Blood Prince (2005) and the final confrontation between the wizards Harry Potter and Lord Voldemort.
+
+Deathly Hallows shattered sales records upon release, surpassing marks set by previous titles of the Harry Potter series. It holds the Guinness World Record for most novels sold within 24 hours of release, with 8.3 million sold in the US alone and 2.65 million in the UK. Generally well received by critics, the book won the 2008 Colorado Blue Spruce Book Award, and the American Library Association named it a "Best Book for Young Adults". A film adaptation of the novel was released in two parts: Harry Potter and the Deathly Hallows – Part 1 in November 2010, and Part 2 in July 2011.', NULL, 'Available', 319, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (7, '618346252', ' The Fellowship of the Ring', 24, NULL, 'https://images.gr-assets.com/books/1298411339l/34.jpg', 'The Fellowship of the Ring is the first of three volumes of the epic novel The Lord of the Rings by the English author J. R. R. Tolkien. It is followed by The Two Towers and The Return of the King. It takes place in the fictional universe of Middle-earth. It was originally published on 29 July 1954 in the United Kingdom.
+
+The volume consists of a foreword, in which the author discusses his writing of The Lord of the Rings, a prologue titled "Concerning Hobbits, and other matters", and the main narrative in Book I and Book II.', NULL, 'Available', 317, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (8, '307277674', 'The Da Vinci Code', 44, NULL, 'https://images.gr-assets.com/books/1303252999l/968.jpg', 'The Da Vinci Code is a 2003 mystery thriller novel by Dan Brown. It is Brown''s second novel to include the character Robert Langdon: the first was his 2000 novel Angels & Demons. The Da Vinci Code follows "symbologist" Robert Langdon and cryptologist Sophie Neveu after a murder in the Louvre Museum in Paris causes them to become involved in a battle between the Priory of Sion and Opus Dei over the possibility of Jesus Christ having been a companion to Mary Magdalene.
+
+The novel explores an alternative religious history, whose central plot point is that the Merovingian kings of France were descended from the bloodline of Jesus Christ and Mary Magdalene, ideas derived from Clive Prince''s The Templar Revelation (1997) and books by Margaret Starbird. The book also refers to The Holy Blood and the Holy Grail (1982) though Dan Brown has stated that it was not used as research material.', NULL, 'Available', 322, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (9, '553588486', 'A Game of Thrones', 12, NULL, 'https://images.gr-assets.com/books/1436732693l/13496.jpg', 'A Game of Thrones is the first novel in A Song of Ice and Fire, a series of fantasy novels by the American author George R. R. Martin. It was first published on August 1, 1996. The novel won the 1997 Locus Award and was nominated for both the 1997 Nebula Award and the 1997 World Fantasy Award. The novella Blood of the Dragon, comprising the Daenerys Targaryen chapters from the novel, won the 1997 Hugo Award for Best Novella. In January 2011, the novel became a New York Times Bestseller and reached #1 on the list in July 2011.
+
+In the novel, recounting events from various points of view, Martin introduces the plot-lines of the noble houses of Westeros, the Wall, and the Targaryens. The novel has inspired several spin-off works, including several games. It is also the namesake and basis for the first season of Game of Thrones, an HBO television series that premiered in April 2011.', NULL, 'Available', 319, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (10, '375826696', 'Eragon', 49, NULL, 'https://images.gr-assets.com/books/1366212852l/113436.jpg', 'Eragon is the first book in The Inheritance Cycle by American fantasy writer, Christopher Paolini. Paolini, born in 1983, wrote the novel while still in his teens. After writing the first draft for a year, Paolini spent a second year rewriting and fleshing out the story and characters. His parents saw the final manuscript and in 2001 decided to self-publish Eragon; Paolini spent a year traveling around the United States promoting the novel. By chance, the book was discovered by Carl Hiaasen, who got it re-published by Alfred A. Knopf. The re-published version was released on August 26, 2003.
+
+The book tells the story of a farm boy named Eragon, who finds a mysterious stone in the mountains. Not knowing the stone''s origin or worth, he attempts to use it as payment to a butcher. A dragon he later names Saphira hatches from the stone, which was really an egg. When the evil King Galbatorix finds out the general location of the egg he sends the Ra''zac to acquire it. By that time Saphira had been growing for a while and takes Eragon to the Spine after Ra''zac appear in their village, Carvahall. Eragon and Saphira are forced to flee from their hometown, with a storyteller called Brom (who is later revealed to be an old member of an extinct group called the Riders), and Brom was supposed to teach Eragon ''The Ways of the Rider''.', NULL, 'Available', 317, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (13, '055357342X', 'A Storm of Swords', 48, NULL, 'https://images.gr-assets.com/books/1497931121l/62291.jpg', 'A Storm of Swords is the third of seven planned novels in A Song of Ice and Fire, a fantasy series by American author George R. R. Martin. It was first published on August 8, 2000, in the United Kingdom, with a United States edition following in November 2000. Its publication was preceded by a novella called Path of the Dragon, which collects some of the Daenerys Targaryen chapters from the novel into a single book.
+
+At the time of its publication, A Storm of Swords was the longest novel in the series. It was so long that in the UK, Ireland, Australia, and Israel, its paperback edition was split in half, Part 1 being published as Steel and Snow in June 2001 (with the one-volume cover) and Part 2 as Blood and Gold in August 2001 (with a specially-commissioned new cover). The same division was used in the Polish and Greek editions. In France, the decision was made to cut the novel into four separate volumes.', NULL, 'Available', 316, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (15, '055358202X', 'A Feast for Crows', 13, NULL, 'https://images.gr-assets.com/books/1429538615l/13497.jpg', 'A Feast for Crows is the fourth of seven planned novels in the epic fantasy series A Song of Ice and Fire by American author George R. R. Martin. The novel was first published on October 17, 2005, in the United Kingdom, with a United States edition following on November 8, 2005.', NULL, 'Available', 316, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (16, '552151696', 'Digital Fortress', 46, NULL, 'https://images.gr-assets.com/books/1360095966l/11125.jpg', 'Digital Fortress is a techno-thriller novel written by American author Dan Brown and published in 1998 by St. Martin''s Press. The book explores the theme of government surveillance of electronically stored information on the private lives of citizens, and the possible civil liberties and ethical implications of using such technology.', NULL, 'Available', 318, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (17, '618640150', 'The Lord of the Rings', 9, NULL, 'https://images.gr-assets.com/books/1411114164l/33.jpg', 'The Lord of the Rings is an epic high fantasy novel written by English author and scholar J. R. R. Tolkien. The story began as a sequel to Tolkien''s 1937 fantasy novel The Hobbit, but eventually developed into a much larger work. Written in stages between 1937 and 1949, The Lord of the Rings is one of the best-selling novels ever written, with over 150 million copies sold.
+
+The title of the novel refers to the story''s main antagonist, the Dark Lord Sauron,[a] who had in an earlier age created the One Ring to rule the other Rings of Power as the ultimate weapon in his campaign to conquer and rule all of Middle-earth. From quiet beginnings in the Shire, a hobbit land not unlike the English countryside, the story ranges across Middle-earth, following the course of the War of the Ring through the eyes of its characters, most notably the hobbits Frodo Baggins, Sam, Merry and Pippin.', NULL, 'Available', 319, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (19, '385504225', 'The Lost Symbol', 22, NULL, 'https://images.gr-assets.com/books/1358274396l/6411961.jpg', 'The Lost Symbol is a 2009 novel written by American writer Dan Brown. It is a thriller set in Washington, D.C., after the events of The Da Vinci Code, and relies on Freemasonry for both its recurring theme and its major characters.
+
+Released on September 15, 2009, it is the third Brown novel to involve the character of Harvard University symbologist Robert Langdon, following 2000''s Angels & Demons and 2003''s The Da Vinci Code.', NULL, 'Available', 321, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (20, '385537859', 'Inferno', 10, NULL, 'https://images.gr-assets.com/books/1397093185l/17212231.jpg', 'Inferno is a 2013 mystery thriller novel by American author Dan Brown and the fourth book in his Robert Langdon series, following Angels & Demons, The Da Vinci Code and The Lost Symbol. The book was published on May 14, 2013, ten years after publication of The Da Vinci Code (2003), by Doubleday. It was number one on the New York Times Best Seller list for hardcover fiction and Combined Print & E-book fiction for the first eleven weeks of its release, and also remained on the list of E-book fiction for the first seventeen weeks of its release.', NULL, 'Available', 316, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (37, '097640110X', 'The Hedge Knight', 28, NULL, 'https://images.gr-assets.com/books/1443806558l/13501.jpg', 'The first novella was originally published August 25, 1998 in the Legends anthology, edited by Robert Silverberg. The story was later adapted into a six-issue comic book limited series by Ben Avery, drawn by Mike S. Miller, produced by Roaring Studios (now Dabel Brothers Productions) and published by Image Comics and Devil''s Due between August 2003 and May 2004. Devil''s Due published the complete limited series as a graphic novel in June 2004. Following the termination of the partnership between Dabel Brothers and Devil''s Due, the graphic novel has been republished in various editions.', NULL, 'Available', 322, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (38, '553805444', 'The World of Ice and Fire', 44, NULL, 'https://images.gr-assets.com/books/1400360220l/17345242.jpg', 'The World of Ice & Fire is a companion book for George R. R. Martin''s A Song of Ice and Fire fantasy series. Written by Martin, Elio M. García Jr. and Linda Antonsson, it was published by Bantam on October 28, 2014. The 326-page volume is a fully illustrated "history compendium" of Martin''s fictional Westeros, written from the perspective of an in-world "Maester" and featuring newly written material, family trees, and extensive maps and artwork.', NULL, 'Available', 318, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (22, '747599874', 'The Tales of Beedle the Bard', 31, NULL, 'https://images.gr-assets.com/books/1373467575l/3950967.jpg', 'The Tales of Beedle the Bard is a book of children''s stories by British author J. K. Rowling. There is a storybook of the same name mentioned in Harry Potter and the Deathly Hallows, the last book of the Harry Potter series.
+
+The book was originally produced in a limited edition of only seven copies, each handwritten and illustrated by J. K. Rowling. One of them was offered for auction through Sotheby''s in late 2007 and was expected to sell for £50,000 (US$77,000, €69,000); ultimately it was bought for £1.95 million ($3 million, €2.7 million) by Amazon, making the selling price the highest achieved at auction for a modern literary manuscript. The money earned at the auction of the book was donated to The Children''s Voice charity campaign.', NULL, 'Available', 320, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (23, '375840400', 'Eldest', 43, NULL, 'https://images.gr-assets.com/books/1387119654l/45978.jpg', 'Eldest is the second novel in the Inheritance Cycle by Christopher Paolini and the sequel to Eragon. Eldest was first published in hardcover on August 23, 2005, and was released in paperback in September 2006.[1] Eldest has been released in an audiobook format,[2] and as an ebook.[3] Like Eragon, Eldest became a New York Times bestseller.[3] A deluxe edition of Eldest was released on September 26, 2006, including new information and art by both the illustrator and the author. Other editions of Eldest are translated into different languages.
+
+Eldest begins following several important events in Eragon. The story is the continued adventures of Eragon and his dragon Saphira, centering on their journey to the realm of the Elves in order to further Eragon''s training as a Dragon Rider. Other plots in the story focus on Roran, Eragon''s cousin, who leads the inhabitants of Carvahall to Surda to join the Varden, and Nasuada as she takes on her father''s role as leader of the Varden. Eldest ends at the Battle of the Burning Plains, where Eragon faces a new Dragon Rider, Murtagh, and a new dragon, Thorn.', NULL, 'Available', 322, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (24, '316228532', 'The Casual Vacancy', 10, NULL, 'https://images.gr-assets.com/books/1358266832l/13497818.jpg', 'The Casual Vacancy is a 2012 novel written by J. K. Rowling. The book was published worldwide by the Little, Brown Book Group on 27 September 2012. A paperback edition was released on 23 July 2013. It was Rowling''s first publication since the Harry Potter series, her first apart from that series, and her first novel for adult readership.
+
+The novel is set in a suburban West Country town called Pagford and begins with the death of beloved Parish Councillor Barry Fairbrother. Subsequently, a seat on the council is vacant and a conflict ensues before the election for his successor takes place. Factions develop, particularly concerning whether to dissociate with a local council estate, ''the Fields'', with which Barry supported an alliance. However, those running for a place soon find their darkest secrets revealed on the Parish Council online forum, ruining their campaign and leaving the election in turmoil.', NULL, 'Available', 321, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (26, '618391118', 'The Silmarillion', 21, NULL, 'https://images.gr-assets.com/books/1336502583l/7332.jpg', 'The Silmarillion (Quenya: [silmaˈriliɔn]) is a collection of mythopoeic works by English writer J. R. R. Tolkien, edited and published posthumously by his son, Christopher Tolkien, in 1977, with assistance from Guy Gavriel Kay. The Silmarillion, along with J. R. R. Tolkien''s other works, forms an extensive, though incomplete, narrative that describes the universe of Eä in which are found the lands of Valinor, Beleriand, Númenor, and Middle-earth, within which The Hobbit and The Lord of the Rings take place.
+
+After the success of The Hobbit, Tolkien''s publisher requested a sequel. Tolkien sent them an early draft of The Silmarillion but they rejected the work as being obscure and "too Celtic". The result was that Tolkien began work on "A Long Expected Party", the first chapter of what he described at the time as "a new story about Hobbits", which became The Lord of the Rings.', NULL, 'Available', 318, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (28, '345368584', 'The Hobbit', 34, NULL, 'https://images.gr-assets.com/books/1374681632l/659469.jpg', 'The Hobbit, or There and Back Again is a children''s fantasy novel by English author J. R. R. Tolkien. It was published on 21 September 1937 to wide critical acclaim, being nominated for the Carnegie Medal and awarded a prize from the New York Herald Tribune for best juvenile fiction. The book remains popular and is recognized as a classic in children''s literature.
+
+The Hobbit is set within Tolkien''s fictional universe and follows the quest of home-loving hobbit Bilbo Baggins to win a share of the treasure guarded by Smaug the dragon. Bilbo''s journey takes him from light-hearted, rural surroundings into more sinister territory.
+
+The story is told in the form of an episodic quest, and most chapters introduce a specific creature or type of creature of Tolkien''s geography. Bilbo gains a new level of maturity, competence, and wisdom by accepting the disreputable, romantic, fey, and adventurous sides of his nature and applying his wits and common sense. The story reaches its climax in the Battle of the Five Armies, where many of the characters and creatures from earlier chapters re-emerge to engage in conflict.', NULL, 'Available', 319, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (32, '1780484259', 'A Song of Ice and Fire', 16, NULL, 'https://images.gr-assets.com/books/1339340118l/12177850.jpg', 'A Song of Ice and Fire is a series of epic fantasy novels by the American novelist and screenwriter George R. R. Martin. He began the first volume of the series, A Game of Thrones, in 1991, and it was published in 1996. Martin, who initially envisioned the series as a trilogy, has published five out of a planned seven volumes. The fifth and most recent volume of the series, A Dance with Dragons, was published in 2011 and took Martin six years to write. He is currently writing the sixth novel, The Winds of Winter.', NULL, 'Available', 320, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (33, '043979143X', 'Gregor and the Code of Claw', 46, NULL, 'https://images.gr-assets.com/books/1365854331l/537070.jpg', 'Gregor and the Code of Claw is a children''s novel by author Suzanne Collins, best known for her Hunger Games trilogy. It is the fifth and final book of The Underland Chronicles, and was published in 2007. Scholastic has rated the book''s "grade level equivalent" as 4.5 and the book''s lexile score as 730L, making it reading-level-appropriate for the average fourth to sixth grader. The novel has been praised especially as a conclusion to The Underland Chronicles. In its description of the novel, as part of its "Recommended Books" award, the CCBC states, "Although Gregor and the Code of Claw works as a stand-alone story, readers will want to start with book one and work their way through to this final volume." An audiobook version was released in 2008, read by Paul Boehmer.', NULL, 'Available', 319, NULL);
+INSERT INTO public.book (book_id, isbn, title, price, price_currency, picture, abstract, interview, status, publisher, average_rating) VALUES (35, '345533488', 'A Knight of the Seven Kingdoms', 20, NULL, 'https://images.gr-assets.com/books/1423281810l/18635622.jpg', 'Tales of Dunk and Egg is a series of fantasy novellas by George R. R. Martin, set in the world of his A Song of Ice and Fire novels. They follow the adventures of "Dunk" (the future Lord Commander of the Kingsguard, Ser Duncan the Tall) and "Egg" (the future king Aegon V Targaryen), some 90 years before the events of the novels.', NULL, 'Available', 318, NULL);
 
 
 --
@@ -1255,6 +1301,11 @@ INSERT INTO public.cart (cart_id, "user", ordered) VALUES (9, 5, false);
 -- Data for Name: event; Type: TABLE DATA; Schema: public; Owner: -
 --
 
+INSERT INTO public.event (event_id, location, book, name, date_time) VALUES (3, 11, 3, 'Catching Fire', '2019-07-13 12:00:00+02');
+INSERT INTO public.event (event_id, location, book, name, date_time) VALUES (4, 11, 6, 'Harry Potter and the Deathly Hallows', '2019-08-31 14:00:00+02');
+INSERT INTO public.event (event_id, location, book, name, date_time) VALUES (5, 11, 8, 'The Da Vinci Code', '2019-09-03 20:30:00+02');
+INSERT INTO public.event (event_id, location, book, name, date_time) VALUES (6, 11, 10, 'Eragon', '2019-10-05 18:00:00+02');
+INSERT INTO public.event (event_id, location, book, name, date_time) VALUES (7, 11, 26, 'The Silmarillon', '2019-11-11 10:00:00+01');
 
 
 --
@@ -1317,6 +1368,66 @@ INSERT INTO public.publisher (publisher_id, hq_location, name) VALUES (322, NULL
 -- Data for Name: similar_book; Type: TABLE DATA; Schema: public; Owner: -
 --
 
+INSERT INTO public.similar_book (id, book1, book2) VALUES (2, 0, 3);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (5, 0, 4);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (6, 3, 4);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (7, 2, 8);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (8, 2, 20);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (9, 2, 19);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (10, 19, 20);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (11, 19, 8);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (12, 8, 20);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (14, 1, 12);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (15, 1, 14);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (16, 1, 17);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (17, 1, 28);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (22, 12, 14);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (23, 12, 17);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (24, 12, 28);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (25, 14, 17);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (26, 14, 28);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (27, 17, 28);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (13, 1, 7);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (18, 7, 12);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (19, 7, 14);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (20, 7, 17);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (21, 7, 28);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (28, 5, 6);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (29, 5, 25);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (30, 6, 25);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (31, 5, 30);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (32, 6, 30);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (33, 25, 30);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (34, 33, 34);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (35, 33, 36);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (36, 34, 36);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (37, 10, 23);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (38, 9, 11);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (39, 9, 13);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (40, 9, 15);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (41, 9, 18);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (42, 9, 32);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (43, 9, 35);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (44, 11, 13);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (45, 11, 15);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (46, 11, 18);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (47, 11, 32);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (48, 11, 35);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (49, 13, 15);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (50, 13, 18);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (51, 13, 32);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (52, 13, 35);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (53, 15, 18);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (54, 15, 32);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (55, 15, 35);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (56, 18, 32);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (57, 18, 35);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (58, 32, 35);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (59, 26, 7);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (60, 26, 12);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (61, 26, 14);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (62, 26, 17);
+INSERT INTO public.similar_book (id, book1, book2) VALUES (63, 26, 28);
 
 
 --
@@ -1358,7 +1469,7 @@ INSERT INTO public."user" (user_id, username, password, email, first_name, surna
 -- Name: address_address_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.address_address_id_seq', 10, true);
+SELECT pg_catalog.setval('public.address_address_id_seq', 11, true);
 
 
 --
@@ -1430,7 +1541,7 @@ SELECT pg_catalog.setval('public.cart_cart_id_seq', 9, true);
 -- Name: event_event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.event_event_id_seq', 1, true);
+SELECT pg_catalog.setval('public.event_event_id_seq', 7, true);
 
 
 --
@@ -1475,7 +1586,7 @@ SELECT pg_catalog.setval('public.review_review_id_seq', 1, false);
 -- Name: similar_book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.similar_book_id_seq', 1, true);
+SELECT pg_catalog.setval('public.similar_book_id_seq', 63, true);
 
 
 --
@@ -1722,7 +1833,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- TOC entry 3383 (class 2618 OID 41907)
+-- TOC entry 3383 (class 2618 OID 41975)
 -- Name: book_essentials _RETURN; Type: RULE; Schema: public; Owner: -
 --
 
@@ -1752,7 +1863,7 @@ CREATE OR REPLACE VIEW public.book_essentials AS
 
 
 --
--- TOC entry 3384 (class 2618 OID 41912)
+-- TOC entry 3384 (class 2618 OID 41980)
 -- Name: order_essentials _RETURN; Type: RULE; Schema: public; Owner: -
 --
 
@@ -1761,6 +1872,7 @@ CREATE OR REPLACE VIEW public.order_essentials AS
     "user".user_id,
     o.payment_method,
     o.shipping_method,
+    o.order_date,
     to_jsonb(ad.*) AS shipment_address,
     sum((b.price * (cb.quantity)::double precision)) AS total_amount,
     jsonb_agg(jsonb_build_object('book', b.*, 'quantity', cb.quantity)) AS books
@@ -2002,7 +2114,7 @@ ALTER TABLE ONLY public."user"
     ADD CONSTRAINT user_address_foreign FOREIGN KEY (address) REFERENCES public.address(address_id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 
--- Completed on 2019-07-04 18:56:48 CEST
+-- Completed on 2019-07-04 22:56:38 CEST
 
 --
 -- PostgreSQL database dump complete
