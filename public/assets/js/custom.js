@@ -1,3 +1,9 @@
+$(document).ready(function(){
+    if(location.protocol === 'http:' && location.hostname === "bookhub-ctm.herokuapp.com") {
+        location.href = 'https://'+location.hostname+location.pathname;
+    }
+});
+
 /*------------------------------
  * Copyright 2016 Pixelized
  * http://www.pixelized.cz
@@ -511,3 +517,4 @@ function print_window(){
 	  e.print(),
 	  e.close()
 }
+

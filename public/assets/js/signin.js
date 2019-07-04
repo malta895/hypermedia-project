@@ -15,16 +15,12 @@ $(document).ready(function () {
             console.log(res);
 
             if(res.userId){
-                console.log("Succesful Login! Redirecting to Home page..."); +
+                console.log("Successful Login! Redirecting to Home page..."); +
                     sessionStorage.setItem('userId', JSON.stringify(res));
 
                 console.log(res.responseText);
 
-                if(location.protocol === 'http:' && location.hostname === '"bookhub-ctm.herokuapp.com"') {
-                    location.href = 'https://bookhub-ctm.herokuapp.com/';
-                } else {
-                    location.href = '/index.html';
-                }
+                location.href='/';
 
 
             }
