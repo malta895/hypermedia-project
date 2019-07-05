@@ -51,7 +51,7 @@ $(document).ready(function () {
                     $(".navbar-cart > ul").append(elem);
 
                 }
-                elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="/pages/checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
+                elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="/pages/cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="/pages/checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
                 $(".navbar-cart > ul").append(elem);
             }
 
@@ -85,17 +85,16 @@ $(document).ready(function () {
         }
     });
     $('.logout').click(function (e) {
-        e.preventDefault()
+        e.preventDefault();
         $.post('/api/user/logout', function (res) {
-            console.log("Logout succesful!")
+            console.log("Logout succesful!");
             sessionStorage.clear();
-            location.reload();
-
+            location.href = '/';
         })
             .fail(res => {
                 //TODO gestire errore
                 console.log(res);
-            })
+            });
     });
 
 
