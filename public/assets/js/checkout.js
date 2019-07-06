@@ -36,7 +36,7 @@ $(document).ready(function () {
         order.first_name = $(this).find('input[name=first_name]').val();
         order.last_name = $(this).find('input[name=last_name]').val();
         order.addressStreetLine1 = $(this).find('input[name=addressStreetLine1]').val();
-        order.addressStreetLine1 = $(this).find('input[name=addressStreetLine2]').val();
+        order.addressStreetLine2 = $(this).find('input[name=addressStreetLine2]').val();
         order.zip_code = $(this).find('input[name=zip_code]').val();
         order.country = $(this).find('input[name=country]').val();
         order.province = $(this).find('input[name=province]').val();
