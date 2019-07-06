@@ -104,7 +104,7 @@ $(document).ready(function () {
                                     $(".navbar-cart > ul").append(elem);
 
                                 }
-                                elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="/pages/checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
+                                elem = '<li> <div class="row"> <div class="col-sm-6"> <a href="/pages/cart.html" class="btn btn-primary btn-block">View Cart</a> </div> <div class="col-sm-6"> <a href="/pages/checkout.html" class="btn btn-primary btn-block">Checkout</a> </div> </div> </li>';
                                 $(".navbar-cart > ul").append(elem);
                                 
 
