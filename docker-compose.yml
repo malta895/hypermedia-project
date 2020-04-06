@@ -1,0 +1,26 @@
+version: "3"
+services:
+  hypermedia-app:
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://hyp:hyp@postgres:5432/hypermedia-db
+      NODE_ENV: development
+      PORT: 3000
+      TOKEN_SECRET: token_secret # make the user set it in a future release
+    ports:
+      - "3000:3000"
+    command: npm start
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  postgres:
+    image: postgres:alpine
+    ports:
+        - "35432:5432" # try to avoid port conflict if other postgres instances are running on the host
+    environment: # same as inserted in DATABASE_URL
+      POSTGRES_USER: hyp
+      POSTGRES_PASSWORD: hyp
+      POSTURES_DB: hypermedia-db
