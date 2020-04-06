@@ -98,7 +98,8 @@ swaggerTools.initializeMiddleware(swaggerDoc, function(middleware) {
   app.use(express.static(path.join(__dirname, "./public")));
 
   //Serve statically the api specs and the documentation
-  // app.use('/backend', express.static(path.join(__dirname, "./other/backend")));
+  if(process.env.SERVE_BACKEND_DOCS)
+    app.use('/backend', express.static(path.join(__dirname, "./other/backend")));
 
 
 
