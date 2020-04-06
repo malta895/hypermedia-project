@@ -5,7 +5,7 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgres://hyp:hyp@postgres:5432/hypermedia-db
+      DATABASE_URL: postgres://hyp:hyp@postgres:5432/hyp
       NODE_ENV: development
       PORT: 3000
       TOKEN_SECRET: token_secret # make the user set it in a future release
@@ -20,7 +20,8 @@ services:
     image: postgres:alpine
     ports:
         - "35432:5432" # try to avoid port conflict if other postgres instances are running on the host
+    volumes:
+      - /var/lib/postgres/data
     environment: # same as inserted in DATABASE_URL
       POSTGRES_USER: hyp
       POSTGRES_PASSWORD: hyp
-      POSTURES_DB: hypermedia-db
