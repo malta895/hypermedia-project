@@ -6,9 +6,9 @@
 
 | Member n. | Role | First name | Last Name | Matricola | Email address |
 | --------- | ------------- | ---------- | --------- | --------- | --------------- |
-| 1 | administrator | Luca | Maltagliati | 919858 | luca.maltagliati@mail.polimi.it |
-| 2 | member | Marco | Turetta | 921188 | marco3.turetta@mail.polimi.it |
-| 3 | member | Alessandro | Carughi | 915626 | alessandro.carughi@mail.polimi.it |
+| 1 | administrator | Luca | Maltagliati | ... | ... |
+| 2 | member | Marco | Turetta | ... | ... |
+| 3 | member | Alessandro | Carughi | ... | ... |
 
 ## Links to other deliverables
 - Deliverable D0: the web application is accessible at
