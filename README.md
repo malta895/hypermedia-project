@@ -1,6 +1,9 @@
 
 # Hypermedia Applications Project
 
+## Backend documentation
+
+A complete backend documentation is available <a href="other/backend/index.md">here</a>
 
 ## Installation
 
@@ -25,3 +28,6 @@ The app is served by default on port 3000
 Alessandro Carughi
 Luca Maltagliati
 Marco Turetta
+
+# License
+<a href="LICENSE">MIT License</a>
