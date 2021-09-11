@@ -13,7 +13,7 @@
   "license": "Unlicense",
   "private": true,
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "bluebird": "^3.5.5",
     "dotenv": "^8.0.0",
     "email-validator": "^2.0.4",
