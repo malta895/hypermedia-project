@@ -26,8 +26,7 @@ exports.setupDataLayer = function (dbUrl) {
 
         let sqlDb = knex({
             client: "pg",
-            connection: dbUrl,
-            ssl: true,
+            connection: dbUrl + '?ssl=true',
             debug: process.env.NODE_ENV === "development"
         });
 
