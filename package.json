@@ -1,4 +1,6 @@
 {
+  "engines": { "node": "<=12.0"},
+  "engine-strict": true,
   "name": "hyp-bookstore",
   "version": "1.0.0",
   "description": "This is a simple bookstore server with a book inventory, users and a shopping cart.",
