@@ -1,0 +1,3 @@
+[submodule "public"]
+	path = public
+	url = git@github.com:malta895/hypermedia-project-frontend.git
